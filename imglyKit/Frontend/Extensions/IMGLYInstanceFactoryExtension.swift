@@ -40,6 +40,8 @@ extension IMGLYInstanceFactory {
             return saturationEditorViewControllerWithFixedFilterStack(fixedFilterStack)
         case IMGLYMainMenuButtonType.text:
             return textEditorViewControllerWithFixedFilterStack(fixedFilterStack)
+        case IMGLYMainMenuButtonType.drawer:
+            return drawImageViewControllerWithFixedFilterStack(fixedFilterStack)
         default:
             return nil
         }
@@ -79,6 +81,11 @@ extension IMGLYInstanceFactory {
     
     public class func textEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack) -> IMGLYTextEditorViewController {
         return IMGLYTextEditorViewController(fixedFilterStack: fixedFilterStack)
+    }
+
+    public class func drawImageViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack) -> IMGLYDrawerViewController {
+        let vc = IMGLYDrawerViewController(fixedFilterStack: fixedFilterStack)
+        return vc
     }
     
     // MARK: - Gradient Views

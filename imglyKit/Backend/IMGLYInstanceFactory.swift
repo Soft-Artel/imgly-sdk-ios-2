@@ -157,6 +157,14 @@ open class IMGLYInstanceFactory {
     open class func textFilter() -> IMGLYTextFilter {
         return IMGLYTextFilter()
     }
+    /**
+    Creates a draw filter.
+
+    - returns: A draw filter
+    */
+    open class func drawFilter() -> IMGLYDrawFilter{
+        return IMGLYDrawFilter()
+    }
     
     /**
     Creates a sticker filter.

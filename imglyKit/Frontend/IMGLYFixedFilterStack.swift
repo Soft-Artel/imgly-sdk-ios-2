@@ -31,11 +31,13 @@ open class IMGLYFixedFilterStack: NSObject {
     open var brightnessFilter = IMGLYInstanceFactory.colorAdjustmentFilter()
     open var tiltShiftFilter = IMGLYInstanceFactory.tiltShiftFilter()
     open var textFilter = IMGLYInstanceFactory.textFilter()
+    open var drawFilter = [CIFilter]()
     open var stickerFilters = [CIFilter]()
     
     open var activeFilters: [CIFilter] {
         var activeFilters: [CIFilter] = [enhancementFilter, orientationCropFilter, tiltShiftFilter, effectFilter, brightnessFilter, textFilter]
         activeFilters += stickerFilters
+        activeFilters += drawFilter
         
         return activeFilters
     }
@@ -57,6 +59,7 @@ extension IMGLYFixedFilterStack: NSCopying {
         copy.tiltShiftFilter = tiltShiftFilter.copy(with: zone) as! IMGLYTiltshiftFilter
         copy.textFilter = textFilter.copy(with: zone) as! IMGLYTextFilter
         copy.stickerFilters = NSArray(array: stickerFilters, copyItems: true) as! [CIFilter]
+        copy.drawFilter = NSArray(array: drawFilter, copyItems:  true) as! [CIFilter]
         return copy
     }
 }

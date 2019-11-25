@@ -26,6 +26,7 @@ import UIKit
     case noise
     case text
     case reset
+    case drawer
 }
 
 public typealias IMGLYEditorCompletionBlock = (IMGLYEditorResult, UIImage?) -> Void
@@ -102,7 +103,12 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                 title: NSLocalizedString("main-editor.button.text", tableName: nil, bundle: bundle, value: "", comment: ""),
                 image: UIImage(named: "icon_option_text", in: bundle, compatibleWith: nil),
                 handler: { [unowned self] in self.subEditorButtonPressed(.text) }))
-        
+        handlers.append(
+        IMGLYActionButton(
+            title: NSLocalizedString("Рисовалка", tableName: nil, bundle: bundle, value: "", comment: ""),
+            image: UIImage(named: "icon_option_text", in: bundle, compatibleWith: nil),
+            handler: { [unowned self] in self.subEditorButtonPressed(.drawer) }))
+
         return handlers
         }()
     
@@ -161,17 +167,17 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     // MARK: - Helpers
     
     fileprivate func subEditorButtonPressed(_ buttonType: IMGLYMainMenuButtonType) {
-        if (buttonType == IMGLYMainMenuButtonType.magic) {
+        switch buttonType {
+        case .magic:
             if !updating {
                 fixedFilterStack.enhancementFilter._enabled = !fixedFilterStack.enhancementFilter._enabled
                 updatePreviewImage()
             }
-        } else {
+        default:
             if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack) {
                 viewController.lowResolutionImage = lowResolutionImage
                 viewController.previewImageView.image = previewImageView.image
                 viewController.completionHandler = subEditorDidComplete
-                
                 show(viewController, sender: self)
             }
         }

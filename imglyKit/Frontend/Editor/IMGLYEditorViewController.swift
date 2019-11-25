@@ -56,7 +56,6 @@ open class IMGLYEditorViewController: UIViewController {
     
     override open func viewDidLoad() {
         super.viewDidLoad()
-
         configureNavigationItems()
         configureViewHierarchy()
         configureViewConstraints()

@@ -606,7 +606,8 @@ open class IMGLYCameraViewController: UIViewController {
         navigationController.navigationBar.barStyle = .black
         navigationController.navigationBar.isTranslucent = false
         navigationController.navigationBar.titleTextAttributes = [ NSAttributedString.Key.foregroundColor : UIColor.white ]
-        
+        navigationController.modalPresentationStyle = .overFullScreen
+
         self.present(navigationController, animated: true, completion: nil)
     }
     

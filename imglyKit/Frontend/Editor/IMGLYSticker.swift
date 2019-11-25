@@ -18,3 +18,5 @@ open class IMGLYSticker: NSObject {
         super.init()
     }
 }
+
+

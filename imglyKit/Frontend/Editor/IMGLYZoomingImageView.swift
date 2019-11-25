@@ -39,6 +39,10 @@ open class IMGLYZoomingImageView: UIScrollView {
         visibleImageFrame = visibleImageFrame.intersection(imageView.frame)
         return visibleImageFrame
     }
+
+    open var imageSize: CGSize?{
+        return self.imageView.image?.size
+    }
     
     // MARK: - Initializers
     
@@ -82,13 +86,13 @@ open class IMGLYZoomingImageView: UIScrollView {
     // MARK: - Actions
     
     @objc fileprivate func doubleTapped(_ gestureRecognizer: UITapGestureRecognizer) {
-        let location = gestureRecognizer.location(in: imageView)
-        
-        if zoomScale > minimumZoomScale {
-            setZoomScale(minimumZoomScale, animated: true)
-        } else {
-            zoom(to: CGRect(x: location.x, y: location.y, width: 1, height: 1), animated: true)
-        }
+//        let location = gestureRecognizer.location(in: imageView)
+//
+//        if zoomScale > minimumZoomScale {
+//            setZoomScale(minimumZoomScale, animated: true)
+//        } else {
+//            zoom(to: CGRect(x: location.x, y: location.y, width: 1, height: 1), animated: true)
+//        }
     }
 }
 
@@ -98,9 +102,9 @@ extension IMGLYZoomingImageView: UIScrollViewDelegate {
     }
     
     public func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        let offsetX = max((bounds.size.width - contentSize.width) * 0.5, 0)
-        let offsetY = max((bounds.size.height - contentSize.height) * 0.5, 0)
-        
-        imageView.center = CGPoint(x: contentSize.width * 0.5 + offsetX, y: contentSize.height * 0.5 + offsetY)
+//        let offsetX = max((bounds.size.width - contentSize.width) * 0.5, 0)
+//        let offsetY = max((bounds.size.height - contentSize.height) * 0.5, 0)
+//
+//        imageView.center = CGPoint(x: contentSize.width * 0.5 + offsetX, y: contentSize.height * 0.5 + offsetY)
     }
 }
