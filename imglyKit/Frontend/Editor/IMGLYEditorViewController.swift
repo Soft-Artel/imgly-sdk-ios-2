@@ -29,7 +29,7 @@ open class IMGLYEditorViewController: UIViewController {
             }
         }
     }
-    
+
     open var lowResolutionImage: UIImage?
     
     open fileprivate(set) lazy var previewImageView: IMGLYZoomingImageView = {
@@ -51,7 +51,7 @@ open class IMGLYEditorViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     // MARK: - UIViewController
     
     override open func viewDidLoad() {
@@ -72,7 +72,7 @@ open class IMGLYEditorViewController: UIViewController {
     open override var shouldAutorotate : Bool {
         return false
     }
-    
+
     open override var preferredInterfaceOrientationForPresentation : UIInterfaceOrientation {
         return .portrait
     }
@@ -92,22 +92,35 @@ open class IMGLYEditorViewController: UIViewController {
     }
     
     fileprivate func configureViewConstraints() {
+
+        let bottomSafe: NSLayoutYAxisAnchor
+        if #available(iOS 11.0 , *){
+            bottomSafe = self.view.safeAreaLayoutGuide.bottomAnchor
+        } else {
+            bottomSafe = self.view.bottomAnchor
+        }
         let views: [String: AnyObject] = [
             "previewImageView" : previewImageView,
             "bottomContainerView" : bottomContainerView,
             "topLayoutGuide" : topLayoutGuide
         ]
-        
+
         let metrics: [String: AnyObject] = [
             "bottomContainerViewHeight" : 100 as AnyObject
         ]
-        
+
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[previewImageView]|", options: [], metrics: nil, views: views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[bottomContainerView]|", options: [], metrics: nil, views: views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[topLayoutGuide][previewImageView][bottomContainerView(==bottomContainerViewHeight)]|", options: [], metrics: metrics, views: views))
-        
+
         previewImageView.addConstraint(NSLayoutConstraint(item: activityIndicatorView, attribute: .centerX, relatedBy: .equal, toItem: previewImageView, attribute: .centerX, multiplier: 1, constant: 0))
         previewImageView.addConstraint(NSLayoutConstraint(item: activityIndicatorView, attribute: .centerY, relatedBy: .equal, toItem: previewImageView, attribute: .centerY, multiplier: 1, constant: 0))
+
+
+        self.previewImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+
+
+
     }
     
     open var enableZoomingInPreviewImage: Bool {

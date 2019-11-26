@@ -27,13 +27,6 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
         return view
     }()
 
-    open fileprivate(set) lazy var backgroundView: UIView = {
-        let view = UIView()
-        view.clipsToBounds =  true
-        return view
-    }()
-
-
     fileprivate var dragView: UIView?
     fileprivate var tempStickersClipView = [CIFilter]()
     
@@ -44,12 +37,12 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
         if let image = mainImageView.image{
             let drawFilter = IMGLYInstanceFactory.drawFilter()
             drawFilter.paint = image
-            let center = CGPoint(x: mainImageView.center.x / backgroundView.frame.size.width,
-                                 y: mainImageView.center.y / backgroundView.frame.size.height)
+            let center = CGPoint(x: mainImageView.center.x / self.previewImageView.frame.size.width,
+                                 y: mainImageView.center.y / self.previewImageView.frame.size.height)
 
-            var size = self.backgroundView.frame.size
-            size.width = size.width / backgroundView.bounds.size.width
-            size.height = size.height / backgroundView.bounds.size.height
+            var size = self.previewImageView.frame.size
+            size.width = size.width / self.previewImageView.bounds.size.width
+            size.height = size.height / self.previewImageView.bounds.size.height
             drawFilter.center = center
             drawFilter.scale = size.width
             drawFilter.transform = view.transform
@@ -75,7 +68,6 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
     open override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.addSubview(backgroundView)
         let bundle = Bundle(for: type(of: self))
         navigationItem.title = NSLocalizedString("Рисовалка", tableName: nil, bundle: bundle, value: "", comment: "")
 
@@ -91,9 +83,9 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
         }
         let imageView = UIImageView()
         for line in lineArray{
-            UIGraphicsBeginImageContext(backgroundView.frame.size)
-            imageView.image?.draw(in: backgroundView.frame, blendMode: .normal, alpha: 1.0)
-            line.draw(in: backgroundView.frame, blendMode: .normal, alpha: opacity)
+            UIGraphicsBeginImageContext(self.previewImageView.frame.size)
+            imageView.image?.draw(in: self.previewImageView.frame, blendMode: .normal, alpha: 1.0)
+            line.draw(in: self.previewImageView.frame, blendMode: .normal, alpha: opacity)
             imageView.image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
         }
@@ -117,12 +109,13 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
 
         self.tempImageView = UIImageView()
         self.mainImageView = UIImageView()
-        self.tempImageView.frame = view.convert(previewImageView.visibleImageFrame, from: previewImageView)
+        self.tempImageView.frame =
+            view.convert(previewImageView.visibleImageFrame, from: previewImageView)
         self.mainImageView.frame = view.convert(previewImageView.visibleImageFrame, from: previewImageView)
+//        self.tempImageView.center = self.previewImageView.center
+//        self.mainImageView.center = self.previewImageView.center
         self.view.addSubview(self.tempImageView)
         self.view.addSubview(self.mainImageView)
-
-        self.backgroundView.frame = view.convert(previewImageView.visibleImageFrame, from: previewImageView)
 
         self.backButton.frame = CGRect(x: self.view.frame.origin.x + 20,
                                        y: bottomContainerView.frame.origin.y - 20,
@@ -139,11 +132,11 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
       // MARK: - Actions
 
       func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint) {
-        UIGraphicsBeginImageContext(self.backgroundView.frame.size)
+        UIGraphicsBeginImageContext(self.previewImageView.frame.size)
         guard let context = UIGraphicsGetCurrentContext() else {
           return
         }
-        tempImageView.image?.draw(in: self.backgroundView.frame)
+        tempImageView.image?.draw(in: self.previewImageView.frame)
 
         context.move(to: fromPoint)
         context.addLine(to: toPoint)
@@ -164,9 +157,8 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
         guard let touch = touches.first else {
           return
         }
-        self.backgroundView.frame = self.previewImageView.visibleImageFrame
         swiped = false
-        lastPoint = touch.location(in: self.backgroundView)
+        lastPoint = touch.location(in: self.previewImageView)
       }
 
     override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -174,7 +166,7 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
           return
         }
         swiped = true
-        let currentPoint = touch.location(in: self.backgroundView)
+        let currentPoint = touch.location(in: self.previewImageView)
         drawLine(from: lastPoint, to: currentPoint)
 
         lastPoint = currentPoint
@@ -191,8 +183,8 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
 
         // Merge tempImageView into mainImageView
         UIGraphicsBeginImageContext(mainImageView.frame.size)
-        mainImageView.image?.draw(in: backgroundView.frame, blendMode: .normal, alpha: 1.0)
-        tempImageView?.image?.draw(in: backgroundView.frame, blendMode: .normal, alpha: opacity)
+        mainImageView.image?.draw(in: self.previewImageView.frame, blendMode: .normal, alpha: 1.0)
+        tempImageView?.image?.draw(in: self.previewImageView.frame, blendMode: .normal, alpha: opacity)
         mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
