@@ -106,12 +106,16 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
 
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
+        let imageViewFrame = self.previewImageView.imageView.frame
+        
         self.tempImageView = UIImageView()
         self.mainImageView = UIImageView()
         self.tempImageView.frame =
             view.convert(previewImageView.visibleImageFrame, from: previewImageView)
         self.mainImageView.frame = view.convert(previewImageView.visibleImageFrame, from: previewImageView)
+        self.mainImageView.frame.origin.x = (self.previewImageView.frame.size.width - imageViewFrame.width) / 2
+        self.tempImageView.frame.origin.x = (self.previewImageView.frame.size.width - imageViewFrame.width) / 2
+        
 //        self.tempImageView.center = self.previewImageView.center
 //        self.mainImageView.center = self.previewImageView.center
         self.view.addSubview(self.tempImageView)
@@ -182,7 +186,7 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
         self.lineArray.append(image)
 
         // Merge tempImageView into mainImageView
-        UIGraphicsBeginImageContext(mainImageView.frame.size)
+        UIGraphicsBeginImageContext(self.previewImageView.frame.size)
         mainImageView.image?.draw(in: self.previewImageView.frame, blendMode: .normal, alpha: 1.0)
         tempImageView?.image?.draw(in: self.previewImageView.frame, blendMode: .normal, alpha: opacity)
         mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()

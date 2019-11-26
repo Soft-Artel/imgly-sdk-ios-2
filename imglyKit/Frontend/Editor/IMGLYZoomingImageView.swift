@@ -26,7 +26,7 @@ open class IMGLYZoomingImageView: UIScrollView {
         }
     }
 
-    fileprivate let imageView = UIImageView()
+    public let imageView = UIImageView()
     fileprivate var initialZoomScaleWasSet = false
     open lazy var doubleTapGestureRecognizer: UITapGestureRecognizer = {
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(IMGLYZoomingImageView.doubleTapped(_:)))
