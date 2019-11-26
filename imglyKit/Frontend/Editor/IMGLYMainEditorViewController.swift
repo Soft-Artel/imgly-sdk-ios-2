@@ -37,6 +37,19 @@ private let ButtonCollectionViewCellSize = CGSize(width: 66, height: 90)
 open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     
     // MARK: - Properties
+
+    static func showEditor(image: UIImage, parent: UIViewController) {
+        let editorViewController = IMGLYMainEditorViewController()
+        editorViewController.highResolutionImage = image
+
+        let navigationController = IMGLYNavigationController(rootViewController: editorViewController)
+        navigationController.navigationBar.barStyle = .black
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.navigationBar.titleTextAttributes = [ NSAttributedString.Key.foregroundColor : UIColor.white ]
+        navigationController.modalPresentationStyle = .overFullScreen
+
+        parent.present(navigationController, animated: true, completion: nil)
+    }
     
     open lazy var actionButtons: [IMGLYActionButton] = {
         let bundle = Bundle(for: type(of: self))
@@ -134,10 +147,10 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(IMGLYMainEditorViewController.cancelTapped(_:)))
         
         navigationController?.delegate = self
-        
+
         fixedFilterStack.effectFilter = IMGLYInstanceFactory.effectFilterWithType(initialFilterType)
         fixedFilterStack.effectFilter.inputIntensity = initialFilterIntensity
-        
+
         updatePreviewImage()
         configureMenuCollectionView()
     }
@@ -213,7 +226,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
             updating = true
             PhotoProcessorQueue.async {
                 let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage, filters: self.fixedFilterStack.activeFilters)
-                
+
                 DispatchQueue.main.async {
                     self.previewImageView.image = processedImage
                     self.updating = false

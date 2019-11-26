@@ -15,10 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let cameraViewController = IMGLYCameraViewController(recordingModes: [.photo, .video])
-        cameraViewController.maximumVideoLength = 15
-        cameraViewController.squareMode = true
-        
+        let cameraViewController = IMGLYCameraViewController()
+
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = cameraViewController
         window?.makeKeyAndVisible()

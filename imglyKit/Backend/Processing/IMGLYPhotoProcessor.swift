@@ -103,10 +103,11 @@ open class IMGLYPhotoProcessor {
         
         return currentImage
     }
-    
+
     #if os(iOS)
     
     open class func processWithUIImage(_ image: UIImage, filters: [CIFilter]) -> UIImage? {
+//        let image = UIImage(named: "testingImage")!
         let imageOrientation = image.imageOrientation
         guard let coreImage = CIImage(image: image) else {
             return nil
