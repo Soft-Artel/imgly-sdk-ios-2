@@ -18,7 +18,7 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
     var tempImageView: UIImageView!
     var backButton = UIButton()
     var lineArray = [UIImage]()
-    
+
 //    var drawerView: DrawingView?
     open fileprivate(set) lazy var textColorSelectorView: IMGLYTextColorSelectorView = {
         let view = IMGLYTextColorSelectorView()
@@ -27,9 +27,8 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
         return view
     }()
 
-    fileprivate var dragView: UIView?
     fileprivate var tempStickersClipView = [CIFilter]()
-    
+
 
     open override func tappedDone(_ sender: UIBarButtonItem?) {
         var addedStickers = false
@@ -41,10 +40,10 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
                                  y: mainImageView.center.y / self.previewImageView.frame.size.height)
 
             var size = self.previewImageView.frame.size
-            size.width = size.width / self.previewImageView.bounds.size.width
-            size.height = size.height / self.previewImageView.bounds.size.height
+            size.width = size.width / self.previewImageView.imageView.bounds.size.width
+            size.height = size.height / self.previewImageView.imageView.bounds.size.height
             drawFilter.center = center
-            drawFilter.scale = size.width
+            drawFilter.scale = 1// size.width
             drawFilter.transform = view.transform
             fixedFilterStack.drawFilter.append(drawFilter)
             addedStickers = true
@@ -106,41 +105,53 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
 
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let imageViewFrame = self.previewImageView.imageView.frame
-        
-        self.tempImageView = UIImageView()
-        self.mainImageView = UIImageView()
-        self.tempImageView.frame =
-            view.convert(previewImageView.visibleImageFrame, from: previewImageView)
-        self.mainImageView.frame = view.convert(previewImageView.visibleImageFrame, from: previewImageView)
-        self.mainImageView.frame.origin.x = (self.previewImageView.frame.size.width - imageViewFrame.width) / 2
-        self.tempImageView.frame.origin.x = (self.previewImageView.frame.size.width - imageViewFrame.width) / 2
-        
-//        self.tempImageView.center = self.previewImageView.center
-//        self.mainImageView.center = self.previewImageView.center
-        self.view.addSubview(self.tempImageView)
-        self.view.addSubview(self.mainImageView)
 
-        self.backButton.frame = CGRect(x: self.view.frame.origin.x + 20,
-                                       y: bottomContainerView.frame.origin.y - 20,
-                                              width: 30, height: 30)
-        self.backButton.backgroundColor = .red
-        self.backButton.layer.cornerRadius = self.backButton.frame.height / 2
-        self.backButton.addTarget(self, action: #selector(self.undoAction), for: .touchUpInside)
-        self.view.addSubview(self.backButton)
+
+                self.tempImageView = UIImageView()
+                self.mainImageView = UIImageView()
+
+                self.tempImageView.frame.size = self.previewImageView.visibleImageFrame.size
+        //        self.tempImageView.center.x = self.view.center.x
+        //        self.tempImageView.frame.origin.y = (self.previewImageView.frame.height - self.previewImageView.imageView.frame.height) / 2
+
+                self.mainImageView.frame.size = self.tempImageView.frame.size
+            self.view.addSubview(self.mainImageView)
+            self.view.addSubview(self.tempImageView)
+
+
+            self.backButton.frame = CGRect(x: self.view.frame.origin.x + 20,
+                                               y: bottomContainerView.frame.origin.y - 20,
+                                                      width: 30, height: 30)
+            self.backButton.backgroundColor = .red
+            self.backButton.layer.cornerRadius = self.backButton.frame.height / 2
+            self.backButton.addTarget(self, action: #selector(self.undoAction), for: .touchUpInside)
+            self.view.addSubview(self.backButton)
 
     }
 
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        self.tempImageView.frame.origin = self.previewImageView.visibleImageFrame.origin
+        self.tempImageView.frame.size.height -= self.tempImageView.frame.origin.y
+        self.tempImageView.frame.size.width -= self.tempImageView.frame.origin.x
+        
+        self.mainImageView.frame.origin = self.tempImageView.frame.origin
+        self.mainImageView.frame.size.height -= self.mainImageView.frame.origin.y
+        self.mainImageView.frame.size.width -= self.mainImageView.frame.origin.x
+
+
+    }
 
 
       // MARK: - Actions
 
       func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint) {
-        UIGraphicsBeginImageContext(self.previewImageView.frame.size)
+        UIGraphicsBeginImageContext(tempImageView.frame.size)
         guard let context = UIGraphicsGetCurrentContext() else {
           return
         }
-        tempImageView.image?.draw(in: self.previewImageView.frame)
+        tempImageView.image?.draw(in: self.tempImageView.bounds)
 
         context.move(to: fromPoint)
         context.addLine(to: toPoint)
@@ -162,7 +173,8 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
           return
         }
         swiped = false
-        lastPoint = touch.location(in: self.previewImageView)
+        lastPoint = touch.location(in: self.tempImageView)
+
       }
 
     override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -186,9 +198,9 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
         self.lineArray.append(image)
 
         // Merge tempImageView into mainImageView
-        UIGraphicsBeginImageContext(self.previewImageView.frame.size)
-        mainImageView.image?.draw(in: self.previewImageView.frame, blendMode: .normal, alpha: 1.0)
-        tempImageView?.image?.draw(in: self.previewImageView.frame, blendMode: .normal, alpha: opacity)
+        UIGraphicsBeginImageContext(self.mainImageView.frame.size)
+        mainImageView.image?.draw(in: tempImageView.bounds, blendMode: .normal, alpha: 1.0)
+        tempImageView?.image?.draw(in: tempImageView.bounds, blendMode: .normal, alpha: opacity)
         mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
