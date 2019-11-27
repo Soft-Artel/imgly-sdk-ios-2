@@ -95,8 +95,11 @@ open class IMGLYOrientationEditorViewController: IMGLYSubEditorViewController {
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        transparentRectView.frame = view.convert(previewImageView.visibleImageFrame, from: previewImageView)
-        reCalculateCropRectBounds()
+        self.transparentRectView.frame.size = self.previewImageView.visibleImageFrame.size//view.convert(previewImageView.visibleImageFrame, from: previewImageView)
+        self.transparentRectView.frame = self.previewImageView.visibleImageFrame
+        self.transparentRectView.center.y = self.bottomContainerView.frame.origin.y / 2
+        self.transparentRectView.center.x = self.previewImageView.center.x
+        self.reCalculateCropRectBounds()
     }
     
     // MARK: - IMGLYEditorViewController

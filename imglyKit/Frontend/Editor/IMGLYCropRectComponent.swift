@@ -56,7 +56,7 @@ open class IMGLYCropRectComponent {
     fileprivate func addMaskRectView() {
         let bounds = CGRect(x: 0, y: 0, width: transparentView_!.frame.size.width,
             height: transparentView_!.frame.size.height)
-        
+
         let maskLayer = CAShapeLayer()
         maskLayer.frame = bounds
         maskLayer.fillColor = UIColor.black.cgColor

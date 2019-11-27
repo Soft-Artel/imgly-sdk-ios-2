@@ -127,8 +127,9 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
     // MARK: - SubEditorViewController
     
     open override func tappedDone(_ sender: UIBarButtonItem?) {
+        fixedFilterStack.orientationCropFilter.trueCropRect = self.transparentRectView.frame
         fixedFilterStack.orientationCropFilter.cropRect = normalizedCropRect()
-        
+
         updatePreviewImageWithCompletion {
             super.tappedDone(sender)
         }
