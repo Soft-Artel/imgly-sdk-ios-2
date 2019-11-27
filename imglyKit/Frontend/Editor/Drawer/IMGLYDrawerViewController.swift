@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverControllerDelegate{
+open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
 
     open fileprivate(set) lazy var mainImageView: UIImageView = {
         let view = UIImageView()
@@ -107,42 +107,38 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
         super.viewDidLayoutSubviews()
 
 
-                self.tempImageView = UIImageView()
-                self.mainImageView = UIImageView()
+        self.tempImageView = UIImageView()
+        self.mainImageView = UIImageView()
 
-                self.tempImageView.frame.size = self.previewImageView.visibleImageFrame.size
-        //        self.tempImageView.center.x = self.view.center.x
-        //        self.tempImageView.frame.origin.y = (self.previewImageView.frame.height - self.previewImageView.imageView.frame.height) / 2
+//        if let lowResolutionImage = self.lowResolutionImage {
+//            let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage, filters: self.fixedFilterStack.activeFilters)
+//            self.previewImageView.image = processedImage
+//        }
 
-                self.mainImageView.frame.size = self.tempImageView.frame.size
-            self.view.addSubview(self.mainImageView)
-            self.view.addSubview(self.tempImageView)
+//        if let frames = self.imageFrame{
+//            self.tempImageView.frame = frames
+//            self.mainImageView.frame = self.tempImageView.frame
+//        }else{
+        self.tempImageView.frame = self.previewImageView.visibleImageFrame
+        self.tempImageView.frame.size.height = self.previewImageView.visibleImageFrame.height - self.previewImageView.visibleImageFrame.origin.y
+        self.tempImageView.center.y = self.bottomContainerView.frame.origin.y / 2
+        self.tempImageView.center.x = self.previewImageView.center.x
+        self.mainImageView.frame = self.tempImageView.frame
+//        }
+
+        self.view.addSubview(self.mainImageView)
+        self.view.addSubview(self.tempImageView)
 
 
-            self.backButton.frame = CGRect(x: self.view.frame.origin.x + 20,
+        self.backButton.frame = CGRect(x: self.view.frame.origin.x + 20,
                                                y: bottomContainerView.frame.origin.y - 20,
                                                       width: 30, height: 30)
-            self.backButton.backgroundColor = .red
-            self.backButton.layer.cornerRadius = self.backButton.frame.height / 2
-            self.backButton.addTarget(self, action: #selector(self.undoAction), for: .touchUpInside)
-            self.view.addSubview(self.backButton)
+        self.backButton.backgroundColor = .red
+        self.backButton.layer.cornerRadius = self.backButton.frame.height / 2
+        self.backButton.addTarget(self, action: #selector(self.undoAction), for: .touchUpInside)
+        self.view.addSubview(self.backButton)
 
     }
-
-    open override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        self.tempImageView.frame.origin = self.previewImageView.visibleImageFrame.origin
-        self.tempImageView.frame.size.height -= self.tempImageView.frame.origin.y
-        self.tempImageView.frame.size.width -= self.tempImageView.frame.origin.x
-        
-        self.mainImageView.frame.origin = self.tempImageView.frame.origin
-        self.mainImageView.frame.size.height -= self.mainImageView.frame.origin.y
-        self.mainImageView.frame.size.width -= self.mainImageView.frame.origin.x
-
-
-    }
-
 
       // MARK: - Actions
 
@@ -182,7 +178,7 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
           return
         }
         swiped = true
-        let currentPoint = touch.location(in: self.previewImageView)
+        let currentPoint = touch.location(in: self.tempImageView)
         drawLine(from: lastPoint, to: currentPoint)
 
         lastPoint = currentPoint
@@ -198,7 +194,7 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverCon
         self.lineArray.append(image)
 
         // Merge tempImageView into mainImageView
-        UIGraphicsBeginImageContext(self.mainImageView.frame.size)
+        UIGraphicsBeginImageContext(self.mainImageView.bounds.size)
         mainImageView.image?.draw(in: tempImageView.bounds, blendMode: .normal, alpha: 1.0)
         tempImageView?.image?.draw(in: tempImageView.bounds, blendMode: .normal, alpha: opacity)
         mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()

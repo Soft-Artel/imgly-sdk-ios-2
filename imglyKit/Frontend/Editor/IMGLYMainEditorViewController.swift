@@ -187,7 +187,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                 updatePreviewImage()
             }
         default:
-            if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack) {
+            if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: self.previewImageView.visibleImageFrame) {
                 viewController.lowResolutionImage = lowResolutionImage
                 viewController.previewImageView.image = previewImageView.image
                 viewController.completionHandler = subEditorDidComplete

@@ -14,14 +14,16 @@ public typealias IMGLYPreviewImageGenerationCompletionBlock = () -> (Void)
 open class IMGLYSubEditorViewController: IMGLYEditorViewController {
     
     // MARK: - Properties
-    
+
+    public let imageFrame: CGRect?
     public let fixedFilterStack: IMGLYFixedFilterStack
     open var completionHandler: IMGLYSubEditorCompletionBlock?
     
     // MARK: - Initializers
     
-    public init(fixedFilterStack: IMGLYFixedFilterStack) {
+    public init(fixedFilterStack: IMGLYFixedFilterStack, frame: CGRect? = nil) {
         self.fixedFilterStack = fixedFilterStack.copy() as! IMGLYFixedFilterStack
+        self.imageFrame = frame
         super.init(nibName: nil, bundle: nil)
     }
 
