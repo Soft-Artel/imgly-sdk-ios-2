@@ -54,7 +54,7 @@ open class IMGLYOrientationEditorViewController: IMGLYSubEditorViewController {
     
     fileprivate lazy var transparentRectView: UIView = {
         let view = UIView()
-        view.backgroundColor = .red//UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
+        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
         return view
         }()
     
@@ -84,7 +84,7 @@ open class IMGLYOrientationEditorViewController: IMGLYSubEditorViewController {
             cropRect.size.width != 1.0 || cropRect.size.height != 1.0 {
                 updatePreviewImageWithoutCropWithCompletion {
                     self.view.layoutIfNeeded()
-                    self.cropRectComponent.present()
+                    self.cropRectComponent.present(self.view.bounds)
                     self.layoutCropRectViews()
                 }
         } else {
@@ -183,7 +183,7 @@ open class IMGLYOrientationEditorViewController: IMGLYSubEditorViewController {
         let height = viewHeight * fixedFilterStack.orientationCropFilter.cropRect.size.height
         let rect = CGRect(x: x, y: y, width: width, height: height)
         cropRectComponent.cropRect = rect
-        cropRectComponent.layoutViewsForCropRect()
+        cropRectComponent.layoutViewsForCropRect(self.transparentRectView.bounds)
     }
     
     fileprivate func reCalculateCropRectBounds() {
