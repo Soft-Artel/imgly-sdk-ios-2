@@ -56,9 +56,13 @@ open class IMGLYCropRectComponent {
     fileprivate func addMaskRectView() {
         let bounds = CGRect(x: 0, y: 0, width: transparentView_!.frame.size.width,
             height: transparentView_!.frame.size.height)
+        let frames = CGRect(x: self.leftLineView_.frame.origin.x,
+        y: self.leftLineView_.frame.origin.y,
+        width: self.topLineView_.frame.width,
+        height: self.leftLineView_.frame.height)
 
         let maskLayer = CAShapeLayer()
-        maskLayer.frame = bounds
+        maskLayer.frame = self.
         maskLayer.fillColor = UIColor.black.cgColor
         let path = UIBezierPath(rect: cropRect)
         path.append(UIBezierPath(rect: bounds))

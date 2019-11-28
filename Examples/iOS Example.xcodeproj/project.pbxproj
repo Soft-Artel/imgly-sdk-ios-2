@@ -361,7 +361,7 @@
 				DEVELOPMENT_TEAM = P5ZY6F8UKU;
 				INFOPLIST_FILE = "iOS Example/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.9elements.iOS-Example---------------";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.9elements.iOS-Examf------";
 				PRODUCT_NAME = "iOS Example";
 				PROVISIONING_PROFILE = "30a0fc45-7758-4723-8980-95e9a9b0f830";
 				PROVISIONING_PROFILE_SPECIFIER = "";
