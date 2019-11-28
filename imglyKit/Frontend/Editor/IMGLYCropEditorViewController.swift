@@ -97,19 +97,24 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         configureButtons()
         configureCropRect()
         selectedButton = freeRatioButton
+
+        fixedFilterStack.orientationCropFilter.trueCropRect = self.transparentRectView.frame
+        fixedFilterStack.orientationCropFilter.trueCropRect.size.width = 2
+        fixedFilterStack.orientationCropFilter.trueCropRect.size.height = 2
+        fixedFilterStack.orientationCropFilter.cropRect = normalizedCropRect()
     }
     
     open override func viewDidAppear(_ animated: Bool) {
         let cropRect = fixedFilterStack.orientationCropFilter.cropRect
         if cropRect.origin.x != 0 || cropRect.origin.y != 0 ||
             cropRect.size.width != 1.0 || cropRect.size.height != 1.0 {
-                updatePreviewImageWithoutCropWithCompletion {
+
                     self.view.setNeedsLayout()
                     self.view.layoutIfNeeded()
                     self.reCalculateCropRectBounds()
                     self.setInitialCropRect()
                     self.cropRectComponent.present(self.view.bounds)
-                }
+                
         } else {
             reCalculateCropRectBounds()
             setInitialCropRect()

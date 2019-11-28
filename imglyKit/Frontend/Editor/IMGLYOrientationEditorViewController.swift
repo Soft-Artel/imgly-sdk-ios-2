@@ -54,7 +54,7 @@ open class IMGLYOrientationEditorViewController: IMGLYSubEditorViewController {
     
     fileprivate lazy var transparentRectView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
+        view.backgroundColor = .clear//UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
         return view
         }()
     
@@ -78,7 +78,7 @@ open class IMGLYOrientationEditorViewController: IMGLYSubEditorViewController {
     
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         let cropRect = fixedFilterStack.orientationCropFilter.cropRect
         if cropRect.origin.x != 0 || cropRect.origin.y != 0 ||
             cropRect.size.width != 1.0 || cropRect.size.height != 1.0 {

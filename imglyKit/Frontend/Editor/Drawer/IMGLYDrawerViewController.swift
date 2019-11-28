@@ -119,9 +119,9 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
 //            self.tempImageView.frame = frames
 //            self.mainImageView.frame = self.tempImageView.frame
 //        }else{
-        self.tempImageView.frame = self.previewImageView.visibleImageFrame
-        self.tempImageView.frame.size.height = self.previewImageView.visibleImageFrame.height - self.previewImageView.visibleImageFrame.origin.y
-        self.tempImageView.center.y = self.bottomContainerView.frame.origin.y / 2
+        self.tempImageView.frame = self.imageFrame ?? self.view.frame
+//        self.tempImageView.frame.size.height = self.previewImageView.visibleImageFrame.height - self.previewImageView.visibleImageFrame.origin.y
+//        self.tempImageView.center.y = self.bottomContainerView.frame.origin.y / 2
         self.tempImageView.center.x = self.previewImageView.center.x
         self.mainImageView.frame = self.tempImageView.frame
 //        }

@@ -38,7 +38,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     
     // MARK: - Properties
 
-    static func showEditor(image: UIImage, parent: UIViewController) {
+    static func showEditor(image: UIImage, parent: UIViewController, animate: Bool = true) {
         let editorViewController = IMGLYMainEditorViewController()
         editorViewController.highResolutionImage = image
 
@@ -48,7 +48,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
         navigationController.navigationBar.titleTextAttributes = [ NSAttributedString.Key.foregroundColor : UIColor.white ]
         navigationController.modalPresentationStyle = .overFullScreen
 
-        parent.present(navigationController, animated: true, completion: nil)
+        parent.present(navigationController, animated: animate, completion: nil)
     }
     
     open lazy var actionButtons: [IMGLYActionButton] = {
@@ -186,13 +186,26 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                 fixedFilterStack.enhancementFilter._enabled = !fixedFilterStack.enhancementFilter._enabled
                 updatePreviewImage()
             }
+//        case .crop, .orientation:
+//            if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: self.previewImageView.visibleImageFrame) {
+//                viewController.lowResolutionImage = previewImageView.image
+//                viewController.previewImageView.image = previewImageView.image
+//                viewController.completionHandler = subEditorDidComplete
+//                show(viewController, sender: self)
+//            }
         default:
-            if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: self.previewImageView.visibleImageFrame) {
-                viewController.lowResolutionImage = lowResolutionImage
-                viewController.previewImageView.image = previewImageView.image
-                viewController.completionHandler = subEditorDidComplete
-                show(viewController, sender: self)
-            }
+//            if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: self.previewImageView.visibleImageFrame) {
+//                viewController.lowResolutionImage = lowResolutionImage
+//                viewController.previewImageView.image = previewImageView.image
+//                viewController.completionHandler = subEditorDidComplete
+//                show(viewController, sender: self)
+//            }
+             if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: self.previewImageView.visibleImageFrame) {
+                            viewController.lowResolutionImage = previewImageView.image
+                            viewController.previewImageView.image = previewImageView.image
+                            viewController.completionHandler = subEditorDidComplete
+                            show(viewController, sender: self)
+                        }
         }
     }
     

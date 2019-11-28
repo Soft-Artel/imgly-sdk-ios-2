@@ -35,7 +35,14 @@ open class IMGLYSubEditorViewController: IMGLYEditorViewController {
     
     open override func tappedDone(_ sender: UIBarButtonItem?) {
         completionHandler?(previewImageView.image, fixedFilterStack)
-        navigationController?.popViewController(animated: true)
+//        navigationController?.popViewController(animated: true)
+        let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage!, filters: self.fixedFilterStack.activeFilters)
+
+        let parent = navigationController?.parent
+        navigationController?.dismiss(animated: false, completion: {
+            IMGLYMainEditorViewController.showEditor(image: processedImage!, parent: parent ?? IMGLYCameraViewController._shared!, animate: false)
+        })
+
     }
     
     // MARK: - Helpers

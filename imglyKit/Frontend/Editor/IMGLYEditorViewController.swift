@@ -132,6 +132,7 @@ open class IMGLYEditorViewController: UIViewController {
     
     @objc open func tappedDone(_ sender: UIBarButtonItem?) {
         // Subclasses must override this
+        IMGLYMainEditorViewController.showEditor(image: self.lowResolutionImage!, parent: self)
     }
     
 }
