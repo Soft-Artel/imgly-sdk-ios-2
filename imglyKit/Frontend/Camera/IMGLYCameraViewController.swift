@@ -37,6 +37,7 @@ open class IMGLYCameraViewController: UIViewController {
     fileprivate func showEditorNavigationControllerWithImage(_ image: UIImage = UIImage(named: "testingImage")!) {
 
         IMGLYMainEditorViewController.showEditor(image: image, parent: self)
+        
     }
 
     @objc open func takePhoto(_ sender: UIButton?) {
