@@ -66,7 +66,7 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
     var swiped = false
 
     open override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad() 
         self.previewImageView.imageView.backgroundColor = .green
         let bundle = Bundle(for: type(of: self))
         navigationItem.title = NSLocalizedString("Рисовалка", tableName: nil, bundle: bundle, value: "", comment: "")

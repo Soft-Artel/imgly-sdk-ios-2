@@ -13,6 +13,8 @@ internal let PhotoProcessorQueue = DispatchQueue(label: "ly.img.SDK.PhotoProcess
 open class IMGLYEditorViewController: UIViewController {
     
     // MARK: - Properties
+
+    
     
     open var shouldShowActivityIndicator = true
     

@@ -38,7 +38,9 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     
     // MARK: - Properties
 
-    static func showEditor(image: UIImage, parent: UIViewController, animate: Bool = true) {
+    public static var parentVC: UIViewController? = nil
+
+    public static func showEditor(image: UIImage, parent: UIViewController, animate: Bool = true) {
         let editorViewController = IMGLYMainEditorViewController()
         editorViewController.highResolutionImage = image
 
@@ -47,6 +49,10 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
         navigationController.navigationBar.isTranslucent = false
         navigationController.navigationBar.titleTextAttributes = [ NSAttributedString.Key.foregroundColor : UIColor.white ]
         navigationController.modalPresentationStyle = .overFullScreen
+
+        if IMGLYMainEditorViewController.parentVC == nil{
+            IMGLYMainEditorViewController.parentVC = parent
+        }
 
         parent.present(navigationController, animated: animate, completion: nil)
     }

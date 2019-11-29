@@ -373,6 +373,8 @@
 		4589ECC423881691001D2FF7 /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4589ECC223881691001D2FF7 /* ColorPickerViewController.swift */; };
 		4589ECC923882661001D2FF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4589ECC823882661001D2FF7 /* Main.storyboard */; };
 		45B24C7923910E7F0063AA65 /* IMGLYDrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B24C7823910E7F0063AA65 /* IMGLYDrawerViewController.swift */; };
+		45F4A9BA2391677A00A876E1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F4A9B92391677A00A876E1 /* ViewController.swift */; };
+		45F4A9BC23916DAE00A876E1 /* ViewControllerrr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F4A9BB23916DAE00A876E1 /* ViewControllerrr.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -586,6 +588,8 @@
 		4589ECC223881691001D2FF7 /* ColorPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
 		4589ECC823882661001D2FF7 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		45B24C7823910E7F0063AA65 /* IMGLYDrawerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGLYDrawerViewController.swift; sourceTree = "<group>"; };
+		45F4A9B92391677A00A876E1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		45F4A9BB23916DAE00A876E1 /* ViewControllerrr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerrr.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -692,6 +696,8 @@
 			isa = PBXGroup;
 			children = (
 				2BF4D3AA1AF114FA00C801B2 /* IMGLYCameraViewController.swift */,
+				45F4A9B92391677A00A876E1 /* ViewController.swift */,
+				45F4A9BB23916DAE00A876E1 /* ViewControllerrr.swift */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -1358,6 +1364,7 @@
 				2BF4D52D1AF1155E00C801B2 /* IMGLYSepiaHighFilter.swift in Sources */,
 				2BF4D5441AF1159D00C801B2 /* IMGLYInstanceFactory.swift in Sources */,
 				2BF4D51C1AF1155E00C801B2 /* IMGLYLomoFilter.swift in Sources */,
+				45F4A9BC23916DAE00A876E1 /* ViewControllerrr.swift in Sources */,
 				2BF4D3DC1AF1150500C801B2 /* IMGLYImageCaptionButton.swift in Sources */,
 				2BF4D5161AF1155E00C801B2 /* IMGLYK6Filter.swift in Sources */,
 				2B25F1BC1B03AC8E0081032D /* IMGLYZoomingImageView.swift in Sources */,
@@ -1374,6 +1381,7 @@
 				2BF4D5231AF1155E00C801B2 /* IMGLYOrchidFilter.swift in Sources */,
 				2BF4D3CE1AF1150500C801B2 /* IMGLYBrightnessEditorViewController.swift in Sources */,
 				2BF4D5331AF1155E00C801B2 /* IMGLYSummerFilter.swift in Sources */,
+				45F4A9BA2391677A00A876E1 /* ViewController.swift in Sources */,
 				2BF4D3CF1AF1150500C801B2 /* IMGLYButtonCollectionViewCell.swift in Sources */,
 				2BF4D5151AF1155E00C801B2 /* IMGLYK2Filter.swift in Sources */,
 				4589ECC423881691001D2FF7 /* ColorPickerViewController.swift in Sources */,

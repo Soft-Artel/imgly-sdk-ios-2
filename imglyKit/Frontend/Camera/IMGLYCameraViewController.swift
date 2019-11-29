@@ -19,6 +19,8 @@ public typealias IMGLYCameraCompletionBlock = (UIImage?, URL?) -> (Void)
 
 open class IMGLYCameraViewController: UIViewController {
 
+    
+
     static var _shared: UIViewController?
 
     open override func viewDidLoad() {
@@ -35,8 +37,19 @@ open class IMGLYCameraViewController: UIViewController {
 
 
     fileprivate func showEditorNavigationControllerWithImage(_ image: UIImage = UIImage(named: "testingImage")!) {
+        self.present(ViewControllerrr(), animated: true, completion: nil)
+//        let editorViewController = IMGLYMainEditorViewController()
+//        editorViewController.highResolutionImage = image
+//
+//        let navigationController = IMGLYNavigationController(rootViewController: editorViewController)
+//        navigationController.navigationBar.barStyle = .black
+//        navigationController.navigationBar.isTranslucent = false
+//        navigationController.navigationBar.titleTextAttributes = [ NSAttributedString.Key.foregroundColor : UIColor.white ]
+//        navigationController.modalPresentationStyle = .overFullScreen
+//
+//        self.present(navigationController, animated: true, completion: nil)
 
-        IMGLYMainEditorViewController.showEditor(image: image, parent: self)
+//        IMGLYMainEditorViewController.showEditor(image: image, parent: self)
         
     }
 
