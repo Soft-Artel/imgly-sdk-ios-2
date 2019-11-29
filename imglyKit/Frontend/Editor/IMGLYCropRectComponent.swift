@@ -34,11 +34,11 @@ open class IMGLYCropRectComponent {
     }
 
     // call this in viewDidAppear
-    open func present() {
+    open func present(_ c: CGRect) {
         layoutViewsForCropRect()
         showViews()
     }
-    
+
     fileprivate func setupLineViews() {
         cropRect = CGRect(x: 100, y: 100, width: 150, height: 100)
         setupLineView(topLineView_)
@@ -52,22 +52,27 @@ open class IMGLYCropRectComponent {
         lineView.isHidden = true
         parentView_!.addSubview(lineView)
     }
-    
+
     fileprivate func addMaskRectView() {
         let bounds = CGRect(x: 0, y: 0, width: transparentView_!.frame.size.width,
             height: transparentView_!.frame.size.height)
-        
+
         let maskLayer = CAShapeLayer()
         maskLayer.frame = bounds
         maskLayer.fillColor = UIColor.black.cgColor
-        let path = UIBezierPath(rect: cropRect)
+        var rect = cropRect
+        rect.origin.x = self.leftLineView_.frame.origin.x - transparentView_!.frame.origin.x
+        rect.origin.y = self.topLineView_.frame.origin.y - transparentView_!.frame.origin.y
+        rect.size.width = abs(cropRect.width)
+        rect.size.height = abs(cropRect.height)
+        let path = UIBezierPath(rect: rect)//cropRect)
         path.append(UIBezierPath(rect: bounds))
         maskLayer.path = path.cgPath
         maskLayer.fillRule = .evenOdd
-        
+
        transparentView_!.layer.mask = maskLayer
     }
-    
+
     fileprivate func setupAnchors() {
         let anchorImage = UIImage(named: "crop_anchor", in: Bundle(for: type(of: self)), compatibleWith:nil)
         topLeftAnchor_ = createAnchorWithImage(anchorImage)
@@ -75,7 +80,7 @@ open class IMGLYCropRectComponent {
         bottomLeftAnchor_ = createAnchorWithImage(anchorImage)
         bottomRightAnchor_ = createAnchorWithImage(anchorImage)
     }
-    
+
     fileprivate func createAnchorWithImage(_ image:UIImage?) -> UIImageView {
         let anchor = UIImageView(image: image!)
         anchor.contentMode = .center
@@ -84,14 +89,14 @@ open class IMGLYCropRectComponent {
         transparentView_!.addSubview(anchor)
         return anchor
     }
-    
+
     // MARK:- layout
-    open func layoutViewsForCropRect() {
+    open func layoutViewsForCropRect(_ f: CGRect = .zero) {
         layoutLines()
         layoutAnchors()
         addMaskRectView()
     }
-    
+
     fileprivate func layoutLines() {
         let left = cropRect.origin.x + transparentView_!.frame.origin.x
         let right = left + cropRect.size.width - 1.0
@@ -99,13 +104,13 @@ open class IMGLYCropRectComponent {
         let bottom = top + cropRect.size.height - 1.0
         let width = cropRect.size.width
         let height = cropRect.size.height
-        
+
         leftLineView_.frame = CGRect(x: left, y: top, width: 1, height: height)
         rightLineView_.frame = CGRect(x: right, y: top, width: 1, height: height)
         topLineView_.frame = CGRect(x: left, y: top, width: width, height: 1)
         bottomLineView_.frame = CGRect(x: left, y: bottom, width: width, height: 1)
     }
-    
+
     fileprivate func layoutAnchors() {
         let left = cropRect.origin.x
         let right = left + cropRect.size.width
@@ -116,7 +121,7 @@ open class IMGLYCropRectComponent {
         bottomLeftAnchor_!.center = CGPoint(x: left, y: bottom)
         bottomRightAnchor_!.center = CGPoint(x: right, y: bottom)
     }
-    
+
     open func showViews() {
         if showAnchors_ {
             topLeftAnchor_!.isHidden = false

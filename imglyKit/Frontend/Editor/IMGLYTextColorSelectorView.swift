@@ -12,12 +12,12 @@ public protocol IMGLYTextColorSelectorViewDelegate: class {
     func textColorSelectorView(_ selectorView: IMGLYTextColorSelectorView, didSelectColor color: UIColor)
 }
 
-open class IMGLYTextColorSelectorView: UIScrollView {
+open class IMGLYTextColorSelectorView: UIScrollView, UIPopoverPresentationControllerDelegate {
     open weak var menuDelegate: IMGLYTextColorSelectorViewDelegate?
     
     fileprivate var colorArray = [UIColor]()
     fileprivate var buttonArray = [IMGLYColorButton]()
-    
+    fileprivate let blur = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
     fileprivate let kButtonYPosition = CGFloat(22)
     fileprivate let kButtonXPositionOffset = CGFloat(5)
     fileprivate let kButtonDistance = CGFloat(10)
@@ -86,5 +86,24 @@ open class IMGLYTextColorSelectorView: UIScrollView {
     
     @objc fileprivate func colorButtonTouchedUpInside(_ button:UIButton) {
         menuDelegate?.textColorSelectorView(self, didSelectColor: button.backgroundColor!)
+        
+        self.blur.removeFromSuperview()
+        self.blur.frame = CGRect(x: 0, y: 0, width: button.frame.width, height: button.frame.height)
+        button.addSubview(self.blur)
+
+//        if button == self.buttonArray[0]{
+//            let  popoverVC = storyboard?.instantiateViewController(withIdentifier: "colorPickerPopover") as? ColorPickerViewController
+//            popoverVC?.modalPresentationStyle = .popover
+//            popoverVC?.preferredContentSize = CGSize(width: 284, height: 446)
+//            popoverVC?.delegate = self
+//            if let popoverController = popoverVC?.popoverPresentationController {
+//                popoverController.sourceView = self.textColorSelectorView
+//                popoverController.sourceRect = CGRect(x: 0, y: 0, width: 85, height: 30)
+//                popoverController.delegate = self
+//                present(popoverVC!, animated: true, completion: nil)
+//            }
+//        }
     }
+
+
 }

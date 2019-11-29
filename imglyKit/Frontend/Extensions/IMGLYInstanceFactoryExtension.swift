@@ -20,7 +20,7 @@ extension IMGLYInstanceFactory {
     
     - returns: A viewcontroller according to the button-type.
     */
-    public class func viewControllerForButtonType(_ type: IMGLYMainMenuButtonType, withFixedFilterStack fixedFilterStack: IMGLYFixedFilterStack) -> IMGLYSubEditorViewController? {
+    public class func viewControllerForButtonType(_ type: IMGLYMainMenuButtonType, withFixedFilterStack fixedFilterStack: IMGLYFixedFilterStack, and frame: CGRect? = nil) -> IMGLYSubEditorViewController? {
         switch (type) {
         case IMGLYMainMenuButtonType.filter:
             return filterEditorViewControllerWithFixedFilterStack(fixedFilterStack)
@@ -40,6 +40,8 @@ extension IMGLYInstanceFactory {
             return saturationEditorViewControllerWithFixedFilterStack(fixedFilterStack)
         case IMGLYMainMenuButtonType.text:
             return textEditorViewControllerWithFixedFilterStack(fixedFilterStack)
+        case IMGLYMainMenuButtonType.drawer:
+            return drawImageViewControllerWithFixedFilterStack(fixedFilterStack, and: (frame ?? nil)!)
         default:
             return nil
         }
@@ -79,6 +81,12 @@ extension IMGLYInstanceFactory {
     
     public class func textEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack) -> IMGLYTextEditorViewController {
         return IMGLYTextEditorViewController(fixedFilterStack: fixedFilterStack)
+    }
+
+    public class func drawImageViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack, and frame : CGRect) -> IMGLYDrawerViewController {
+//        let vc = IMGLYDrawerViewController(fixedFilterStack: fixedFilterStack)
+        let vc = IMGLYDrawerViewController(fixedFilterStack: fixedFilterStack, frame: frame)
+        return vc
     }
     
     // MARK: - Gradient Views

@@ -97,23 +97,28 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         configureButtons()
         configureCropRect()
         selectedButton = freeRatioButton
+
+        fixedFilterStack.orientationCropFilter.trueCropRect = self.transparentRectView.frame
+        fixedFilterStack.orientationCropFilter.trueCropRect.size.width = 2
+        fixedFilterStack.orientationCropFilter.trueCropRect.size.height = 2
+        fixedFilterStack.orientationCropFilter.cropRect = normalizedCropRect()
     }
     
     open override func viewDidAppear(_ animated: Bool) {
         let cropRect = fixedFilterStack.orientationCropFilter.cropRect
         if cropRect.origin.x != 0 || cropRect.origin.y != 0 ||
             cropRect.size.width != 1.0 || cropRect.size.height != 1.0 {
-                updatePreviewImageWithoutCropWithCompletion {
+
                     self.view.setNeedsLayout()
                     self.view.layoutIfNeeded()
                     self.reCalculateCropRectBounds()
                     self.setInitialCropRect()
-                    self.cropRectComponent.present()
-                }
+                    self.cropRectComponent.present(self.view.bounds)
+                
         } else {
             reCalculateCropRectBounds()
             setInitialCropRect()
-            cropRectComponent.present()
+            cropRectComponent.present(self.view.bounds)
         }
     }
     
@@ -127,8 +132,9 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
     // MARK: - SubEditorViewController
     
     open override func tappedDone(_ sender: UIBarButtonItem?) {
+        fixedFilterStack.orientationCropFilter.trueCropRect = self.transparentRectView.frame
         fixedFilterStack.orientationCropFilter.cropRect = normalizedCropRect()
-        
+
         updatePreviewImageWithCompletion {
             super.tappedDone(sender)
         }
@@ -245,7 +251,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         center.y += (cropRectComponent.cropRect.size.height - size.height)
         cropRectComponent.topLeftAnchor_!.center = center
         recalculateCropRectFromTopLeftAnchor()
-        cropRectComponent.layoutViewsForCropRect()
+        cropRectComponent.layoutViewsForCropRect(self.transparentRectView.frame)
     }
     
     fileprivate func reCalulateSizeForTopLeftAnchor(_ size:CGSize) -> CGSize {
@@ -299,7 +305,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         center.y = (cropRectComponent.bottomLeftAnchor_!.center.y - size.height)
         cropRectComponent.topRightAnchor_!.center = center
         recalculateCropRectFromTopRightAnchor()
-        cropRectComponent.layoutViewsForCropRect()
+        cropRectComponent.layoutViewsForCropRect(self.transparentRectView.frame)
     }
     
     fileprivate func reCalulateSizeForTopRightAnchor(_ size:CGSize) -> CGSize {
@@ -352,7 +358,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         center.y = (cropRectComponent.topRightAnchor_!.center.y + size.height)
         cropRectComponent.bottomLeftAnchor_!.center = center
         recalculateCropRectFromTopRightAnchor()
-        cropRectComponent.layoutViewsForCropRect()
+        cropRectComponent.layoutViewsForCropRect(self.transparentRectView.frame)
     }
     
     fileprivate func reCalulateSizeForBottomLeftAnchor(_ size:CGSize) -> CGSize {
@@ -399,7 +405,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         center.y -= (cropRectComponent.cropRect.size.height - size.height)
         cropRectComponent.bottomRightAnchor_!.center = center
         recalculateCropRectFromTopLeftAnchor()
-        cropRectComponent.layoutViewsForCropRect()
+        cropRectComponent.layoutViewsForCropRect(self.transparentRectView.frame)
     }
     
     fileprivate func reCalulateSizeForBottomRightAnchor(_ size:CGSize) -> CGSize {
@@ -438,7 +444,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
             rect.origin.x = newLocation.x - dragOffset.x
             rect.origin.y = newLocation.y - dragOffset.y
             cropRectComponent.cropRect = rect
-            cropRectComponent.layoutViewsForCropRect()
+            cropRectComponent.layoutViewsForCropRect(self.transparentRectView.frame)
         }
     }
     
@@ -541,7 +547,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         }
         if selectionMode != IMGLYSelectionMode.free {
             setCropRectForSelectionRatio()
-            cropRectComponent.layoutViewsForCropRect()
+            cropRectComponent.layoutViewsForCropRect(self.transparentRectView.frame)
         }
     }
     

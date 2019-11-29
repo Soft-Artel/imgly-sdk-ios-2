@@ -16,6 +16,8 @@ import QuartzCore
 
 import CoreGraphics
 
+
+
 open class IMGLYStickerFilter: CIFilter {
     /// A CIImage object that serves as input for the filter.
     @objc open var inputImage: CIImage?

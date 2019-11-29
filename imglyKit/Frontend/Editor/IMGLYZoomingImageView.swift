@@ -25,8 +25,8 @@ open class IMGLYZoomingImageView: UIScrollView {
             setNeedsLayout()
         }
     }
-    
-    fileprivate let imageView = UIImageView()
+
+    public let imageView = UIImageView()
     fileprivate var initialZoomScaleWasSet = false
     open lazy var doubleTapGestureRecognizer: UITapGestureRecognizer = {
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(IMGLYZoomingImageView.doubleTapped(_:)))
@@ -38,6 +38,10 @@ open class IMGLYZoomingImageView: UIScrollView {
         var visibleImageFrame = bounds
         visibleImageFrame = visibleImageFrame.intersection(imageView.frame)
         return visibleImageFrame
+    }
+
+    open var imageSize: CGSize?{
+        return self.imageView.image?.size
     }
     
     // MARK: - Initializers
@@ -75,32 +79,36 @@ open class IMGLYZoomingImageView: UIScrollView {
                 minimumZoomScale = min(frame.size.width / imageView.bounds.size.width, frame.size.height / imageView.bounds.size.height)
                 zoomScale = minimumZoomScale
                 initialZoomScaleWasSet = true
+                
             }
         }
     }
-    
+
     // MARK: - Actions
     
     @objc fileprivate func doubleTapped(_ gestureRecognizer: UITapGestureRecognizer) {
         let location = gestureRecognizer.location(in: imageView)
-        
+
         if zoomScale > minimumZoomScale {
             setZoomScale(minimumZoomScale, animated: true)
         } else {
             zoom(to: CGRect(x: location.x, y: location.y, width: 1, height: 1), animated: true)
         }
     }
+
 }
 
 extension IMGLYZoomingImageView: UIScrollViewDelegate {
     public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return imageView
+            return imageView
     }
     
     public func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        let offsetX = max((bounds.size.width - contentSize.width) * 0.5, 0)
-        let offsetY = max((bounds.size.height - contentSize.height) * 0.5, 0)
-        
-        imageView.center = CGPoint(x: contentSize.width * 0.5 + offsetX, y: contentSize.height * 0.5 + offsetY)
+
+            let offsetX = max((bounds.size.width - contentSize.width) * 0.5, 0)
+            let offsetY = max((bounds.size.height - contentSize.height) * 0.5, 0)
+
+            imageView.center = CGPoint(x: contentSize.width * 0.5 + offsetX, y: contentSize.height * 0.5 + offsetY)
+
     }
 }

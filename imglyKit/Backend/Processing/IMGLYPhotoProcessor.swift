@@ -103,7 +103,7 @@ open class IMGLYPhotoProcessor {
         
         return currentImage
     }
-    
+
     #if os(iOS)
     
     open class func processWithUIImage(_ image: UIImage, filters: [CIFilter]) -> UIImage? {

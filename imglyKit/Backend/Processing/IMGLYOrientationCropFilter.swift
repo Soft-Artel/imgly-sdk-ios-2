@@ -34,6 +34,7 @@ open class IMGLYOrientationCropFilter : CIFilter {
     @objc open var inputImage:CIImage?
     open var cropRect = CGRect(x: 0, y: 0, width: 1, height: 1)
     open var rotationAngle = IMGLYRotationAngle._0
+    open var trueCropRect = CGRect.zero
     
     fileprivate var flipVertical_ = false
     fileprivate var flipHorizontal_ = false

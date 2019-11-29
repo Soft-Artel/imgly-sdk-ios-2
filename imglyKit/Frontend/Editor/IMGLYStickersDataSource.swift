@@ -17,23 +17,31 @@ open class IMGLYStickersDataSource: NSObject, IMGLYStickersDataSourceDelegate {
     
     override init() {
         let stickerFiles = [
-            "glasses_nerd",
-            "glasses_normal",
-            "glasses_shutter_green",
-            "glasses_shutter_yellow",
-            "glasses_sun",
-            "hat_cap",
-            "hat_party",
-            "hat_sherrif",
-            "hat_zylinder",
-            "heart",
-            "mustache_long",
-            "mustache1",
-            "mustache2",
-            "mustache3",
-            "pipe",
-            "snowflake",
-            "star"
+            "boy-min",
+            "close-min",
+            "dollar-min",
+            "fire-min",
+            "girl-min",
+            "good-min",
+            "heart-min",
+            "idea-min",
+            "open-min",
+            "paperplane-min",
+            "pen-min",
+            "plane-min",
+            "redarrow-min",
+            "rise-min",
+            "whitearrow-min",
+            "word1-min",
+            "word2-min",
+            "word3-min",
+            "word4-min",
+            "word5-min",
+            "word6-min",
+            "word7-min",
+            "word8-min",
+            "word9-min",
+            "yellowarrow-min"
         ]
         
         stickers = stickerFiles.map { (file: String) -> IMGLYSticker? in
