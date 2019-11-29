@@ -35,21 +35,7 @@ open class IMGLYCameraViewController: UIViewController {
 
 
     fileprivate func showEditorNavigationControllerWithImage(_ image: UIImage = UIImage(named: "testingImage")!) {
-//        let editorViewController = IMGLYMainEditorViewController()
-//        editorViewController.highResolutionImage = image
-//        if let cameraController = cameraController {
-//            editorViewController.initialFilterType = cameraController.effectFilter.filterType
-//            editorViewController.initialFilterIntensity = cameraController.effectFilter.inputIntensity
-//        }
-//        editorViewController.completionBlock = editorCompletionBlock
-//
-//        let navigationController = IMGLYNavigationController(rootViewController: editorViewController)
-//        navigationController.navigationBar.barStyle = .black
-//        navigationController.navigationBar.isTranslucent = false
-//        navigationController.navigationBar.titleTextAttributes = [ NSAttributedString.Key.foregroundColor : UIColor.white ]
-//        navigationController.modalPresentationStyle = .overFullScreen
-//
-//        self.present(navigationController, animated: true, completion: nil)
+
         IMGLYMainEditorViewController.showEditor(image: image, parent: self)
     }
 

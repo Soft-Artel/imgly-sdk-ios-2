@@ -8,19 +8,18 @@
 
 import UIKit
 
-open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
+open class IMGLYDrawerViewController: IMGLYSubEditorViewController, UIPopoverControllerDelegate{
 
     open fileprivate(set) lazy var mainImageView: UIImageView = {
         let view = UIImageView()
         view.clipsToBounds = true
         return view
     }()
-
-    var tempImageView = UIImageView()
+    var tempImageView: UIImageView!
     var backButton = UIButton()
     var lineArray = [UIImage]()
-
-    //    var drawerView: DrawingView?
+    
+//    var drawerView: DrawingView?
     open fileprivate(set) lazy var textColorSelectorView: IMGLYTextColorSelectorView = {
         let view = IMGLYTextColorSelectorView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -29,7 +28,7 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
     }()
 
     fileprivate var tempStickersClipView = [CIFilter]()
-
+    
 
     open override func tappedDone(_ sender: UIBarButtonItem?) {
         var addedStickers = false
@@ -61,39 +60,18 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
 
     var lastPoint = CGPoint.zero
     var color = UIColor.black
-    var brushWidth: CGFloat = 20.0
+    var brushWidth: CGFloat = 10.0
     var opacity: CGFloat = 1.0
     var swiped = false
 
     open override func viewDidLoad() {
         super.viewDidLoad()
-        self.previewImageView.imageView.backgroundColor = .green
+
         let bundle = Bundle(for: type(of: self))
         navigationItem.title = NSLocalizedString("Рисовалка", tableName: nil, bundle: bundle, value: "", comment: "")
 
-        self.view.addSubview(self.mainImageView)
-        self.view.addSubview(self.tempImageView)
-
-        self.tempImageView.translatesAutoresizingMaskIntoConstraints = false
-        self.tempImageView.topAnchor.constraint(equalTo: self.previewImageView.imageView.topAnchor).isActive = true
-        self.tempImageView.leftAnchor.constraint(equalTo: self.previewImageView.imageView.leftAnchor).isActive = true
-        self.tempImageView.rightAnchor.constraint(equalTo: self.previewImageView.imageView.rightAnchor).isActive = true
-        self.tempImageView.bottomAnchor.constraint(equalTo: self.previewImageView.imageView.bottomAnchor).isActive = true
-
-        self.mainImageView.translatesAutoresizingMaskIntoConstraints = false
-        self.mainImageView.topAnchor.constraint(equalTo: self.tempImageView.topAnchor).isActive = true
-        self.mainImageView.leftAnchor.constraint(equalTo: self.tempImageView.leftAnchor).isActive = true
-        self.mainImageView.rightAnchor.constraint(equalTo: self.tempImageView.rightAnchor).isActive = true
-        self.mainImageView.bottomAnchor.constraint(equalTo: self.tempImageView.bottomAnchor).isActive = true
-
         self.configureColorSelectorView()
 
-//        self.backButton.backgroundColor = .red
-//        self.backButton.layer.cornerRadius = self.backButton.frame.height / 2
-        self.backButton.addTarget(self, action: #selector(self.undoAction), for: .touchUpInside)
-        let btnImage = UIImage(named: "back-button", in: Bundle(for: type(of: self)), compatibleWith:nil)
-        self.backButton.setImage(btnImage, for: .normal)
-        self.view.addSubview(self.backButton)
     }
 
     @objc func undoAction(){
@@ -127,41 +105,41 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
 
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.tempImageView.layoutIfNeeded()
-        self.mainImageView.layoutIfNeeded()
 
-        self.tempImageView.transform = self.previewImageView.imageView.transform
-        self.mainImageView.transform = self.tempImageView.transform
+        self.tempImageView = UIImageView()
+        self.mainImageView = UIImageView()
+              
+        self.tempImageView.frame = self.previewImageView.imageView.frame
+        self.tempImageView.center.x = self.view.center.x
+        
+        self.mainImageView.frame = self.tempImageView.frame
 
-        //        self.mainImageView = UIImageView()
+        self.view.addSubview(self.tempImageView)
+        self.view.addSubview(self.mainImageView)
 
-        //        if let lowResolutionImage = self.lowResolutionImage {
-        //            let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage, filters: self.fixedFilterStack.activeFilters)
-        //            self.previewImageView.image = processedImage
-        //        }
+        self.backButton.frame = CGRect(x: self.view.frame.origin.x + 20,
+                                       y: bottomContainerView.frame.origin.y - 20,
+                                              width: 30, height: 30)
+        self.backButton.backgroundColor = .red
+        self.backButton.layer.cornerRadius = self.backButton.frame.height / 2
+        self.backButton.addTarget(self, action: #selector(self.undoAction), for: .touchUpInside)
+        self.view.addSubview(self.backButton)
 
-        //        if let frames = self.imageFrame{
-        //            self.tempImageView.frame = frames
-        //            self.mainImageView.frame = self.tempImageView.frame
-        //        }else{
-//        self.tempImageView.frame = self.imageFrame ?? self.view.frame
-//        //        self.tempImageView.frame.size.height = self.previewImageView.visibleImageFrame.height - self.previewImageView.visibleImageFrame.origin.y
-//        //        self.tempImageView.center.y = self.bottomContainerView.frame.origin.y / 2
-//        self.tempImageView.center.x = self.previewImageView.center.x
-//        self.mainImageView.frame = self.tempImageView.frame
-//        //        }
-
-        self.backButton.frame = CGRect(x: self.view.frame.origin.x + 50,
-                                       y: bottomContainerView.frame.origin.y - 50,
-                                       width: 50, height: 50)
+    }
+    
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
     }
 
-    // MARK: - Actions
 
-    func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint) {
-        UIGraphicsBeginImageContext(tempImageView.bounds.size)
+
+      // MARK: - Actions
+
+      func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint) {
+        UIGraphicsBeginImageContext(tempImageView.frame.size)
         guard let context = UIGraphicsGetCurrentContext() else {
-            return
+          return
         }
         tempImageView.image?.draw(in: self.tempImageView.bounds)
 
@@ -178,44 +156,40 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
         tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
 
         UIGraphicsEndImageContext()
-    }
+      }
 
     override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.tempImageView.layoutIfNeeded()
-        self.mainImageView.layoutIfNeeded()
-
         guard let touch = touches.first else {
-            return
+          return
         }
         swiped = false
         lastPoint = touch.location(in: self.tempImageView)
-
-    }
+      }
 
     override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else {
-            return
+          return
         }
         swiped = true
         let currentPoint = touch.location(in: self.tempImageView)
         drawLine(from: lastPoint, to: currentPoint)
 
         lastPoint = currentPoint
-    }
+      }
 
     override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !swiped {
-            // draw a single point
-            drawLine(from: lastPoint, to: lastPoint)
+          // draw a single point
+          drawLine(from: lastPoint, to: lastPoint)
         }
 
         guard let image = self.tempImageView.image else { return }
         self.lineArray.append(image)
 
         // Merge tempImageView into mainImageView
-        UIGraphicsBeginImageContext(self.mainImageView.bounds.size)
+        UIGraphicsBeginImageContext(self.mainImageView.frame.size)
         mainImageView.image?.draw(in: tempImageView.bounds, blendMode: .normal, alpha: 1.0)
-        tempImageView.image?.draw(in: tempImageView.bounds, blendMode: .normal, alpha: opacity)
+        tempImageView?.image?.draw(in: tempImageView.bounds, blendMode: .normal, alpha: opacity)
         mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
