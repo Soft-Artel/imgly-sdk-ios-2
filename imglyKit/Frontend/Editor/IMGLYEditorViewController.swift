@@ -136,5 +136,4 @@ open class IMGLYEditorViewController: UIViewController {
         // Subclasses must override this
         IMGLYMainEditorViewController.showEditor(image: self.lowResolutionImage!, parent: self)
     }
-    
 }

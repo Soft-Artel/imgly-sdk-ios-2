@@ -56,7 +56,15 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
 
         parent.present(navigationController, animated: animate, completion: nil)
     }
-    
+
+    public init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required public init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     open lazy var actionButtons: [IMGLYActionButton] = {
         let bundle = Bundle(for: type(of: self))
         var handlers = [IMGLYActionButton]()

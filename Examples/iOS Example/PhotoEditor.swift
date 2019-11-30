@@ -14,6 +14,9 @@ open class PhotoEditor: UIViewController {
     override open func viewDidLoad() {
         super.viewDidLoad()
 
+        let image = UIImage(named: "testingImage")!
+        IMGLYMainEditorViewController.showEditor(image: image, parent: self)
+
     }
 
     public func showPhotoEditor(image: UIImage, parent: UIViewController){
