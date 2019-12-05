@@ -14,8 +14,6 @@ open class IMGLYEditorViewController: UIViewController {
     
     // MARK: - Properties
 
-    
-    
     open var shouldShowActivityIndicator = true
     
     open var updating = false {
@@ -95,12 +93,7 @@ open class IMGLYEditorViewController: UIViewController {
     
     fileprivate func configureViewConstraints() {
 
-        let bottomSafe: NSLayoutYAxisAnchor
-        if #available(iOS 11.0 , *){
-            bottomSafe = self.view.safeAreaLayoutGuide.bottomAnchor
-        } else {
-            bottomSafe = self.view.bottomAnchor
-        }
+
         let views: [String: AnyObject] = [
             "previewImageView" : previewImageView,
             "bottomContainerView" : bottomContainerView,
@@ -133,7 +126,6 @@ open class IMGLYEditorViewController: UIViewController {
     // MARK: - Actions
     
     @objc open func tappedDone(_ sender: UIBarButtonItem?) {
-        // Subclasses must override this
-        IMGLYMainEditorViewController.showEditor(image: self.lowResolutionImage!, parent: self)
+
     }
 }

@@ -29,6 +29,14 @@ import UIKit
     case drawer
 }
 
+public protocol SaveImageDelegate: class {
+    func saveImage(_ image: UIImage)
+}
+
+public protocol DoneEditDelegate: class{
+    func close(_ image: UIImage)
+}
+
 public typealias IMGLYEditorCompletionBlock = (IMGLYEditorResult, UIImage?) -> Void
 
 private let ButtonCollectionViewCellReuseIdentifier = "ButtonCollectionViewCell"
@@ -38,32 +46,9 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     
     // MARK: - Properties
 
-    public static var parentVC: UIViewController? = nil
+    public weak var photoEditorDelegate: DoneEditDelegate?
 
-    public static func showEditor(image: UIImage, parent: UIViewController, animate: Bool = true) {
-        let editorViewController = IMGLYMainEditorViewController()
-        editorViewController.highResolutionImage = image
-
-        let navigationController = IMGLYNavigationController(rootViewController: editorViewController)
-        navigationController.navigationBar.barStyle = .black
-        navigationController.navigationBar.isTranslucent = false
-        navigationController.navigationBar.titleTextAttributes = [ NSAttributedString.Key.foregroundColor : UIColor.white ]
-        navigationController.modalPresentationStyle = .overFullScreen
-
-        if IMGLYMainEditorViewController.parentVC == nil{
-            IMGLYMainEditorViewController.parentVC = parent
-        }
-
-        parent.present(navigationController, animated: animate, completion: nil)
-    }
-
-    public init() {
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required public init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    public weak var delegateEditor: SaveImageDelegate?
 
     open lazy var actionButtons: [IMGLYActionButton] = {
         let bundle = Bundle(for: type(of: self))
@@ -157,6 +142,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
         super.viewDidLoad()
         
         let bundle = Bundle(for: type(of: self))
+
         navigationItem.title = NSLocalizedString("main-editor.title", tableName: nil, bundle: bundle, value: "", comment: "")
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(IMGLYMainEditorViewController.cancelTapped(_:)))
         
@@ -193,28 +179,15 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     
     // MARK: - Helpers
     
-    fileprivate func subEditorButtonPressed(_ buttonType: IMGLYMainMenuButtonType) {
+    open func subEditorButtonPressed(_ buttonType: IMGLYMainMenuButtonType) {
         switch buttonType {
         case .magic:
             if !updating {
                 fixedFilterStack.enhancementFilter._enabled = !fixedFilterStack.enhancementFilter._enabled
                 updatePreviewImage()
             }
-//        case .crop, .orientation:
-//            if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: self.previewImageView.visibleImageFrame) {
-//                viewController.lowResolutionImage = previewImageView.image
-//                viewController.previewImageView.image = previewImageView.image
-//                viewController.completionHandler = subEditorDidComplete
-//                show(viewController, sender: self)
-//            }
         default:
-//            if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: self.previewImageView.visibleImageFrame) {
-//                viewController.lowResolutionImage = lowResolutionImage
-//                viewController.previewImageView.image = previewImageView.image
-//                viewController.completionHandler = subEditorDidComplete
-//                show(viewController, sender: self)
-//            }
-             if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: self.previewImageView.visibleImageFrame) {
+            if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: self.previewImageView.visibleImageFrame, doneEditDelegate: self.photoEditorDelegate) {
                             viewController.lowResolutionImage = previewImageView.image
                             viewController.previewImageView.image = previewImageView.image
                             viewController.completionHandler = subEditorDidComplete
@@ -265,25 +238,11 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     // MARK: - EditorViewController
     
     override open func tappedDone(_ sender: UIBarButtonItem?) {
-        if let completionBlock = completionBlock {
-            highResolutionImage = highResolutionImage?.imgly_normalizedImage
-            var filteredHighResolutionImage: UIImage?
-            
-            if let highResolutionImage = self.highResolutionImage {
-                sender?.isEnabled = false
-                PhotoProcessorQueue.async {
-                    filteredHighResolutionImage = IMGLYPhotoProcessor.processWithUIImage(highResolutionImage, filters: self.fixedFilterStack.activeFilters)
-                    
-                    DispatchQueue.main.async {
-                        completionBlock(.done, filteredHighResolutionImage)
-                        sender?.isEnabled = true
-                    }
-                }
-            } else {
-                completionBlock(.done, filteredHighResolutionImage)
-            }
-        } else {
-            dismiss(animated: true, completion: nil)
+
+        guard let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage!, filters: self.fixedFilterStack.activeFilters) else { return }
+
+        dismiss(animated: true) {
+            self.delegateEditor?.saveImage(processedImage)
         }
     }
     

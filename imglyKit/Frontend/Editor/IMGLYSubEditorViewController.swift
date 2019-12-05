@@ -15,15 +15,17 @@ open class IMGLYSubEditorViewController: IMGLYEditorViewController {
     
     // MARK: - Properties
 
+    public var photoEditorDelegate: DoneEditDelegate?
     public let imageFrame: CGRect?
     public let fixedFilterStack: IMGLYFixedFilterStack
     open var completionHandler: IMGLYSubEditorCompletionBlock?
     
     // MARK: - Initializers
     
-    public init(fixedFilterStack: IMGLYFixedFilterStack, frame: CGRect? = nil) {
+    public init(fixedFilterStack: IMGLYFixedFilterStack, frame: CGRect? = nil,photoEditorDelegate : DoneEditDelegate?) {
         self.fixedFilterStack = fixedFilterStack.copy() as! IMGLYFixedFilterStack
         self.imageFrame = frame
+        self.photoEditorDelegate = photoEditorDelegate
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -33,14 +35,14 @@ open class IMGLYSubEditorViewController: IMGLYEditorViewController {
     
     // MARK: - EditorViewController
     
-    open override func tappedDone(_ sender: UIBarButtonItem?) {
+    public override func tappedDone(_ sender: UIBarButtonItem?) {
         completionHandler?(previewImageView.image, fixedFilterStack)
 
         guard let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage!, filters: self.fixedFilterStack.activeFilters) else { return }
-        self.dismiss(animated: false, completion: {
-            IMGLYMainEditorViewController.showEditor(image: processedImage, parent: IMGLYMainEditorViewController.parentVC!, animate: false)
-        })
 
+        self.dismiss(animated: false, completion: {
+            self.photoEditorDelegate?.close(processedImage)
+        })
     }
     
     // MARK: - Helpers
