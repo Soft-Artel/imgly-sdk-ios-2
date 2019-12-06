@@ -18,13 +18,14 @@ open class PhotoEditor{
     var image: UIImage?
     let delegateImage: SaveImageDelegate?
     let parentVC: UIViewController?
-    public var delegateVC: PhotoEditor? = nil
     let editorViewController = IMGLYMainEditorViewController()
-
+    var photoEditor: PhotoEditor? = nil
     public init(image: UIImage, delegate: SaveImageDelegate,parent: UIViewController) {
         self.image = image
         self.delegateImage = delegate
         self.parentVC = parent
+        self.photoEditor = self
+        self.editorViewController.delegateEditor = self.delegateImage
     }
 
     required public init?(coder: NSCoder) {
@@ -33,9 +34,11 @@ open class PhotoEditor{
 
 
     public func startEditing(){
+        if self.photoEditor == nil{
+            self.photoEditor = self
+        }
         self.editorViewController.highResolutionImage = self.image
-        self.editorViewController.delegateEditor = self.delegateImage
-        self.editorViewController.photoEditorDelegate = self.delegateVC
+        self.editorViewController.photoEditor = self.photoEditor
         let navigationController = IMGLYNavigationController(rootViewController: editorViewController)
         navigationController.navigationBar.barStyle = .black
         navigationController.navigationBar.isTranslucent = false
@@ -46,11 +49,6 @@ open class PhotoEditor{
 
     }
 
-
-
-}
-
-extension PhotoEditor: DoneEditDelegate{
     public func close(_ image: UIImage) {
 
         self.image = image

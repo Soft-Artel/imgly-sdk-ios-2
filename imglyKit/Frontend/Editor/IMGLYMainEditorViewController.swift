@@ -33,10 +33,6 @@ public protocol SaveImageDelegate: class {
     func saveImage(_ image: UIImage)
 }
 
-public protocol DoneEditDelegate: class{
-    func close(_ image: UIImage)
-}
-
 public typealias IMGLYEditorCompletionBlock = (IMGLYEditorResult, UIImage?) -> Void
 
 private let ButtonCollectionViewCellReuseIdentifier = "ButtonCollectionViewCell"
@@ -46,7 +42,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     
     // MARK: - Properties
 
-    public weak var photoEditorDelegate: DoneEditDelegate?
+    public weak var photoEditor: PhotoEditor?
 
     public weak var delegateEditor: SaveImageDelegate?
 
@@ -187,7 +183,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                 updatePreviewImage()
             }
         default:
-            if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: self.previewImageView.visibleImageFrame, doneEditDelegate: self.photoEditorDelegate) {
+            if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: self.previewImageView.visibleImageFrame, doneEdit: self.photoEditor) {
                             viewController.lowResolutionImage = previewImageView.image
                             viewController.previewImageView.image = previewImageView.image
                             viewController.completionHandler = subEditorDidComplete

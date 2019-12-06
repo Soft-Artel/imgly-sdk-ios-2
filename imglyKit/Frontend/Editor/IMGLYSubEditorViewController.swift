@@ -15,17 +15,17 @@ open class IMGLYSubEditorViewController: IMGLYEditorViewController {
     
     // MARK: - Properties
 
-    public var photoEditorDelegate: DoneEditDelegate?
+    public var photoEditorDelegate: PhotoEditor?
     public let imageFrame: CGRect?
     public let fixedFilterStack: IMGLYFixedFilterStack
     open var completionHandler: IMGLYSubEditorCompletionBlock?
     
     // MARK: - Initializers
     
-    public init(fixedFilterStack: IMGLYFixedFilterStack, frame: CGRect? = nil,photoEditorDelegate : DoneEditDelegate?) {
+    public init(fixedFilterStack: IMGLYFixedFilterStack, frame: CGRect? = nil,_ photoEdit: PhotoEditor?) {
         self.fixedFilterStack = fixedFilterStack.copy() as! IMGLYFixedFilterStack
         self.imageFrame = frame
-        self.photoEditorDelegate = photoEditorDelegate
+        self.photoEditorDelegate = photoEdit
         super.init(nibName: nil, bundle: nil)
     }
 
