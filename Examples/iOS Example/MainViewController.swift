@@ -40,8 +40,3 @@ extension MainViewController: SaveImageDelegate{
     }
 }
 
-extension MainViewController: DoneEditDelegate{
-    func close(_ image: UIImage) {
-        
-    }
-}
