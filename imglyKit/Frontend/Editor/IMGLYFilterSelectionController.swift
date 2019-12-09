@@ -24,7 +24,8 @@ open class IMGLYFilterSelectionController: UICollectionViewController {
     fileprivate var selectedCellIndex: Int?
     open var selectedBlock: IMGLYFilterTypeSelectedBlock?
     open var activeFilterType: IMGLYFilterTypeActiveBlock?
-    
+    open var previewImage: UIImage? = nil
+
     // MARK: - Initializers
     
     init() {
@@ -73,7 +74,32 @@ extension IMGLYFilterSelectionController {
                 
                 // Create filterPreviewImage
                 PhotoProcessorQueue.async {
-                    let filterPreviewImage = IMGLYPhotoProcessor.processWithUIImage(UIImage(named: "nonePreview", in: bundle, compatibleWith:nil)!, filters: [filter])
+
+                    let previewImage: UIImage = self.previewImage ?? UIImage(named: "nonePreview", in: bundle, compatibleWith:nil)!
+
+                    let imageSize = previewImage.size
+
+                    let width: CGFloat
+                    let x: CGFloat
+                    let y: CGFloat
+                    if imageSize.width < imageSize.height{
+                        width =  imageSize.width
+                        x = 0
+                        y = (imageSize.height - width) / 2
+                    }else{
+                        width = imageSize.height
+                        x = ( imageSize.width - width) / 2
+                        y = 0
+                    }
+
+
+                    let rect = CGRect(x: x, y: y, width: width, height: width)
+
+                    let cgImage = previewImage.cgImage!.cropping(to: rect)
+
+                    let image = UIImage(cgImage: cgImage!)
+
+                    let filterPreviewImage = IMGLYPhotoProcessor.processWithUIImage(image, filters: [filter])
                     
                     DispatchQueue.main.async {
                         FilterPreviews[filterType] = filterPreviewImage

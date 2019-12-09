@@ -13,8 +13,9 @@ open class IMGLYFilterEditorViewController: IMGLYSubEditorViewController {
     // MARK: - Properties
     
     public let filterSelectionController = IMGLYFilterSelectionController()
-    
+
     open fileprivate(set) lazy var filterIntensitySlider: UISlider = {
+        self.filterSelectionController.previewImage = self.previewImageView.image
         let bundle = Bundle(for: type(of: self))
         let slider = UISlider()
         slider.translatesAutoresizingMaskIntoConstraints = false

@@ -52,39 +52,52 @@ class IMGLYImageCaptionCollectionViewCell: UICollectionViewCell {
         containerView.addSubview(textLabel)
         
         contentView.addSubview(containerView)
-        
-        let views = [
-            "containerView" : containerView,
-            "imageView" : imageView,
-            "textLabel" : textLabel
-        ]
-        
-        let metrics: [ String: AnyObject ] = [
-            "imageHeight" : imageSize.height as AnyObject,
-            "imageWidth" : imageSize.width as AnyObject,
-            "imageCaptionMargin" : imageCaptionMargin as AnyObject
-        ]
-        
-        containerView.addConstraints(NSLayoutConstraint.constraints(
-            withVisualFormat: "|-(>=0)-[imageView(==imageWidth)]-(>=0)-|",
-            options: [],
-            metrics: metrics,
-            views: views))
-        
-        containerView.addConstraints(NSLayoutConstraint.constraints(
-            withVisualFormat: "|-(>=0)-[textLabel]-(>=0)-|",
-            options: [],
-            metrics: metrics,
-            views: views))
-        
-        containerView.addConstraints(NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|[imageView(==imageHeight)]-(imageCaptionMargin)-[textLabel]|",
-            options: .alignAllCenterX,
-            metrics: metrics,
-            views: views))
-        
-        contentView.addConstraint(NSLayoutConstraint(item: containerView, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1, constant: 0))
-        contentView.addConstraint(NSLayoutConstraint(item: containerView, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0))
+
+        self.textLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
+        self.textLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
+
+        containerView.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: self.textLabel.topAnchor).isActive = true
+        containerView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor).isActive = true
+        containerView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor).isActive = true
+
+        self.imageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+        self.imageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        self.imageView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
+        self.imageView.heightAnchor.constraint(equalTo: self.imageView.widthAnchor).isActive = true
+
+//        let views = [
+//            "containerView" : containerView,
+//            "imageView" : imageView,
+//            "textLabel" : textLabel
+//        ]
+//
+//        let metrics: [ String: AnyObject ] = [
+//            "imageHeight" : imageSize.height as AnyObject,
+//            "imageWidth" : imageSize.width as AnyObject,
+//            "imageCaptionMargin" : imageCaptionMargin as AnyObject
+//        ]
+//
+//        containerView.addConstraints(NSLayoutConstraint.constraints(
+//            withVisualFormat: "|-(>=0)-[imageView(==imageWidth)]-(>=0)-|",
+//            options: [],
+//            metrics: metrics,
+//            views: views))
+//
+//        containerView.addConstraints(NSLayoutConstraint.constraints(
+//            withVisualFormat: "|-(>=0)-[textLabel]-(>=0)-|",
+//            options: [],
+//            metrics: metrics,
+//            views: views))
+//
+//        containerView.addConstraints(NSLayoutConstraint.constraints(
+//            withVisualFormat: "V:|[imageView(==imageHeight)]-(imageCaptionMargin)-[textLabel]|",
+//            options: .alignAllCenterX,
+//            metrics: metrics,
+//            views: views))
+//
+//        contentView.addConstraint(NSLayoutConstraint(item: containerView, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1, constant: 0))
+//        contentView.addConstraint(NSLayoutConstraint(item: containerView, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0))
     }
     
     // MARK: - Subclasses

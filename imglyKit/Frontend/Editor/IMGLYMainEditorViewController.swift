@@ -166,7 +166,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(IMGLYButtonCollectionViewCell.self, forCellWithReuseIdentifier: ButtonCollectionViewCellReuseIdentifier)
-        
+
         let views = [ "collectionView" : collectionView ]
         bottomContainerView.addSubview(collectionView)
         bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[collectionView]|", options: [], metrics: nil, views: views))
