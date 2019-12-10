@@ -38,7 +38,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         button.imageView.image = UIImage(named: "icon_crop_square", in: bundle, compatibleWith: nil)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(IMGLYCropEditorViewController.activateOneToOneRatio(_:)), for: .touchUpInside)
-        return button
+        return button 
         }()
     
     open fileprivate(set) lazy var fourToThreeRatioButton: IMGLYImageCaptionButton = {
