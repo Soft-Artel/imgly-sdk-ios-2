@@ -96,7 +96,7 @@ open class IMGLYFilterEditorViewController: IMGLYSubEditorViewController {
         self.filterSelectionController?.didMove(toParent: self)
         bottomContainerView.addSubview(self.filterSelectionController!.view)
         
-        bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[filterSelectionView]|", options: [], metrics: nil, views: views))
+         bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[filterSelectionView]|", options: [], metrics: nil, views: views))
         bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[filterSelectionView]|", options: [], metrics: nil, views: views))
     }
     
