@@ -42,6 +42,8 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     
     // MARK: - Properties
 
+    
+
     public weak var photoEditor: PhotoEditor?
 
     public weak var delegateEditor: SaveImageDelegate?

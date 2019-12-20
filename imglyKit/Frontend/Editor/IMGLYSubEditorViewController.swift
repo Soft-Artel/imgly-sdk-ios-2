@@ -40,6 +40,12 @@ open class IMGLYSubEditorViewController: IMGLYEditorViewController {
 
         guard let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage!, filters: self.fixedFilterStack.activeFilters) else { return }
 
+        let transition = CATransition()
+        transition.duration = 0.2
+        transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        transition.type = .reveal
+        transition.subtype = nil
+        self.view.window?.layer.add(transition, forKey: nil)
         self.dismiss(animated: false, completion: {
             self.photoEditorDelegate?.close(processedImage)
         })

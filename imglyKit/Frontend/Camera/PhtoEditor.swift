@@ -31,7 +31,7 @@ open class PhotoEditor{
     }
 
 
-    public func startEditing(){
+    public func startEditing(again: Bool = false){
         if self.photoEditor == nil{
             self.photoEditor = self
         }
@@ -45,14 +45,19 @@ open class PhotoEditor{
         navigationController.navigationBar.titleTextAttributes = [ NSAttributedString.Key.foregroundColor : UIColor.white ]
         navigationController.modalPresentationStyle = .overFullScreen
 
+        if again{
+            editorViewController.animateSeque = true
+        }
+
         parentVC?.present(navigationController, animated: false, completion: nil)
+
 
     }
 
     public func close(_ image: UIImage) {
 
         self.image = image
-        self.startEditing()
+        self.startEditing(again: true)
 
     }
 }

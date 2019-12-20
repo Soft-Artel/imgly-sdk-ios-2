@@ -15,7 +15,8 @@ open class IMGLYEditorViewController: UIViewController {
     // MARK: - Properties
 
     open var shouldShowActivityIndicator = true
-    
+    public var animateSeque: Bool = false
+
     open var updating = false {
         didSet {
             if shouldShowActivityIndicator {
@@ -80,7 +81,11 @@ open class IMGLYEditorViewController: UIViewController {
     // MARK: - Configuration
     
     fileprivate func configureNavigationItems() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(IMGLYEditorViewController.tappedDone(_:)))
+        if self.animateSeque{
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(IMGLYEditorViewController.tappedDone(_:)))
+        }else{
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(IMGLYEditorViewController.tappedDone(_:)))
+        }
     }
     
     fileprivate func configureViewHierarchy() {
