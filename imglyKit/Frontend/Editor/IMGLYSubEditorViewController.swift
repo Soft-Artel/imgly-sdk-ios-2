@@ -15,15 +15,17 @@ open class IMGLYSubEditorViewController: IMGLYEditorViewController {
     
     // MARK: - Properties
 
+    public var photoEditorDelegate: PhotoEditor?
     public let imageFrame: CGRect?
     public let fixedFilterStack: IMGLYFixedFilterStack
     open var completionHandler: IMGLYSubEditorCompletionBlock?
     
     // MARK: - Initializers
     
-    public init(fixedFilterStack: IMGLYFixedFilterStack, frame: CGRect? = nil) {
+    public init(fixedFilterStack: IMGLYFixedFilterStack, frame: CGRect? = nil,_ photoEdit: PhotoEditor?) {
         self.fixedFilterStack = fixedFilterStack.copy() as! IMGLYFixedFilterStack
         self.imageFrame = frame
+        self.photoEditorDelegate = photoEdit
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -33,16 +35,20 @@ open class IMGLYSubEditorViewController: IMGLYEditorViewController {
     
     // MARK: - EditorViewController
     
-    open override func tappedDone(_ sender: UIBarButtonItem?) {
+    public override func tappedDone(_ sender: UIBarButtonItem?) {
         completionHandler?(previewImageView.image, fixedFilterStack)
-//        navigationController?.popViewController(animated: true)
-        let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage!, filters: self.fixedFilterStack.activeFilters)
 
-        let parent = navigationController?.parent
-        navigationController?.dismiss(animated: false, completion: {
-            IMGLYMainEditorViewController.showEditor(image: processedImage!, parent: parent ?? IMGLYCameraViewController._shared!, animate: false)
+        guard let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage!, filters: self.fixedFilterStack.activeFilters) else { return }
+
+        let transition = CATransition()
+        transition.duration = 0.2
+        transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        transition.type = .reveal
+        transition.subtype = nil
+        self.view.window?.layer.add(transition, forKey: nil)
+        self.dismiss(animated: false, completion: {
+            self.photoEditorDelegate?.close(processedImage)
         })
-
     }
     
     // MARK: - Helpers

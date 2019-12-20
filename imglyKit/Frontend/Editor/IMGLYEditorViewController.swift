@@ -13,9 +13,10 @@ internal let PhotoProcessorQueue = DispatchQueue(label: "ly.img.SDK.PhotoProcess
 open class IMGLYEditorViewController: UIViewController {
     
     // MARK: - Properties
-    
+
     open var shouldShowActivityIndicator = true
-    
+    public var animateSeque: Bool = false
+
     open var updating = false {
         didSet {
             if shouldShowActivityIndicator {
@@ -80,7 +81,11 @@ open class IMGLYEditorViewController: UIViewController {
     // MARK: - Configuration
     
     fileprivate func configureNavigationItems() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(IMGLYEditorViewController.tappedDone(_:)))
+        if self.animateSeque{
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(IMGLYEditorViewController.tappedDone(_:)))
+        }else{
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(IMGLYEditorViewController.tappedDone(_:)))
+        }
     }
     
     fileprivate func configureViewHierarchy() {
@@ -93,32 +98,45 @@ open class IMGLYEditorViewController: UIViewController {
     
     fileprivate func configureViewConstraints() {
 
-        let bottomSafe: NSLayoutYAxisAnchor
-        if #available(iOS 11.0 , *){
-            bottomSafe = self.view.safeAreaLayoutGuide.bottomAnchor
-        } else {
-            bottomSafe = self.view.bottomAnchor
+        let bottomAnchorConstraint: NSLayoutYAxisAnchor
+        if #available(iOS 11.0, *){
+            bottomAnchorConstraint = self.view.safeAreaLayoutGuide.bottomAnchor
+        }else{
+            bottomAnchorConstraint = self.view.bottomAnchor
         }
-        let views: [String: AnyObject] = [
-            "previewImageView" : previewImageView,
-            "bottomContainerView" : bottomContainerView,
-            "topLayoutGuide" : topLayoutGuide
-        ]
-
-        let metrics: [String: AnyObject] = [
-            "bottomContainerViewHeight" : 100 as AnyObject
-        ]
-
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[previewImageView]|", options: [], metrics: nil, views: views))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[bottomContainerView]|", options: [], metrics: nil, views: views))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[topLayoutGuide][previewImageView][bottomContainerView(==bottomContainerViewHeight)]|", options: [], metrics: metrics, views: views))
-
-        previewImageView.addConstraint(NSLayoutConstraint(item: activityIndicatorView, attribute: .centerX, relatedBy: .equal, toItem: previewImageView, attribute: .centerX, multiplier: 1, constant: 0))
-        previewImageView.addConstraint(NSLayoutConstraint(item: activityIndicatorView, attribute: .centerY, relatedBy: .equal, toItem: previewImageView, attribute: .centerY, multiplier: 1, constant: 0))
-
 
         self.previewImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        self.previewImageView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor).isActive = true
+        self.previewImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        self.previewImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        self.previewImageView.bottomAnchor.constraint(equalTo: self.bottomContainerView.topAnchor).isActive = true
 
+        self.bottomContainerView.heightAnchor.constraint(equalToConstant: 130).isActive = true
+        self.bottomContainerView.bottomAnchor.constraint(equalTo: bottomAnchorConstraint).isActive = true
+        self.bottomContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        self.bottomContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+//        self.bottomContainerView.topAnchor.constraint(equalTo: self.previewImageView.bottomAnchor).isActive = true
+
+//        let views: [String: AnyObject] = [
+//            "previewImageView" : previewImageView,
+//            "bottomContainerView" : bottomContainerView,
+//            "topLayoutGuide" : topLayoutGuide
+//        ]
+//
+//        let metrics: [String: AnyObject] = [
+//            "bottomContainerViewHeight" : 100 as AnyObject
+//        ]
+//
+//        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[previewImageView]|", options: [], metrics: nil, views: views))
+//        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[bottomContainerView]|", options: [], metrics: nil, views: views))
+//        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[topLayoutGuide][previewImageView][bottomContainerView(==bottomContainerViewHeight)]|", options: [], metrics: metrics, views: views))
+//
+//        previewImageView.addConstraint(NSLayoutConstraint(item: activityIndicatorView, attribute: .centerX, relatedBy: .equal, toItem: previewImageView, attribute: .centerX, multiplier: 1, constant: 0))
+//        previewImageView.addConstraint(NSLayoutConstraint(item: activityIndicatorView, attribute: .centerY, relatedBy: .equal, toItem: previewImageView, attribute: .centerY, multiplier: 1, constant: 0))
+//
+//
+//        self.previewImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+//
 
 
     }
@@ -131,8 +149,6 @@ open class IMGLYEditorViewController: UIViewController {
     // MARK: - Actions
     
     @objc open func tappedDone(_ sender: UIBarButtonItem?) {
-        // Subclasses must override this
-        IMGLYMainEditorViewController.showEditor(image: self.lowResolutionImage!, parent: self)
+
     }
-    
 }

@@ -20,72 +20,72 @@ extension IMGLYInstanceFactory {
     
     - returns: A viewcontroller according to the button-type.
     */
-    public class func viewControllerForButtonType(_ type: IMGLYMainMenuButtonType, withFixedFilterStack fixedFilterStack: IMGLYFixedFilterStack, and frame: CGRect? = nil) -> IMGLYSubEditorViewController? {
+    public class func viewControllerForButtonType(_ type: IMGLYMainMenuButtonType, withFixedFilterStack fixedFilterStack: IMGLYFixedFilterStack, and frame: CGRect? = nil, doneEdit: PhotoEditor?) -> IMGLYSubEditorViewController? {
         switch (type) {
         case IMGLYMainMenuButtonType.filter:
-            return filterEditorViewControllerWithFixedFilterStack(fixedFilterStack)
+            return filterEditorViewControllerWithFixedFilterStack(fixedFilterStack, doneEdit)
         case IMGLYMainMenuButtonType.stickers:
-            return stickersEditorViewControllerWithFixedFilterStack(fixedFilterStack)
+            return stickersEditorViewControllerWithFixedFilterStack(fixedFilterStack, doneEdit)
         case IMGLYMainMenuButtonType.orientation:
-            return orientationEditorViewControllerWithFixedFilterStack(fixedFilterStack)
+            return orientationEditorViewControllerWithFixedFilterStack(fixedFilterStack, doneEdit)
         case IMGLYMainMenuButtonType.focus:
-            return focusEditorViewControllerWithFixedFilterStack(fixedFilterStack)
+            return focusEditorViewControllerWithFixedFilterStack(fixedFilterStack, doneEdit)
         case IMGLYMainMenuButtonType.crop:
-            return cropEditorViewControllerWithFixedFilterStack(fixedFilterStack)
+            return cropEditorViewControllerWithFixedFilterStack(fixedFilterStack, doneEdit)
         case IMGLYMainMenuButtonType.brightness:
-            return brightnessEditorViewControllerWithFixedFilterStack(fixedFilterStack)
+            return brightnessEditorViewControllerWithFixedFilterStack(fixedFilterStack, doneEdit)
         case IMGLYMainMenuButtonType.contrast:
-            return contrastEditorViewControllerWithFixedFilterStack(fixedFilterStack)
+            return contrastEditorViewControllerWithFixedFilterStack(fixedFilterStack, doneEdit)
         case IMGLYMainMenuButtonType.saturation:
-            return saturationEditorViewControllerWithFixedFilterStack(fixedFilterStack)
+            return saturationEditorViewControllerWithFixedFilterStack(fixedFilterStack, doneEdit)
         case IMGLYMainMenuButtonType.text:
-            return textEditorViewControllerWithFixedFilterStack(fixedFilterStack)
+            return textEditorViewControllerWithFixedFilterStack(fixedFilterStack, doneEdit)
         case IMGLYMainMenuButtonType.drawer:
-            return drawImageViewControllerWithFixedFilterStack(fixedFilterStack, and: (frame ?? nil)!)
+            return drawImageViewControllerWithFixedFilterStack(fixedFilterStack, and: (frame ?? nil)!, doneEdit)
         default:
             return nil
         }
     }
     
-    public class func filterEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack) -> IMGLYFilterEditorViewController {
-        return IMGLYFilterEditorViewController(fixedFilterStack: fixedFilterStack)
+    public class func filterEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack, _ photoEdit: PhotoEditor?) -> IMGLYFilterEditorViewController {
+        return IMGLYFilterEditorViewController(fixedFilterStack: fixedFilterStack, photoEdit)
     }
     
-    public class func stickersEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack) -> IMGLYStickersEditorViewController {
-        return IMGLYStickersEditorViewController(fixedFilterStack: fixedFilterStack)
+    public class func stickersEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack, _ photoEdit: PhotoEditor?) -> IMGLYStickersEditorViewController {
+        return IMGLYStickersEditorViewController(fixedFilterStack: fixedFilterStack, photoEdit)
     }
     
-    public class func orientationEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack) -> IMGLYOrientationEditorViewController {
-        return IMGLYOrientationEditorViewController(fixedFilterStack: fixedFilterStack)
+    public class func orientationEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack, _ photoEdit: PhotoEditor?) -> IMGLYOrientationEditorViewController {
+        return IMGLYOrientationEditorViewController(fixedFilterStack: fixedFilterStack, photoEdit)
     }
     
-    public class func focusEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack) -> IMGLYFocusEditorViewController {
-        return IMGLYFocusEditorViewController(fixedFilterStack: fixedFilterStack)
+    public class func focusEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack,_ photoEdit: PhotoEditor?) -> IMGLYFocusEditorViewController {
+        return IMGLYFocusEditorViewController(fixedFilterStack: fixedFilterStack,  photoEdit)
     }
     
-    public class func cropEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack) -> IMGLYCropEditorViewController {
-        return IMGLYCropEditorViewController(fixedFilterStack: fixedFilterStack)
+    public class func cropEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack,_ photoEdit: PhotoEditor?) -> IMGLYCropEditorViewController {
+        return IMGLYCropEditorViewController(fixedFilterStack: fixedFilterStack,  photoEdit)
     }
     
-    public class func brightnessEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack) -> IMGLYBrightnessEditorViewController {
-        return IMGLYBrightnessEditorViewController(fixedFilterStack: fixedFilterStack)
+    public class func brightnessEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack,_ photoEdit: PhotoEditor?) -> IMGLYBrightnessEditorViewController {
+        return IMGLYBrightnessEditorViewController(fixedFilterStack: fixedFilterStack,  photoEdit)
     }
     
-    public class func contrastEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack) -> IMGLYContrastEditorViewController {
-        return IMGLYContrastEditorViewController(fixedFilterStack: fixedFilterStack)
+    public class func contrastEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack,_ photoEdit: PhotoEditor?) -> IMGLYContrastEditorViewController {
+        return IMGLYContrastEditorViewController(fixedFilterStack: fixedFilterStack,  photoEdit)
     }
     
-    public class func saturationEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack) -> IMGLYSaturationEditorViewController {
-        return IMGLYSaturationEditorViewController(fixedFilterStack: fixedFilterStack)
+    public class func saturationEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack,_ photoEdit: PhotoEditor?) -> IMGLYSaturationEditorViewController {
+        return IMGLYSaturationEditorViewController(fixedFilterStack: fixedFilterStack,  photoEdit)
     }
     
-    public class func textEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack) -> IMGLYTextEditorViewController {
-        return IMGLYTextEditorViewController(fixedFilterStack: fixedFilterStack)
+    public class func textEditorViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack,_ photoEdit: PhotoEditor?) -> IMGLYTextEditorViewController {
+        return IMGLYTextEditorViewController(fixedFilterStack: fixedFilterStack,  photoEdit)
     }
 
-    public class func drawImageViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack, and frame : CGRect) -> IMGLYDrawerViewController {
+    public class func drawImageViewControllerWithFixedFilterStack(_ fixedFilterStack: IMGLYFixedFilterStack, and frame : CGRect,_ photoEdit: PhotoEditor?) -> IMGLYDrawerViewController {
 //        let vc = IMGLYDrawerViewController(fixedFilterStack: fixedFilterStack)
-        let vc = IMGLYDrawerViewController(fixedFilterStack: fixedFilterStack, frame: frame)
+        let vc = IMGLYDrawerViewController(fixedFilterStack: fixedFilterStack, frame: frame,  photoEdit)
         return vc
     }
     
