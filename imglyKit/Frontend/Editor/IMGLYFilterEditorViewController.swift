@@ -12,10 +12,9 @@ open class IMGLYFilterEditorViewController: IMGLYSubEditorViewController {
     
     // MARK: - Properties
     
-    public let filterSelectionController = IMGLYFilterSelectionController()
+    private var filterSelectionController: IMGLYFilterSelectionController?
 
     open fileprivate(set) lazy var filterIntensitySlider: UISlider = {
-        self.filterSelectionController.previewImage = self.previewImageView.image
         let bundle = Bundle(for: type(of: self))
         let slider = UISlider()
         slider.translatesAutoresizingMaskIntoConstraints = false
@@ -41,7 +40,8 @@ open class IMGLYFilterEditorViewController: IMGLYSubEditorViewController {
     
     override open func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.filterSelectionController = IMGLYFilterSelectionController()
+        self.filterSelectionController?.previewImage = self.previewImageView.image
         let bundle = Bundle(for: type(of: self))
         navigationItem.title = NSLocalizedString("filter-editor.title", tableName: nil, bundle: bundle, value: "", comment: "")
         
@@ -58,7 +58,7 @@ open class IMGLYFilterEditorViewController: IMGLYSubEditorViewController {
     // MARK: - Configuration
     
     fileprivate func configureFilterSelectionController() {
-        filterSelectionController.selectedBlock = { [weak self] filterType in
+        self.filterSelectionController?.selectedBlock = { [weak self] filterType in
             if filterType == .none {
                 if let filterIntensitySlider = self?.filterIntensitySlider, filterIntensitySlider.alpha > 0 {
                     UIView.animate(withDuration: 0.3, animations: {
@@ -82,7 +82,7 @@ open class IMGLYFilterEditorViewController: IMGLYSubEditorViewController {
             self?.updatePreviewImage()
         }
         
-        filterSelectionController.activeFilterType = { [weak self] in
+       self.filterSelectionController?.activeFilterType = { [weak self] in
             if let fixedFilterStack = self?.fixedFilterStack {
                 return fixedFilterStack.effectFilter.filterType
             }
@@ -90,11 +90,11 @@ open class IMGLYFilterEditorViewController: IMGLYSubEditorViewController {
             return nil
         }
         
-        let views = [ "filterSelectionView" : filterSelectionController.view! ]
+        let views = [ "filterSelectionView" : self.filterSelectionController!.view! ]
         
-        addChild(filterSelectionController)
-        filterSelectionController.didMove(toParent: self)
-        bottomContainerView.addSubview(filterSelectionController.view)
+        addChild(self.filterSelectionController!)
+        self.filterSelectionController?.didMove(toParent: self)
+        bottomContainerView.addSubview(self.filterSelectionController!.view)
         
         bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[filterSelectionView]|", options: [], metrics: nil, views: views))
         bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[filterSelectionView]|", options: [], metrics: nil, views: views))
