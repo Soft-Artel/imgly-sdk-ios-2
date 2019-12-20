@@ -12,7 +12,7 @@ private let FilterCollectionViewCellReuseIdentifier = "FilterCollectionViewCell"
 private let FilterCollectionViewCellSize = CGSize(width: 60, height: 90)
 private let FilterActivationDuration = TimeInterval(0.15)
 
-private var FilterPreviews = [IMGLYFilterType : UIImage]()
+public var FilterPreviews = [IMGLYFilterType : UIImage]()
 
 public typealias IMGLYFilterTypeSelectedBlock = (IMGLYFilterType) -> (Void)
 public typealias IMGLYFilterTypeActiveBlock = () -> (IMGLYFilterType?)
@@ -29,6 +29,9 @@ open class IMGLYFilterSelectionController: UICollectionViewController {
     // MARK: - Initializers
     
     init() {
+        if previewImage != nil {
+            previewImage = nil
+        }
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = FilterCollectionViewCellSize
         flowLayout.scrollDirection = .horizontal
@@ -63,17 +66,9 @@ extension IMGLYFilterSelectionController {
             filterCell.imageView.layer.cornerRadius = 3
             filterCell.imageView.clipsToBounds = true
             filterCell.imageView.contentMode = .scaleToFill
-            filterCell.imageView.image = nil
+            filterCell.imageView.image = FilterPreviews[filterType]
             filterCell.hideTick()
-
-            if let filterPreviewImage = FilterPreviews[filterType] {
-                self.updateCell(filterCell, atIndexPath: indexPath, withFilterType: filter.filterType, forImage: filterPreviewImage)
-                filterCell.activityIndicator.stopAnimating()
-            } else {
-                filterCell.activityIndicator.startAnimating()
-                
-                // Create filterPreviewImage
-                PhotoProcessorQueue.async {
+            if FilterPreviews[filterType] == nil{
 
                     let previewImage: UIImage = self.previewImage ?? UIImage(named: "nonePreview", in: bundle, compatibleWith:nil)!
 
@@ -107,19 +102,19 @@ extension IMGLYFilterSelectionController {
                             self.updateCell(filterCell, atIndexPath: indexPath, withFilterType: filter.filterType, forImage: filterPreviewImage)
                             filterCell.activityIndicator.stopAnimating()
                         }
+                        collectionView.reloadItems(at: [indexPath])
                     }
                 }
-            }
         }
         
         return cell
     }
     
     // MARK: - Helpers
-    
+
     fileprivate func updateCell(_ cell: IMGLYFilterCollectionViewCell, atIndexPath indexPath: IndexPath, withFilterType filterType: IMGLYFilterType, forImage image: UIImage?) {
         cell.imageView.image = image
-        
+
         if let activeFilterType = activeFilterType?(), activeFilterType == filterType {
             cell.showTick()
             selectedCellIndex = indexPath.item

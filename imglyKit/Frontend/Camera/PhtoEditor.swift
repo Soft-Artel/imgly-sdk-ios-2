@@ -16,7 +16,7 @@ private let BottomControlSize = CGSize(width: 47, height: 47)
 open class PhotoEditor{
 
     var image: UIImage?
-    let delegateImage: SaveImageDelegate?
+    weak var delegateImage: SaveImageDelegate?
     let parentVC: UIViewController?
     var photoEditor: PhotoEditor? = nil
     public init(image: UIImage, delegate: SaveImageDelegate,parent: UIViewController) {

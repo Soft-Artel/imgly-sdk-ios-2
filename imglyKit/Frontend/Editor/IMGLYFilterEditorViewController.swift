@@ -40,8 +40,14 @@ open class IMGLYFilterEditorViewController: IMGLYSubEditorViewController {
     
     override open func viewDidLoad() {
         super.viewDidLoad()
+
+        if self.filterSelectionController != nil{
+            self.filterSelectionController = nil
+        }
+
         self.filterSelectionController = IMGLYFilterSelectionController()
-        self.filterSelectionController?.previewImage = self.previewImageView.image
+        let image = self.previewImageView.image
+        self.filterSelectionController?.previewImage = image
         let bundle = Bundle(for: type(of: self))
         navigationItem.title = NSLocalizedString("filter-editor.title", tableName: nil, bundle: bundle, value: "", comment: "")
         
