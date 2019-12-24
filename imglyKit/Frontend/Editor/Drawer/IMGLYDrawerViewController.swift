@@ -91,7 +91,7 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
 //        self.backButton.backgroundColor = .red
 //        self.backButton.layer.cornerRadius = self.backButton.frame.height / 2
         self.backButton.addTarget(self, action: #selector(self.undoAction), for: .touchUpInside)
-        let btnImage = UIImage(named: "back-button", in: Bundle(for: type(of: self)), compatibleWith:nil)
+        let btnImage = UIImage(named: "undo-btn", in: Bundle(for: type(of: self)), compatibleWith:nil)
         self.backButton.setImage(btnImage, for: .normal)
         self.view.addSubview(self.backButton)
     }

@@ -115,8 +115,8 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                 handler: { [unowned self] in self.subEditorButtonPressed(.text) }))
         handlers.append(
         IMGLYActionButton(
-            title: NSLocalizedString("Рисовалка", tableName: nil, bundle: bundle, value: "", comment: ""),
-            image: UIImage(named: "icon_option_text", in: bundle, compatibleWith: nil),
+            title: NSLocalizedString("Drawing", tableName: nil, bundle: bundle, value: "", comment: ""),
+            image: UIImage(named: "draw", in: bundle, compatibleWith: nil),
             handler: { [unowned self] in self.subEditorButtonPressed(.drawer) }))
 
         return handlers
