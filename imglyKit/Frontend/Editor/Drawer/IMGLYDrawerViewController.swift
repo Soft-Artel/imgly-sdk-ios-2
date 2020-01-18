@@ -66,10 +66,17 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
     var swiped = false
 
     open override func viewDidLoad() {
-        super.viewDidLoad() 
+        super.viewDidLoad()
         self.previewImageView.imageView.backgroundColor = .green
         let bundle = Bundle(for: type(of: self))
         navigationItem.title = NSLocalizedString("Рисовалка", tableName: nil, bundle: bundle, value: "", comment: "")
+
+        let bottom: NSLayoutYAxisAnchor
+        if #available(iOS 11.0, *){
+            bottom = self.view.safeAreaLayoutGuide.bottomAnchor
+        }else{
+            bottom = self.view.bottomAnchor
+        }
 
         self.view.addSubview(self.mainImageView)
         self.view.addSubview(self.tempImageView)
@@ -94,6 +101,12 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
         let btnImage = UIImage(named: "undo-btn", in: Bundle(for: type(of: self)), compatibleWith:nil)
         self.backButton.setImage(btnImage, for: .normal)
         self.view.addSubview(self.backButton)
+
+        self.backButton.translatesAutoresizingMaskIntoConstraints = false
+        self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.backButton.topAnchor.constraint(equalTo: bottom, constant: -37).isActive = true
+        self.backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        self.backButton.widthAnchor.constraint(equalTo: self.backButton.heightAnchor).isActive = true
     }
 
     @objc func undoAction(){
@@ -133,27 +146,6 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
         self.tempImageView.transform = self.previewImageView.imageView.transform
         self.mainImageView.transform = self.tempImageView.transform
 
-        //        self.mainImageView = UIImageView()
-
-        //        if let lowResolutionImage = self.lowResolutionImage {
-        //            let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage, filters: self.fixedFilterStack.activeFilters)
-        //            self.previewImageView.image = processedImage
-        //        }
-
-        //        if let frames = self.imageFrame{
-        //            self.tempImageView.frame = frames
-        //            self.mainImageView.frame = self.tempImageView.frame
-        //        }else{
-//        self.tempImageView.frame = self.imageFrame ?? self.view.frame
-//        //        self.tempImageView.frame.size.height = self.previewImageView.visibleImageFrame.height - self.previewImageView.visibleImageFrame.origin.y
-//        //        self.tempImageView.center.y = self.bottomContainerView.frame.origin.y / 2
-//        self.tempImageView.center.x = self.previewImageView.center.x
-//        self.mainImageView.frame = self.tempImageView.frame
-//        //        }
-
-        self.backButton.frame = CGRect(x: self.view.frame.origin.x + 50,
-                                       y: bottomContainerView.frame.origin.y - 50,
-                                       width: 50, height: 50)
     }
 
     // MARK: - Actions
