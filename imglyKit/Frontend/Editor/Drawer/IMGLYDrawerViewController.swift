@@ -69,7 +69,7 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
         super.viewDidLoad()
         self.previewImageView.imageView.backgroundColor = .green
         let bundle = Bundle(for: type(of: self))
-        navigationItem.title = NSLocalizedString("Рисовалка", tableName: nil, bundle: bundle, value: "", comment: "")
+        navigationItem.title = NSLocalizedString("Drawing", tableName: nil, bundle: bundle, value: "", comment: "")
 
         let bottom: NSLayoutYAxisAnchor
         if #available(iOS 11.0, *){

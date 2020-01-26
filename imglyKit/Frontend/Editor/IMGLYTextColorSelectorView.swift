@@ -45,13 +45,25 @@ open class IMGLYTextColorSelectorView: UIScrollView, UIPopoverPresentationContro
         colorArray = [
             UIColor.white,
             UIColor.black,
-            UIColor(red: CGFloat(0xec / 255.0), green:CGFloat(0x37 / 255.0), blue:CGFloat(0x13 / 255.0), alpha:1.0),
-            UIColor(red: CGFloat(0xfc / 255.0), green:CGFloat(0xc0 / 255.0), blue:CGFloat(0x0b / 255.0), alpha:1.0),
-            UIColor(red: CGFloat(0xa9 / 255.0), green:CGFloat(0xe9 / 255.0), blue:CGFloat(0x0e / 255.0), alpha:1.0),
-            UIColor(red: CGFloat(0x0b / 255.0), green:CGFloat(0x6a / 255.0), blue:CGFloat(0xf9 / 255.0), alpha:1.0),
-            UIColor(red: CGFloat(0xff / 255.0), green:CGFloat(0xff / 255.0), blue:CGFloat(0x00 / 255.0), alpha:1.0),
-            UIColor(red: CGFloat(0xb5 / 255.0), green:CGFloat(0xe5 / 255.0), blue:CGFloat(0xff / 255.0), alpha:1.0),
-            UIColor(red: CGFloat(0xff / 255.0), green:CGFloat(0xb5 / 255.0), blue:CGFloat(0xe0 / 255.0), alpha:1.0)]
+            UIColor(hex: "#008fae"),
+            UIColor(hex: "#ff1f01"),
+            UIColor(hex: "#ff9a11"),
+            UIColor(hex: "#8e5595"),
+            UIColor(hex: "#a2c923"),
+            UIColor(hex: "#74b0cb"),
+            UIColor(hex: "#ffbc1c"),
+            UIColor(hex: "#c5b51d"),
+            UIColor(hex: "#b698da"),
+            UIColor(hex: "#898989"),
+            UIColor(hex: "#056da1"),
+            UIColor(hex: "#a3b8ee"),
+            UIColor(hex: "#EB3024"),
+            UIColor(hex: "#ff7c72"),
+            UIColor(hex: "#ffa97a"),
+            UIColor(hex: "#a18569"),
+            UIColor(hex: "#63a66d"),
+            UIColor(hex: "#bbbbbb")
+        ]
     }
     
     fileprivate func configureColorButtons() {

@@ -115,29 +115,6 @@ open class IMGLYEditorViewController: UIViewController {
         self.bottomContainerView.bottomAnchor.constraint(equalTo: bottomAnchorConstraint).isActive = true
         self.bottomContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.bottomContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-//        self.bottomContainerView.topAnchor.constraint(equalTo: self.previewImageView.bottomAnchor).isActive = true
-
-//        let views: [String: AnyObject] = [
-//            "previewImageView" : previewImageView,
-//            "bottomContainerView" : bottomContainerView,
-//            "topLayoutGuide" : topLayoutGuide
-//        ]
-//
-//        let metrics: [String: AnyObject] = [
-//            "bottomContainerViewHeight" : 100 as AnyObject
-//        ]
-//
-//        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[previewImageView]|", options: [], metrics: nil, views: views))
-//        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[bottomContainerView]|", options: [], metrics: nil, views: views))
-//        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[topLayoutGuide][previewImageView][bottomContainerView(==bottomContainerViewHeight)]|", options: [], metrics: metrics, views: views))
-//
-//        previewImageView.addConstraint(NSLayoutConstraint(item: activityIndicatorView, attribute: .centerX, relatedBy: .equal, toItem: previewImageView, attribute: .centerX, multiplier: 1, constant: 0))
-//        previewImageView.addConstraint(NSLayoutConstraint(item: activityIndicatorView, attribute: .centerY, relatedBy: .equal, toItem: previewImageView, attribute: .centerY, multiplier: 1, constant: 0))
-//
-//
-//        self.previewImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-//
-
 
     }
     
