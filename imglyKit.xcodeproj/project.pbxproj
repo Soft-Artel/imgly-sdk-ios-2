@@ -365,6 +365,7 @@
 		2BF4D5431AF1159D00C801B2 /* IMGLYFontImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF4D5411AF1159D00C801B2 /* IMGLYFontImporter.swift */; };
 		2BF4D5441AF1159D00C801B2 /* IMGLYInstanceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF4D5421AF1159D00C801B2 /* IMGLYInstanceFactory.swift */; };
 		2BF4D5451AF115A200C801B2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BF4D5471AF115A200C801B2 /* Localizable.strings */; };
+		456DFF4623DDEE730064D756 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456DFF4523DDEE730064D756 /* UIColorExtension.swift */; };
 		45714387239938B7003EBF60 /* PhtoEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45714386239938B7003EBF60 /* PhtoEditor.swift */; };
 		45754E202387EA9E00232459 /* IMGLYDrawFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45754E1F2387EA9E00232459 /* IMGLYDrawFilter.swift */; };
 		45754E222387ECD900232459 /* IMGLDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45754E212387ECD900232459 /* IMGLDrawer.swift */; };
@@ -373,6 +374,7 @@
 		4589ECC423881691001D2FF7 /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4589ECC223881691001D2FF7 /* ColorPickerViewController.swift */; };
 		4589ECC923882661001D2FF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4589ECC823882661001D2FF7 /* Main.storyboard */; };
 		45B24C7923910E7F0063AA65 /* IMGLYDrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B24C7823910E7F0063AA65 /* IMGLYDrawerViewController.swift */; };
+		45DAEA6423DDFB4A008E36A2 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DAEA6323DDFB4A008E36A2 /* StringExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -578,6 +580,7 @@
 		2BF4D5411AF1159D00C801B2 /* IMGLYFontImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGLYFontImporter.swift; sourceTree = "<group>"; };
 		2BF4D5421AF1159D00C801B2 /* IMGLYInstanceFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGLYInstanceFactory.swift; sourceTree = "<group>"; };
 		2BF4D5461AF115A200C801B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		456DFF4523DDEE730064D756 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		45714386239938B7003EBF60 /* PhtoEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhtoEditor.swift; sourceTree = "<group>"; };
 		45754E1F2387EA9E00232459 /* IMGLYDrawFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMGLYDrawFilter.swift; sourceTree = "<group>"; };
 		45754E212387ECD900232459 /* IMGLDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMGLDrawer.swift; sourceTree = "<group>"; };
@@ -586,6 +589,8 @@
 		4589ECC223881691001D2FF7 /* ColorPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
 		4589ECC823882661001D2FF7 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		45B24C7823910E7F0063AA65 /* IMGLYDrawerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGLYDrawerViewController.swift; sourceTree = "<group>"; };
+		45DAEA6223DDF98A008E36A2 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		45DAEA6323DDFB4A008E36A2 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -636,8 +641,10 @@
 			isa = PBXGroup;
 			children = (
 				2B0DC4C21B037016002FE44F /* NSTimerExtension.swift */,
+				456DFF4523DDEE730064D756 /* UIColorExtension.swift */,
 				2BF4D3EC1AF1151500C801B2 /* UIImageExtension.swift */,
 				2B1ADA0F1B19C3F300C98522 /* IMGLYInstanceFactoryExtension.swift */,
+				45DAEA6323DDFB4A008E36A2 /* StringExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1029,6 +1036,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 2BF4D37A1AF1139600C801B2;
 			productRefGroup = 2BF4D3851AF1139600C801B2 /* Products */;
@@ -1399,12 +1407,14 @@
 				2BF4D4FD1AF1155E00C801B2 /* IMGLYBluesFilter.swift in Sources */,
 				45754E202387EA9E00232459 /* IMGLYDrawFilter.swift in Sources */,
 				2BF4D5051AF1155E00C801B2 /* IMGLYCoolFilter.swift in Sources */,
+				456DFF4623DDEE730064D756 /* UIColorExtension.swift in Sources */,
 				45754E262387EDE200232459 /* IMGLYDrawDataSource.swift in Sources */,
 				45B24C7923910E7F0063AA65 /* IMGLYDrawerViewController.swift in Sources */,
 				2BF4D4AE1AF1154B00C801B2 /* IMGLYOrientationCropFilter.swift in Sources */,
 				2BF4D3E91AF1150500C801B2 /* IMGLYTextColorSelectorView.swift in Sources */,
 				2BF4D5191AF1155E00C801B2 /* IMGLYLeninFilter.swift in Sources */,
 				2BF4D3D71AF1150500C801B2 /* IMGLYFilterEditorViewController.swift in Sources */,
+				45DAEA6423DDFB4A008E36A2 /* StringExtension.swift in Sources */,
 				2BF4D50B1AF1155E00C801B2 /* IMGLYEveningFilter.swift in Sources */,
 				2BF4D4B01AF1154B00C801B2 /* IMGLYStickerFilter.swift in Sources */,
 				2BF4D4F91AF1155E00C801B2 /* IMGLYAncientFilter.swift in Sources */,
@@ -1442,6 +1452,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				2BF4D5461AF115A200C801B2 /* en */,
+				45DAEA6223DDF98A008E36A2 /* ru */,
 			);
 			name = Localizable.strings;
 			path = .;
