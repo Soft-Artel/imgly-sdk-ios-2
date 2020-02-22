@@ -580,6 +580,9 @@
 		2BF4D5411AF1159D00C801B2 /* IMGLYFontImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGLYFontImporter.swift; sourceTree = "<group>"; };
 		2BF4D5421AF1159D00C801B2 /* IMGLYInstanceFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGLYInstanceFactory.swift; sourceTree = "<group>"; };
 		2BF4D5461AF115A200C801B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4512EFB42401892B0035E9DD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4512EFB6240189320035E9DD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4512EFB82401893E0035E9DD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		456DFF4523DDEE730064D756 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		45714386239938B7003EBF60 /* PhtoEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhtoEditor.swift; sourceTree = "<group>"; };
 		45754E1F2387EA9E00232459 /* IMGLYDrawFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMGLYDrawFilter.swift; sourceTree = "<group>"; };
@@ -1037,6 +1040,9 @@
 				en,
 				Base,
 				ru,
+				de,
+				fr,
+				es,
 			);
 			mainGroup = 2BF4D37A1AF1139600C801B2;
 			productRefGroup = 2BF4D3851AF1139600C801B2 /* Products */;
@@ -1453,10 +1459,14 @@
 			children = (
 				2BF4D5461AF115A200C801B2 /* en */,
 				45DAEA6223DDF98A008E36A2 /* ru */,
+				4512EFB42401892B0035E9DD /* de */,
+				4512EFB6240189320035E9DD /* fr */,
+				4512EFB82401893E0035E9DD /* es */,
 			);
 			name = Localizable.strings;
 			path = .;
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 /* End PBXVariantGroup section */
 

@@ -16,57 +16,57 @@
 "camera-view-controller.error-saving-video.title" = "Error while saving video";
 "camera-view-controller.error-saving-video.cancel" = "Cancel";
 
-// Main Editor
+// Editor principal
 "Editor" = "Editor";
 "main-editor.title" = "Editor";
-"main-editor.button.magic" = "Magic";
-"main-editor.button.filter" = "Filter";
-"main-editor.button.stickers" = "Stickers";
-"main-editor.button.orientation" = "Orientation";
-"main-editor.button.focus" = "Focus";
-"main-editor.button.crop" = "Crop";
-"main-editor.button.brightness" = "Brightness";
-"main-editor.button.contrast" = "Contrast";
-"main-editor.button.saturation" = "Saturation";
-"main-editor.button.text" = "Text";
-"Drawing" = "Drawing";
-// Filter Editor
-"filter-editor.title" = "Filter";
+"main-editor.button.magic" = "Magia";
+"main-editor.button.filter" = "Filtro";
+"main-editor.button.stickers" = "Pegatinas";
+"main-editor.button.orientation" = "Orientación";
+"main-editor.button.focus" = "Foco";
+"main-editor.button.crop" = "Recortar";
+"main-editor.button.brightness" = "Brillo";
+"main-editor.button.contrast" = "Contraste";
+"main-editor.button.saturation" = "Saturación";
+"main-editor.button.text" = "Texto";
+"Drawing" = "Dibujo";
+// Editor de filtros
+"filter-editor.title" = "Filtro";
 
-// Stickers Editor
-"stickers-editor.title" = "Stickers";
+// Editor de stickers
+"stickers-editor.title" = "Pegatinas";
 
-// Orientation Editor
-"orientation-editor.title" = "Orientation";
-"orientation-editor.rotate-left" = "Rotate L";
-"orientation-editor.rotate-right" = "Rotate R";
-"orientation-editor.flip-horizontally" = "Flip H";
-"orientation-editor.flip-vertically" = "Flip V";
+// Editor de orientación
+"orientación-editor.title" = "Orientación";
+"orientación-editor.rotate-left" = "Girar L";
+"orientación-editor.rotate-right" = "Rotar R";
+"orientación-editor.flip-horizontally" = "Voltear H";
+"orientación-editor.flip-verticalmente" = "Voltear V";
 
-// Focus Editor
-"focus-editor.title" = "Focus";
-"focus-editor.off" = "Off";
-"focus-editor.linear" = "Linear";
+// Editor de foco
+"focus-editor.title" = "Foco";
+"focus-editor.off" = "Desactivado";
+"focus-editor.linear" = "Lineal";
 "focus-editor.radial" = "Radial";
 
-// Crop Editor
-"crop-editor.title" = "Crop";
-"crop-editor.free" = "Free";
-"crop-editor.1-to-1" = "1:1";
-"crop-editor.4-to-3" = "4:3";
-"crop-editor.16-to-9" = "16:9";
+// Editor de cultivos
+"crop-editor.title" = "Recortar";
+"crop-editor.free" = "Gratis";
+"crop-editor.1-to-1" = "1: 1";
+"crop-editor.4-to-3" = "4: 3";
+"crop-editor.16-to-9" = "16: 9";
 
-// Brightness Editor
-"brightness-editor.title" = "Brightness";
+// Editor de brillo
+"brillo-editor.title" = "Brillo";
 
-// Contrast Editor
-"contrast-editor.title" = "Contrast";
+// Editor de contraste
+"contrast-editor.title" = "Contraste";
 
-// Saturation Editor
-"saturation-editor.title" = "Saturation";
+// Editor de saturación
+"saturation-editor.title" = "Saturación";
 
-// Text Editor
-"text-editor.title" = "Text";
+// Editor de texto
+"text-editor.title" = "Texto";
 
 "boy-min"           =  "boy-min_en";
 "close-min"         =  "close-min_en";

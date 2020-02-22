@@ -60,6 +60,10 @@
 		2BF4D78A1AF11E2E00C801B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		2BF4D7B41AF11ED100C801B2 /* imglyKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = imglyKit.xcodeproj; path = ../imglyKit.xcodeproj; sourceTree = "<group>"; };
 		2BF4D7BF1AF11F7200C801B2 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		4512EFB22401892A0035E9DD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		4512EFB5240189320035E9DD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		4512EFB72401893D0035E9DD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		4512EFB9240189430035E9DD /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		45714388239938CB003EBF60 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -169,6 +173,10 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
+				fr,
+				es,
+				ru,
 			);
 			mainGroup = 2BF4D7721AF11E2E00C801B2;
 			productRefGroup = 2BF4D77C1AF11E2E00C801B2 /* Products */;
@@ -240,6 +248,10 @@
 			isa = PBXVariantGroup;
 			children = (
 				2BF4D78A1AF11E2E00C801B2 /* Base */,
+				4512EFB22401892A0035E9DD /* de */,
+				4512EFB5240189320035E9DD /* fr */,
+				4512EFB72401893D0035E9DD /* es */,
+				4512EFB9240189430035E9DD /* ru */,
 			);
 			name = LaunchScreen.xib;
 			path = .;
