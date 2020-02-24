@@ -29,7 +29,7 @@
 "main-editor.button.contrast" = "Contraste";
 "main-editor.button.saturation" = "Saturación";
 "main-editor.button.text" = "Texto";
-"Drawing" = "Dibujo";
+"Drawing" = "Dibujo"; 
 // Editor de filtros
 "filter-editor.title" = "Filtro";
 
