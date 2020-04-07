@@ -27,7 +27,7 @@
 "main-editor.button.brightness" = "Яркость";
 "main-editor.button.contrast" = "Контраст";
 "main-editor.button.saturation" = "Насыщенность";
-"main-editor.button.text" = "Текс";
+"main-editor.button.text" = "Текст";
 "Drawing" = "Нарисовать";
 // Filter Editor
 "filter-editor.title" = "Фильтр";
