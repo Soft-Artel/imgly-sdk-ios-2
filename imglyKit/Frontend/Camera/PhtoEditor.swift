@@ -19,7 +19,7 @@ open class PhotoEditor{
     weak var delegateImage: SaveImageDelegate?
     let parentVC: UIViewController?
     var photoEditor: PhotoEditor? = nil
-    var complition: ((Bool) -> ())? = nil
+    public var complition: ((Bool) -> ())? = nil
     public init(image: UIImage?, delegate: SaveImageDelegate? = nil ,parent: UIViewController?, complit: ((Bool) -> ())? = nil) {
         self.image = image
         self.delegateImage = delegate
