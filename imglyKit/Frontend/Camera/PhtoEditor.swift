@@ -19,7 +19,8 @@ open class PhotoEditor{
     weak var delegateImage: SaveImageDelegate?
     let parentVC: UIViewController?
     var photoEditor: PhotoEditor? = nil
-    public init(image: UIImage, delegate: SaveImageDelegate,parent: UIViewController) {
+    var complition: ((Bool) -> ())? = nil
+    public init(image: UIImage?, delegate: SaveImageDelegate? ,parent: UIViewController?) {
         self.image = image
         self.delegateImage = delegate
         self.parentVC = parent
@@ -37,6 +38,7 @@ open class PhotoEditor{
         }
         let editorViewController = IMGLYMainEditorViewController()
         editorViewController.delegateEditor = self.delegateImage
+        editorViewController.photoPickerComplition = self.complition
         editorViewController.highResolutionImage = self.image
         editorViewController.photoEditor = self.photoEditor
         let navigationController = IMGLYNavigationController(rootViewController: editorViewController)

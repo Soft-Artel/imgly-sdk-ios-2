@@ -47,6 +47,8 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     public weak var photoEditor: PhotoEditor?
 
     public weak var delegateEditor: SaveImageDelegate?
+    
+    public var photoPickerComplition:((Bool) -> ())?
 
     open lazy var actionButtons: [IMGLYActionButton] = {
         let bundle = Bundle(for: type(of: self))
@@ -240,7 +242,26 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
         guard let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage!, filters: self.fixedFilterStack.activeFilters) else { return }
 
         dismiss(animated: true) {
-            self.delegateEditor?.saveImage(processedImage)
+            guard let delegate = self.delegateEditor else {
+                UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+                guard let complition = self.photoPickerComplition else{ return }
+                complition(true)
+                return
+            }
+           delegate.saveImage(processedImage)
+        }
+    }
+    
+    @objc fileprivate func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            // we got back an error!
+            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
         }
     }
     
