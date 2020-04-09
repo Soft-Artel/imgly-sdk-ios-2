@@ -20,10 +20,11 @@ open class PhotoEditor{
     let parentVC: UIViewController?
     var photoEditor: PhotoEditor? = nil
     var complition: ((Bool) -> ())? = nil
-    public init(image: UIImage?, delegate: SaveImageDelegate? ,parent: UIViewController?) {
+    public init(image: UIImage?, delegate: SaveImageDelegate? = nil ,parent: UIViewController?, complit: ((Bool) -> ())? = nil) {
         self.image = image
         self.delegateImage = delegate
         self.parentVC = parent
+        self.complition = complit
         self.photoEditor = self
     }
 
