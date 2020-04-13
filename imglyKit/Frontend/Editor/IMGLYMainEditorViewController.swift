@@ -248,6 +248,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                 complition(true)
                 return
             }
+            self.cameraDelegate?.dismiss(animated: true, completion: nil)
            delegate.saveImage(processedImage)
         }
     }

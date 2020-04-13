@@ -375,6 +375,12 @@
 		4589ECC923882661001D2FF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4589ECC823882661001D2FF7 /* Main.storyboard */; };
 		45B24C7923910E7F0063AA65 /* IMGLYDrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B24C7823910E7F0063AA65 /* IMGLYDrawerViewController.swift */; };
 		45DAEA6423DDFB4A008E36A2 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DAEA6323DDFB4A008E36A2 /* StringExtension.swift */; };
+		5C4C55192444E50D005D93A5 /* IMGLYCameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4C55132444E50C005D93A5 /* IMGLYCameraController.swift */; };
+		5C4C551A2444E50D005D93A5 /* IMGLYCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4C55142444E50C005D93A5 /* IMGLYCameraViewController.swift */; };
+		5C4C551B2444E50D005D93A5 /* IMGLYVideoRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4C55152444E50C005D93A5 /* IMGLYVideoRecordButton.swift */; };
+		5C4C551C2444E50D005D93A5 /* IMGLYShapeLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4C55162444E50D005D93A5 /* IMGLYShapeLayer.swift */; };
+		5C4C551D2444E50D005D93A5 /* IMGLYRecordingMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4C55172444E50D005D93A5 /* IMGLYRecordingMode.swift */; };
+		5C4C551E2444E50D005D93A5 /* IMGLYAnimationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4C55182444E50D005D93A5 /* IMGLYAnimationDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -594,6 +600,12 @@
 		45B24C7823910E7F0063AA65 /* IMGLYDrawerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGLYDrawerViewController.swift; sourceTree = "<group>"; };
 		45DAEA6223DDF98A008E36A2 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		45DAEA6323DDFB4A008E36A2 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		5C4C55132444E50C005D93A5 /* IMGLYCameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGLYCameraController.swift; sourceTree = "<group>"; };
+		5C4C55142444E50C005D93A5 /* IMGLYCameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGLYCameraViewController.swift; sourceTree = "<group>"; };
+		5C4C55152444E50C005D93A5 /* IMGLYVideoRecordButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGLYVideoRecordButton.swift; sourceTree = "<group>"; };
+		5C4C55162444E50D005D93A5 /* IMGLYShapeLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGLYShapeLayer.swift; sourceTree = "<group>"; };
+		5C4C55172444E50D005D93A5 /* IMGLYRecordingMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGLYRecordingMode.swift; sourceTree = "<group>"; };
+		5C4C55182444E50D005D93A5 /* IMGLYAnimationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMGLYAnimationDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -702,6 +714,12 @@
 			isa = PBXGroup;
 			children = (
 				45714386239938B7003EBF60 /* PhtoEditor.swift */,
+				5C4C55182444E50D005D93A5 /* IMGLYAnimationDelegate.swift */,
+				5C4C55132444E50C005D93A5 /* IMGLYCameraController.swift */,
+				5C4C55142444E50C005D93A5 /* IMGLYCameraViewController.swift */,
+				5C4C55172444E50D005D93A5 /* IMGLYRecordingMode.swift */,
+				5C4C55162444E50D005D93A5 /* IMGLYShapeLayer.swift */,
+				5C4C55152444E50C005D93A5 /* IMGLYVideoRecordButton.swift */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -1328,6 +1346,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C4C55192444E50D005D93A5 /* IMGLYCameraController.swift in Sources */,
 				2BF4D3DA1AF1150500C801B2 /* IMGLYFontSelectorView.swift in Sources */,
 				2BF4D3E31AF1150500C801B2 /* IMGLYSliderEditorViewController.swift in Sources */,
 				2BF4D3DF1AF1150500C801B2 /* IMGLYNavigationAnimationController.swift in Sources */,
@@ -1347,6 +1366,7 @@
 				2BF4D3CD1AF1150500C801B2 /* IMGLYBoxGradientView.swift in Sources */,
 				2BF4D4B21AF1154B00C801B2 /* IMGLYTiltshiftFilter.swift in Sources */,
 				2BF4D5031AF1155E00C801B2 /* IMGLYClassicFilter.swift in Sources */,
+				5C4C551A2444E50D005D93A5 /* IMGLYCameraViewController.swift in Sources */,
 				2BF4D4FB1AF1155E00C801B2 /* IMGLYBleachedFilter.swift in Sources */,
 				2BF4D5081AF1155E00C801B2 /* IMGLYEightiesFilter.swift in Sources */,
 				2BF4D5091AF1155E00C801B2 /* IMGLYElderFilter.swift in Sources */,
@@ -1375,12 +1395,14 @@
 				2BF4D5161AF1155E00C801B2 /* IMGLYK6Filter.swift in Sources */,
 				2B25F1BC1B03AC8E0081032D /* IMGLYZoomingImageView.swift in Sources */,
 				2BF4D3E11AF1150500C801B2 /* IMGLYOrientationEditorViewController.swift in Sources */,
+				5C4C551B2444E50D005D93A5 /* IMGLYVideoRecordButton.swift in Sources */,
 				2BF4D3CC1AF1150400C801B2 /* IMGLYActionButton.swift in Sources */,
 				2BF4D50E1AF1155E00C801B2 /* IMGLYFoodFilter.swift in Sources */,
 				2BF4D3D21AF1150500C801B2 /* IMGLYContrastEditorViewController.swift in Sources */,
 				2BF4D5141AF1155E00C801B2 /* IMGLYK1Filter.swift in Sources */,
 				2BF4D51B1AF1155E00C801B2 /* IMGLYLomo100Filter.swift in Sources */,
 				2BF4D52F1AF1155E00C801B2 /* IMGLYSeventiesFilter.swift in Sources */,
+				5C4C551C2444E50D005D93A5 /* IMGLYShapeLayer.swift in Sources */,
 				2BF4D3D91AF1150500C801B2 /* IMGLYFocusEditorViewController.swift in Sources */,
 				2BF4D3D51AF1150500C801B2 /* IMGLYEditorViewController.swift in Sources */,
 				2BF4D50C1AF1155E00C801B2 /* IMGLYFallFilter.swift in Sources */,
@@ -1388,6 +1410,7 @@
 				2BF4D3CE1AF1150500C801B2 /* IMGLYBrightnessEditorViewController.swift in Sources */,
 				2BF4D5331AF1155E00C801B2 /* IMGLYSummerFilter.swift in Sources */,
 				2BF4D3CF1AF1150500C801B2 /* IMGLYButtonCollectionViewCell.swift in Sources */,
+				5C4C551D2444E50D005D93A5 /* IMGLYRecordingMode.swift in Sources */,
 				2BF4D5151AF1155E00C801B2 /* IMGLYK2Filter.swift in Sources */,
 				4589ECC423881691001D2FF7 /* ColorPickerViewController.swift in Sources */,
 				2BF4D5221AF1155E00C801B2 /* IMGLYNoGreenFilter.swift in Sources */,
@@ -1443,6 +1466,7 @@
 				2BF4D5131AF1155E00C801B2 /* IMGLYHighcarbFilter.swift in Sources */,
 				2BF4D4FA1AF1155E00C801B2 /* IMGLYBleachedBlueFilter.swift in Sources */,
 				2BF4D3DE1AF1150500C801B2 /* IMGLYMainEditorViewController.swift in Sources */,
+				5C4C551E2444E50D005D93A5 /* IMGLYAnimationDelegate.swift in Sources */,
 				2BF4D5011AF1155E00C801B2 /* IMGLYCelsiusFilter.swift in Sources */,
 				2BF4D3D61AF1150500C801B2 /* IMGLYFilterCollectionViewCell.swift in Sources */,
 				2BF4D3EA1AF1150500C801B2 /* IMGLYTextEditorViewController.swift in Sources */,

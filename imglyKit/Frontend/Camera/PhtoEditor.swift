@@ -27,13 +27,18 @@ open class PhotoEditor{
         self.complition = complit
         self.photoEditor = self
     }
+    
+    public init(parent: UIViewController){
+        self.parentVC = parent
+        self.photoEditor = self
+    }
 
     required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
 
-    public func startEditing(again: Bool = false){
+    public func startEditing(again: Bool = false, cameraContoler: UIViewController? = nil){
         if self.photoEditor == nil{
             self.photoEditor = self
         }
@@ -51,12 +56,24 @@ open class PhotoEditor{
         if again{
             editorViewController.animateSeque = true
         }
-
-        parentVC?.present(navigationController, animated: false, completion: nil)
-
-
+        if cameraContoler != nil{
+            editorViewController.cameraDelegate = self.parentVC
+            cameraContoler?.present(navigationController, animated: true, completion: nil)
+        }else{
+            parentVC?.present(navigationController, animated: false, completion: nil)
+        }
     }
-
+    
+    public func openCamera(){
+        
+        let cameraViewController = IMGLYCameraViewController(recordingModes: [.photo, .video])
+        
+        cameraViewController.maximumVideoLength = 36000
+        cameraViewController.squareMode = false
+        
+        self.parentVC?.present(cameraViewController, animated: true, completion: nil)
+    }
+    
     public func close(_ image: UIImage) {
 
         self.image = image

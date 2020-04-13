@@ -16,7 +16,8 @@ open class IMGLYEditorViewController: UIViewController {
 
     open var shouldShowActivityIndicator = true
     public var animateSeque: Bool = false
-
+    weak var cameraDelegate: UIViewController? = nil
+    
     open var updating = false {
         didSet {
             if shouldShowActivityIndicator {
@@ -126,6 +127,6 @@ open class IMGLYEditorViewController: UIViewController {
     // MARK: - Actions
     
     @objc open func tappedDone(_ sender: UIBarButtonItem?) {
-
+        self.cameraDelegate?.dismiss(animated: true, completion: nil)
     }
 }

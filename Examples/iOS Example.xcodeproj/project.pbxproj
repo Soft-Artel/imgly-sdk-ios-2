@@ -377,7 +377,7 @@
 				DEVELOPMENT_TEAM = P5ZY6F8UKU;
 				INFOPLIST_FILE = "iOS Example/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.9elements.iOS-Exahgbdnd";
+				PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.demo.pipos;
 				PRODUCT_NAME = "iOS Example";
 				PROVISIONING_PROFILE = "30a0fc45-7758-4723-8980-95e9a9b0f830";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -396,7 +396,7 @@
 				DEVELOPMENT_TEAM = P5ZY6F8UKU;
 				INFOPLIST_FILE = "iOS Example/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.9elements.iOS-Exampleghfddrgg";
+				PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.demo.pipos;
 				PRODUCT_NAME = "iOS Example";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

@@ -47,8 +47,10 @@ class MainViewController: UIViewController {
 
         let image = UIImage(named: "testingImage")!
 
-        let editor = PhotoEditor(image: image, delegate: self, parent: self)
-        editor.startEditing()
+//        let editor = PhotoEditor(image: image, delegate: self, parent: self)
+//        editor.startEditing()
+        let editor = PhotoEditor(parent: self)
+        editor.openCamera()
 
     }
 
