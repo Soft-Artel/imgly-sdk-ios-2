@@ -255,6 +255,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
             }
             if let delegateCam = self.cameraDelegate{
                 delegateCam.close()
+                UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
                 if !self.animateSeque{
                     delegate.saveImage(processedImage)
                 }
