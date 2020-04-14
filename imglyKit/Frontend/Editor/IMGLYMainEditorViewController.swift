@@ -255,10 +255,10 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
             }
             if let delegateCam = self.cameraDelegate{
                 UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
-                delegateCam.close()
-                if !self.animateSeque{
-                    delegate.saveImage(processedImage)
-                }
+//                delegateCam.close()
+//                if !self.animateSeque{
+//                    delegate.saveImage(processedImage)
+//                }
             }else{
                 delegate.saveImage(processedImage)
             }
@@ -276,6 +276,12 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
             let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)
+        }
+        guard let delegateCam = self.cameraDelegate else {return}
+        delegateCam.close()
+        if !self.animateSeque, let delegate = self.delegateEditor
+        {
+            delegate.saveImage(image)
         }
     }
     
