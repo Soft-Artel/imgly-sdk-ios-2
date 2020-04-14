@@ -50,7 +50,9 @@ class MainViewController: UIViewController {
 //        let editor = PhotoEditor(image: image, delegate: self, parent: self)
 //        editor.startEditing()
         let editor = PhotoEditor(parent: self)
-        editor.openCamera()
+        editor.openCamera(with: {
+            print("писька")
+        })
 
     }
 

@@ -20,6 +20,10 @@ open class PhotoEditor{
     let parentVC: UIViewController?
     var photoEditor: PhotoEditor? = nil
     public var complition: ((Bool) -> ())? = nil
+    
+    var complitionSave : (() -> ())? = nil
+    
+    var cameraContoler: CameraCloseDelegate? = nil
     public init(image: UIImage?, delegate: SaveImageDelegate? = nil ,parent: UIViewController?, complit: ((Bool) -> ())? = nil) {
         self.image = image
         self.delegateImage = delegate
@@ -38,7 +42,7 @@ open class PhotoEditor{
     }
 
 
-    public func startEditing(again: Bool = false, cameraContoler: UIViewController? = nil){
+    public func startEditing(again: Bool = false, cameraContoler: CameraCloseDelegate? = nil){
         if self.photoEditor == nil{
             self.photoEditor = self
         }
@@ -47,6 +51,7 @@ open class PhotoEditor{
         editorViewController.photoPickerComplition = self.complition
         editorViewController.highResolutionImage = self.image
         editorViewController.photoEditor = self.photoEditor
+        editorViewController.cameraDelegate = self.cameraContoler
         let navigationController = IMGLYNavigationController(rootViewController: editorViewController)
         navigationController.navigationBar.barStyle = .black
         navigationController.navigationBar.isTranslucent = false
@@ -57,21 +62,40 @@ open class PhotoEditor{
             editorViewController.animateSeque = true
         }
         if cameraContoler != nil{
-            editorViewController.cameraDelegate = self.parentVC
-            cameraContoler?.present(navigationController, animated: true, completion: nil)
+            self.cameraContoler = cameraContoler
+            editorViewController.cameraDelegate = self.cameraContoler
+            editorViewController.reopenCamera = reopen
+            cameraContoler?.present(view: navigationController)
         }else{
             parentVC?.present(navigationController, animated: false, completion: nil)
         }
     }
     
-    public func openCamera(){
+    func reopen(){
+        let blur = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        self.parentVC?.view.addSubview(blur)
+        blur.frame = self.parentVC?.view.frame as! CGRect
+        cameraContoler?.close()
+        
+        self.openCamera(with: self.complitionSave, presentComplition: blur.removeFromSuperview)
+        
+    }
+    
+    public func openCamera(with complitionSave: (() -> ())?, presentComplition: (() -> ())? = nil){
+        
         
         let cameraViewController = IMGLYCameraViewController(recordingModes: [.photo, .video])
         
+        self.complitionSave = complitionSave
+        cameraViewController.comlitionSave = complitionSave
         cameraViewController.maximumVideoLength = 36000
         cameraViewController.squareMode = false
         
-        self.parentVC?.present(cameraViewController, animated: true, completion: nil)
+        self.cameraContoler = cameraViewController
+        self.parentVC?.present(cameraViewController, animated: true, completion: {
+            guard let presentComplition = presentComplition else { return }
+            presentComplition()
+        })
     }
     
     public func close(_ image: UIImage) {

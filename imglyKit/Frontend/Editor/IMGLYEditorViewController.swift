@@ -16,7 +16,7 @@ open class IMGLYEditorViewController: UIViewController {
 
     open var shouldShowActivityIndicator = true
     public var animateSeque: Bool = false
-    weak var cameraDelegate: UIViewController? = nil
+    weak var cameraDelegate: CameraCloseDelegate? = nil
     
     open var updating = false {
         didSet {
@@ -82,11 +82,11 @@ open class IMGLYEditorViewController: UIViewController {
     // MARK: - Configuration
     
     fileprivate func configureNavigationItems() {
-        if self.animateSeque{
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(IMGLYEditorViewController.tappedDone(_:)))
-        }else{
+//        if self.animateSeque{
+//            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(IMGLYEditorViewController.tappedDone(_:)))
+//        }else{
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(IMGLYEditorViewController.tappedDone(_:)))
-        }
+//        }
     }
     
     fileprivate func configureViewHierarchy() {
@@ -127,6 +127,6 @@ open class IMGLYEditorViewController: UIViewController {
     // MARK: - Actions
     
     @objc open func tappedDone(_ sender: UIBarButtonItem?) {
-        self.cameraDelegate?.dismiss(animated: true, completion: nil)
+        self.cameraDelegate?.close()
     }
 }

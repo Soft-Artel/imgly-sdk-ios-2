@@ -16,9 +16,17 @@ private let FilterSelectionViewHeight = 100
 private let BottomControlSize = CGSize(width: 47, height: 47)
 public typealias IMGLYCameraCompletionBlock = (UIImage?, URL?) -> (Void)
 
+
+public protocol CameraCloseDelegate: class {
+    func close()
+    func present(view: UIViewController)
+}
+
 open class IMGLYCameraViewController: UIViewController {
     
     // MARK: - Initializers
+    
+    public var comlitionSave: (() -> ())? = nil
     
     public convenience init() {
         self.init(recordingModes: [.photo, .video])
@@ -116,6 +124,7 @@ open class IMGLYCameraViewController: UIViewController {
         button.layer.cornerRadius = 3
         button.clipsToBounds = true
         button.addTarget(self, action: #selector(IMGLYCameraViewController.showCameraRoll(_:)), for: .touchUpInside)
+        button.isHidden = true
         return button
         }()
     
@@ -145,6 +154,7 @@ open class IMGLYCameraViewController: UIViewController {
         button.clipsToBounds = true
         button.addTarget(self, action: #selector(IMGLYCameraViewController.toggleFilters(_:)), for: .touchUpInside)
         button.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+        button.isHidden = true
         return button
         }()
     
@@ -164,7 +174,7 @@ open class IMGLYCameraViewController: UIViewController {
         let sliderThumbImage = UIImage(named: "slider_thumb_image", in: bundle, compatibleWith: nil)
         slider.setThumbImage(sliderThumbImage, for: [])
         slider.setThumbImage(sliderThumbImage, for: .highlighted)
-        
+        slider.isHidden = true
         return slider
     }()
     
@@ -257,36 +267,23 @@ open class IMGLYCameraViewController: UIViewController {
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if let filterSelectionViewConstraint = filterSelectionViewConstraint, filterSelectionViewConstraint.constant != 0 {
-        }
+        cameraController?.startCamera()
     }
     
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if let filterSelectionViewConstraint = filterSelectionViewConstraint, filterSelectionViewConstraint.constant != 0 {
-        }
         
-        setLastImageFromRollAsPreview()
-        cameraController?.startCamera()
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         cameraController?.stopCamera()
-        
-        if let filterSelectionViewConstraint = filterSelectionViewConstraint, filterSelectionViewConstraint.constant != 0 {
-            
-        }
+
     }
     
     open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        if let filterSelectionViewConstraint = filterSelectionViewConstraint, filterSelectionViewConstraint.constant != 0 {
-            
-        }
     }
     
     open override var shouldAutomaticallyForwardAppearanceMethods : Bool {
@@ -466,7 +463,7 @@ open class IMGLYCameraViewController: UIViewController {
     }
     
     fileprivate func addRecordingTimeLabel() {
-        updateRecordingTimeLabel(maximumVideoLength)
+        updateRecordingTimeLabel(0)
         topControlsView.addSubview(recordingTimeLabel)
         
         topControlsView.addConstraint(NSLayoutConstraint(item: recordingTimeLabel, attribute: .centerX, relatedBy: .equal, toItem: topControlsView, attribute: .centerX, multiplier: 1, constant: 0))
@@ -558,7 +555,6 @@ open class IMGLYCameraViewController: UIViewController {
     }
     
     fileprivate func showEditorNavigationControllerWithImage(_ image: UIImage) {
-        print("сменить это все на то как сейчас")
         let editorViewController = IMGLYMainEditorViewController()
         editorViewController.highResolutionImage = image
         if let cameraController = cameraController {
@@ -997,7 +993,7 @@ extension IMGLYCameraViewController: IMGLYCameraControllerDelegate {
         let displayedSeconds: Int
         
         if maximumVideoLength > 0 {
-            displayedSeconds = maximumVideoLength - seconds
+            displayedSeconds = 0 + seconds
         } else {
             displayedSeconds = seconds
         }
@@ -1039,4 +1035,15 @@ fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [U
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
 	return input.rawValue
+}
+
+extension IMGLYCameraViewController: CameraCloseDelegate{
+    public func close() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    public func present(view: UIViewController) {
+        self.present(view, animated: true, completion: nil)
+        guard  let complition = self.comlitionSave else { return }
+        complition()
+    }
 }
