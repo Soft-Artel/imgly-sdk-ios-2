@@ -42,8 +42,6 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     
     // MARK: - Properties
 
-    
-
     public weak var photoEditor: PhotoEditor?
 
     public weak var delegateEditor: SaveImageDelegate?
@@ -255,8 +253,15 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                 complition(true)
                 return
             }
-            self.cameraDelegate?.close()
-            delegate.saveImage(processedImage)
+            if let delegateCam = self.cameraDelegate{
+                delegateCam.close()
+                if !self.animateSeque{
+                    delegate.saveImage(processedImage)
+                }
+            }else{
+                delegate.saveImage(processedImage)
+            }
+        
         }
     }
     

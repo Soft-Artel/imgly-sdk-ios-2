@@ -83,6 +83,8 @@ private let kTempVideoFilename = "recording.mov"
 
 open class IMGLYCameraController: NSObject {
     
+    public var delegateImage: SaveImageDelegate? = nil
+
     // MARK: - Properties
     
     /// The response filter that is applied to the live-feed.
@@ -140,6 +142,8 @@ open class IMGLYCameraController: NSObject {
     fileprivate var currentVideoTime: CMTime?
     fileprivate var timeUpdateTimer: Timer?
     open var maximumVideoLength: Int?
+    
+    
     
     // MARK: - Initializers
     
@@ -1051,7 +1055,7 @@ open class IMGLYCameraController: NSObject {
                         if self.squareMode {
 //                            image = self.squareTakenImage(image)
                         }
-                        let editor = PhotoEditor(image: image, delegate: nil, parent: self.delegate as? UIViewController)
+                        let editor = PhotoEditor(image: image, delegate: self.delegateImage, parent: self.delegate as? UIViewController)
                         editor.startEditing(again: false, cameraContoler: self.delegate as? IMGLYCameraViewController)
                     } else {
                         completion(nil, error)
@@ -1244,9 +1248,6 @@ open class IMGLYCameraController: NSObject {
                     
                     self.delegate?.cameraController?(self, recordedSeconds: seconds)
                     
-                    if let maximumVideoLength = self.maximumVideoLength, seconds >= maximumVideoLength {
-                        self.stopVideoRecording()
-                    }
                 }
             })
         }

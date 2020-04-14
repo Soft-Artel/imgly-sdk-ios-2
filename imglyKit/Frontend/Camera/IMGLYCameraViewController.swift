@@ -26,6 +26,9 @@ open class IMGLYCameraViewController: UIViewController {
     
     // MARK: - Initializers
     
+    public weak var delegateEditor: SaveImageDelegate?
+    var cameraDelegate: CameraCloseDelegate? = nil
+    
     public var comlitionSave: (() -> ())? = nil
     
     public convenience init() {
@@ -449,6 +452,7 @@ open class IMGLYCameraViewController: UIViewController {
         view.layoutIfNeeded()
         
         cameraController = IMGLYCameraController(previewView: cameraPreviewContainer)
+        cameraController?.delegateImage = self.delegateEditor
         cameraController!.delegate = self
         cameraController!.setupWithInitialRecordingMode(currentRecordingMode)
         if maximumVideoLength > 0 {
@@ -561,6 +565,7 @@ open class IMGLYCameraViewController: UIViewController {
             editorViewController.initialFilterType = cameraController.effectFilter.filterType
             editorViewController.initialFilterIntensity = cameraController.effectFilter.inputIntensity
         }
+        editorViewController.delegateEditor = self.delegateEditor
         editorViewController.completionBlock = editorCompletionBlock
         
         let navigationController = IMGLYNavigationController(rootViewController: editorViewController)
@@ -692,6 +697,7 @@ open class IMGLYCameraViewController: UIViewController {
                 cameraController?.startVideoRecording()
             } else {
                 cameraController?.stopVideoRecording()
+                self.dismiss(animated: true, completion: nil)
             }
             
             if let filterSelectionViewConstraint = filterSelectionViewConstraint, filterSelectionViewConstraint.constant != 0 {

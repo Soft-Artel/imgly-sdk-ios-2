@@ -14,7 +14,8 @@ private let FilterSelectionViewHeight = 100
 private let BottomControlSize = CGSize(width: 47, height: 47)
 
 open class PhotoEditor{
-
+    
+    static var saveToEntryVC: (() -> ())? = nil
     var image: UIImage?
     weak var delegateImage: SaveImageDelegate?
     let parentVC: UIViewController?
@@ -87,9 +88,11 @@ open class PhotoEditor{
         let cameraViewController = IMGLYCameraViewController(recordingModes: [.photo, .video])
         
         self.complitionSave = complitionSave
+        cameraViewController.cameraDelegate = self.cameraContoler
         cameraViewController.comlitionSave = complitionSave
-        cameraViewController.maximumVideoLength = 36000
+        cameraViewController.maximumVideoLength = 0
         cameraViewController.squareMode = false
+        cameraViewController.delegateEditor = self.delegateImage
         
         self.cameraContoler = cameraViewController
         self.parentVC?.present(cameraViewController, animated: true, completion: {
