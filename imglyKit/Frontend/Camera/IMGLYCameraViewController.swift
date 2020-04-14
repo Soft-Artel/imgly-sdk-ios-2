@@ -1045,11 +1045,12 @@ fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePicke
 
 extension IMGLYCameraViewController: CameraCloseDelegate{
     public func close() {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true) {
+            guard  let complition = self.comlitionSave else { return }
+            complition()
+        }
     }
     public func present(view: UIViewController) {
         self.present(view, animated: true, completion: nil)
-        guard  let complition = self.comlitionSave else { return }
-        complition()
     }
 }
