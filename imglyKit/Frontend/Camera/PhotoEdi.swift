@@ -78,6 +78,7 @@ open class PhotoEditor{
         let cameraViewController = IMGLYCameraViewController(recordingModes: [.photo, .video])
         
         self.complitionSave = complitionSave
+        cameraViewController.comlitionSave = complitionSave
         cameraViewController.cameraDelegate = self.cameraContoler
         cameraViewController.comlitionSave = complitionSave
         cameraViewController.maximumVideoLength = 0
