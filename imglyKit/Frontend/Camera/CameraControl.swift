@@ -99,8 +99,8 @@ open class IMGLYCameraController: NSObject {
     fileprivate let sessionQueue = DispatchQueue(label: "capture_session_queue", attributes: [])
     fileprivate var videoDeviceInput: AVCaptureDeviceInput?
     fileprivate var audioDeviceInput: AVCaptureDeviceInput?
-//    fileprivate var videoDataOutput: AVCaptureVideoDataOutput?
-//    fileprivate var audioDataOutput: AVCaptureAudioDataOutput?
+    fileprivate var videoDataOutput: AVCaptureVideoDataOutput?
+    fileprivate var audioDataOutput: AVCaptureAudioDataOutput?
     @objc dynamic fileprivate var stillImageOutput: AVCaptureStillImageOutput?
     fileprivate var runtimeErrorHandlingObserver: NSObjectProtocol?
     @objc dynamic fileprivate var deviceAuthorized = false
@@ -858,7 +858,8 @@ open class IMGLYCameraController: NSObject {
         guard let audioDevice = IMGLYCameraController.deviceWithMediaType(AVMediaType.audio.rawValue, preferringPosition: nil) else { return }
         let audioDeviceInput: AVCaptureDeviceInput!
         do {
-            audioDeviceInput = try AVCaptureDeviceInput(device: audioDevice)
+            audioDeviceInput = nil
+            //audioDeviceInput = try AVCaptureDeviceInput(device: audioDevice)
         } catch let error1 as NSError {
             error = error1
             audioDeviceInput = nil
@@ -879,7 +880,7 @@ open class IMGLYCameraController: NSObject {
         videoDataOutput.setSampleBufferDelegate(self, queue: self.sessionQueue)
         if self.session.canAddOutput(videoDataOutput) {
             self.session.addOutput(videoDataOutput)
-//            self.videoDataOutput = videoDataOutput
+            self.videoDataOutput = videoDataOutput
         }
         
         if audioDeviceInput != nil {
@@ -887,7 +888,7 @@ open class IMGLYCameraController: NSObject {
             audioDataOutput.setSampleBufferDelegate(self, queue: self.sessionQueue)
             if self.session.canAddOutput(audioDataOutput) {
                 self.session.addOutput(audioDataOutput)
-//                self.audioDataOutput = audioDataOutput
+                self.audioDataOutput = audioDataOutput
             }
         }
         
@@ -1087,6 +1088,7 @@ open class IMGLYCameraController: NSObject {
     }
     
     fileprivate func startWriting() {
+        
         delegate?.cameraControllerDidStartRecording?(self)
         
         sessionQueue.async {
@@ -1113,8 +1115,8 @@ open class IMGLYCameraController: NSObject {
                 return
             }
             
-//            let videoCompressionSettings = self.videoDataOutput?.recommendedVideoSettingsForAssetWriter(writingTo: AVFileType.mov)
-//            self.assetWriterVideoInput = AVAssetWriterInput(mediaType: AVMediaType.video, outputSettings: videoCompressionSettings as [String: AnyObject]?)
+            let videoCompressionSettings = self.videoDataOutput?.recommendedVideoSettingsForAssetWriter(writingTo: AVFileType.mov)
+            self.assetWriterVideoInput = AVAssetWriterInput(mediaType: AVMediaType.video, outputSettings: videoCompressionSettings as [String: AnyObject]?)
             self.assetWriterVideoInput!.expectsMediaDataInRealTime = true
             
             var sourcePixelBufferAttributes: [String: AnyObject] = [String(kCVPixelBufferPixelFormatTypeKey): NSNumber(value: kCVPixelFormatType_32BGRA as UInt32), String(kCVPixelFormatOpenGLESCompatibility): kCFBooleanTrue]
@@ -1143,18 +1145,18 @@ open class IMGLYCameraController: NSObject {
             
             newAssetWriter.add(self.assetWriterVideoInput!)
             
-//            if self.audioDeviceInput != nil {
-//                let audioCompressionSettings = self.audioDataOutput?.recommendedAudioSettingsForAssetWriter(writingTo: AVFileType.mov) as? [String: AnyObject]
-//
-//                if newAssetWriter.canApply(outputSettings: audioCompressionSettings, forMediaType: AVMediaType.audio) {
-//                    self.assetWriterAudioInput = AVAssetWriterInput(mediaType: AVMediaType.audio, outputSettings: audioCompressionSettings)
-//                    self.assetWriterAudioInput?.expectsMediaDataInRealTime = true
-//
-//                    if newAssetWriter.canAdd(self.assetWriterAudioInput!) {
-//                        newAssetWriter.add(self.assetWriterAudioInput!)
-//                    }
-//                }
-//            }
+            if self.audioDeviceInput != nil {
+                let audioCompressionSettings = self.audioDataOutput?.recommendedAudioSettingsForAssetWriter(writingTo: AVFileType.mov) as? [String: AnyObject]
+
+                if newAssetWriter.canApply(outputSettings: audioCompressionSettings, forMediaType: AVMediaType.audio) {
+                    self.assetWriterAudioInput = AVAssetWriterInput(mediaType: AVMediaType.audio, outputSettings: audioCompressionSettings)
+                    self.assetWriterAudioInput?.expectsMediaDataInRealTime = true
+
+                    if newAssetWriter.canAdd(self.assetWriterAudioInput!) {
+                        newAssetWriter.add(self.assetWriterAudioInput!)
+                    }
+                }
+            }
             
             if UIDevice.current.isMultitaskingSupported {
                 self.backgroundRecordingID = UIApplication.shared.beginBackgroundTask(expirationHandler: {})

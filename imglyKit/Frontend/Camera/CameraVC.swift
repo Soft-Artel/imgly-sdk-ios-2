@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AVFoundation
 import MobileCoreServices
 import Photos
 
@@ -244,18 +243,18 @@ open class IMGLYCameraViewController: UIViewController {
     
     fileprivate var buttonsEnabled = true {
         didSet {
-            flashButton.isEnabled = true
-            switchCameraButton.isEnabled =  true
-            cameraRollButton.isEnabled =  true
-            actionButtonContainer.isUserInteractionEnabled =  true
+            flashButton.isEnabled = self.buttonsEnabled
+            switchCameraButton.isEnabled =  self.buttonsEnabled
+            cameraRollButton.isEnabled =  self.buttonsEnabled
+            actionButtonContainer.isUserInteractionEnabled =  self.buttonsEnabled
             
             for recordingModeSelectionButton in recordingModeSelectionButtons {
-                recordingModeSelectionButton.isEnabled =  true
+                recordingModeSelectionButton.isEnabled =  self.buttonsEnabled
             }
 
-            swipeRightGestureRecognizer.isEnabled =  true
-            swipeLeftGestureRecognizer.isEnabled =  true
-            filterSelectionButton.isEnabled =  true
+            swipeRightGestureRecognizer.isEnabled =  self.buttonsEnabled
+            swipeLeftGestureRecognizer.isEnabled =  self.buttonsEnabled
+            filterSelectionButton.isEnabled =  self.buttonsEnabled
         }
     }
     
