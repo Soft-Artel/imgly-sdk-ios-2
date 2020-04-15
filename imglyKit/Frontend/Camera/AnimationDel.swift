@@ -1,9 +1,30 @@
 //
-//  AnimationDel.swift
-//  imglyKit iOS
+//  IMGLYAnimationDelegate.swift
+//  imglyKit
 //
-//  Created by Мурат Камалов on 15.04.2020.
-//  Copyright © 2020 9elements GmbH. All rights reserved.
+//  Created by Sascha Schwabbauer on 11/05/15.
+//  Copyright (c) 2015 9elements GmbH. All rights reserved.
 //
 
-import Foundation
+import QuartzCore
+
+public typealias IMGLYAnimationDelegateBlock = (Bool) -> (Void)
+
+open class IMGLYAnimationDelegate: NSObject, CAAnimationDelegate {
+
+    // MARK: - Properties
+    
+    public let block: IMGLYAnimationDelegateBlock
+    
+    // MARK: - Initializers
+    
+    init(block: @escaping IMGLYAnimationDelegateBlock) {
+        self.block = block
+    }
+    
+    // MARK: - Animation Delegate
+    
+    open func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        block(flag)
+    }
+}
