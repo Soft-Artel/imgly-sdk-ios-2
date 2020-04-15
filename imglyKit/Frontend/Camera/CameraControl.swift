@@ -863,11 +863,11 @@ open class IMGLYCameraController: NSObject {
             error = error1
             audioDeviceInput = nil
         }
-        
+
         if let error = error {
             print("Error in setupAudioInputs: \(error.description)")
         }
-        
+
         if self.session.canAddInput(audioDeviceInput) {
             self.session.addInput(audioDeviceInput)
             self.audioDeviceInput = audioDeviceInput
@@ -1146,14 +1146,14 @@ open class IMGLYCameraController: NSObject {
             if self.audioDeviceInput != nil {
                 let audioCompressionSettings = self.audioDataOutput?.recommendedAudioSettingsForAssetWriter(writingTo: AVFileType.mov) as? [String: AnyObject]
                 
-                if newAssetWriter.canApply(outputSettings: audioCompressionSettings, forMediaType: AVMediaType.audio) {
+//                if newAssetWriter.canApply(outputSettings: audioCompressionSettings, forMediaType: AVMediaType.audio) {
                     self.assetWriterAudioInput = AVAssetWriterInput(mediaType: AVMediaType.audio, outputSettings: audioCompressionSettings)
                     self.assetWriterAudioInput?.expectsMediaDataInRealTime = true
                     
                     if newAssetWriter.canAdd(self.assetWriterAudioInput!) {
                         newAssetWriter.add(self.assetWriterAudioInput!)
                     }
-                }
+//                }
             }
             
             if UIDevice.current.isMultitaskingSupported {
