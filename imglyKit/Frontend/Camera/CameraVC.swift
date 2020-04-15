@@ -716,10 +716,11 @@ open class IMGLYCameraViewController: UIViewController {
                 cameraController?.startVideoRecording()
             } else {
                 cameraController?.stopVideoRecording()
-                if let save = self.comlitionSave{
+                self.dismiss(animated: true) {
+                    guard  let save = self.comlitionSave else { return }
                     save()
+                    
                 }
-                self.dismiss(animated: true, completion: nil)
             }
             
             if let filterSelectionViewConstraint = filterSelectionViewConstraint, filterSelectionViewConstraint.constant != 0 {
