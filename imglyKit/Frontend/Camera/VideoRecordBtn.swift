@@ -94,7 +94,7 @@ public final class IMGLYVideoRecordButton: UIControl {
     public override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
         recording = !recording
         innerLayer.fillColor = IMGLYVideoRecordButton.recordingColor.cgColor
-        sendActions(for: .touchUpInside)
+//        sendActions(for: .touchUpInside)
     }
     
     public override func cancelTracking(with event: UIEvent?) {
