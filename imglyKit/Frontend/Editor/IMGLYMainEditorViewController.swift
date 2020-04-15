@@ -42,14 +42,14 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     
     // MARK: - Properties
 
-    
-
     public weak var photoEditor: PhotoEditor?
 
     public weak var delegateEditor: SaveImageDelegate?
     
     public var photoPickerComplition:((Bool) -> ())?
-
+    
+    public var reopenCamera: (() -> ())? = nil
+    
     open lazy var actionButtons: [IMGLYActionButton] = {
         let bundle = Bundle(for: type(of: self))
         var handlers = [IMGLYActionButton]()
@@ -239,17 +239,30 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     
     override open func tappedDone(_ sender: UIBarButtonItem?) {
 
-        guard let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage!, filters: self.fixedFilterStack.activeFilters) else { return }
-
+        guard let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage!, filters: self.fixedFilterStack.activeFilters) else {
+            self.cameraDelegate?.close()
+            return
+        }
+        
+        
         dismiss(animated: true) {
             guard let delegate = self.delegateEditor else {
+                self.cameraDelegate?.close()
                 UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
                 guard let complition = self.photoPickerComplition else{ return }
                 complition(true)
                 return
             }
-            self.cameraDelegate?.dismiss(animated: true, completion: nil)
-           delegate.saveImage(processedImage)
+            if let delegateCam = self.cameraDelegate{
+                UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+//                delegateCam.close()
+//                if !self.animateSeque{
+//                    delegate.saveImage(processedImage)
+//                }
+            }else{
+                delegate.saveImage(processedImage)
+            }
+        
         }
     }
     
@@ -264,6 +277,12 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)
         }
+        guard let delegateCam = self.cameraDelegate else {return}
+        delegateCam.close()
+        if !self.animateSeque, let delegate = self.delegateEditor
+        {
+            delegate.saveImage(image)
+        }
     }
     
     @objc fileprivate func cancelTapped(_ sender: UIBarButtonItem?) {
@@ -271,6 +290,9 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
             completionBlock(.cancel, nil)
         } else {
             dismiss(animated: true, completion: nil)
+            
+            guard let reopen = self.reopenCamera else {return}
+            reopen()
         }
     }
     
