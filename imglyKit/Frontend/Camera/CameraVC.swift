@@ -243,18 +243,18 @@ open class IMGLYCameraViewController: UIViewController {
     
     fileprivate var buttonsEnabled = true {
         didSet {
-            flashButton.isEnabled = self.buttonsEnabled
-            switchCameraButton.isEnabled =  self.buttonsEnabled
-            cameraRollButton.isEnabled =  self.buttonsEnabled
-            actionButtonContainer.isUserInteractionEnabled =  self.buttonsEnabled
+            flashButton.isEnabled = true
+            switchCameraButton.isEnabled =  true
+            cameraRollButton.isEnabled =  true
+            actionButtonContainer.isUserInteractionEnabled =  true
             
             for recordingModeSelectionButton in recordingModeSelectionButtons {
-                recordingModeSelectionButton.isEnabled =  self.buttonsEnabled
+                recordingModeSelectionButton.isEnabled =  true
             }
 
-            swipeRightGestureRecognizer.isEnabled =  self.buttonsEnabled
-            swipeLeftGestureRecognizer.isEnabled =  self.buttonsEnabled
-            filterSelectionButton.isEnabled =  self.buttonsEnabled
+            swipeRightGestureRecognizer.isEnabled =  true
+            swipeLeftGestureRecognizer.isEnabled =  true
+            filterSelectionButton.isEnabled =  true
         }
     }
     
@@ -712,6 +712,7 @@ open class IMGLYCameraViewController: UIViewController {
     @objc open func recordVideo(_ sender: IMGLYVideoRecordButton?) {
         if let recordVideoButton = sender {
             if recordVideoButton.recording {
+                cameraController?.setupAudioInputs()
                 cameraController?.startVideoRecording()
             } else {
                 cameraController?.stopVideoRecording()

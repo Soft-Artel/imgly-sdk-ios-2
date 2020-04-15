@@ -811,7 +811,7 @@ open class IMGLYCameraController: NSObject {
     fileprivate func setupWithPreferredCameraPosition(_ cameraPosition: AVCaptureDevice.Position, completion: (() -> (Void))?) {
         sessionQueue.async {
             self.setupVideoInputsForPreferredCameraPosition(cameraPosition)
-            self.setupAudioInputs()
+//            self.setupAudioInputs()
             self.setupOutputs()
             
             completion?()
@@ -852,14 +852,13 @@ open class IMGLYCameraController: NSObject {
         }
     }
     
-    fileprivate func setupAudioInputs() {
+    func setupAudioInputs() {
         var error: NSError?
 
         guard let audioDevice = IMGLYCameraController.deviceWithMediaType(AVMediaType.audio.rawValue, preferringPosition: nil) else { return }
         let audioDeviceInput: AVCaptureDeviceInput!
         do {
-            audioDeviceInput = nil
-            //audioDeviceInput = try AVCaptureDeviceInput(device: audioDevice)
+            audioDeviceInput = try AVCaptureDeviceInput(device: audioDevice)
         } catch let error1 as NSError {
             error = error1
             audioDeviceInput = nil
@@ -869,18 +868,9 @@ open class IMGLYCameraController: NSObject {
             print("Error in setupAudioInputs: \(error.description)")
         }
         
-//        if self.session.canAddInput(audioDeviceInput) {
-//            self.session.addInput(audioDeviceInput)
-//            self.audioDeviceInput = audioDeviceInput
-//        }
-    }
-    
-    fileprivate func setupOutputs() {
-        let videoDataOutput = AVCaptureVideoDataOutput()
-        videoDataOutput.setSampleBufferDelegate(self, queue: self.sessionQueue)
-        if self.session.canAddOutput(videoDataOutput) {
-            self.session.addOutput(videoDataOutput)
-            self.videoDataOutput = videoDataOutput
+        if self.session.canAddInput(audioDeviceInput) {
+            self.session.addInput(audioDeviceInput)
+            self.audioDeviceInput = audioDeviceInput
         }
         
         if audioDeviceInput != nil {
@@ -891,6 +881,17 @@ open class IMGLYCameraController: NSObject {
                 self.audioDataOutput = audioDataOutput
             }
         }
+    }
+    
+    fileprivate func setupOutputs() {
+        let videoDataOutput = AVCaptureVideoDataOutput()
+        videoDataOutput.setSampleBufferDelegate(self, queue: self.sessionQueue)
+        if self.session.canAddOutput(videoDataOutput) {
+            self.session.addOutput(videoDataOutput)
+            self.videoDataOutput = videoDataOutput
+        }
+        
+        
         
         let stillImageOutput = AVCaptureStillImageOutput()
         if self.session.canAddOutput(stillImageOutput) {
