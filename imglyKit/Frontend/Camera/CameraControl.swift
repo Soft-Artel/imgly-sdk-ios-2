@@ -869,10 +869,10 @@ open class IMGLYCameraController: NSObject {
             print("Error in setupAudioInputs: \(error.description)")
         }
         
-        if self.session.canAddInput(audioDeviceInput) {
-            self.session.addInput(audioDeviceInput)
-            self.audioDeviceInput = audioDeviceInput
-        }
+//        if self.session.canAddInput(audioDeviceInput) {
+//            self.session.addInput(audioDeviceInput)
+//            self.audioDeviceInput = audioDeviceInput
+//        }
     }
     
     fileprivate func setupOutputs() {
