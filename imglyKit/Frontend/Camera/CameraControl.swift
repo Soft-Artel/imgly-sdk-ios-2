@@ -1040,32 +1040,35 @@ open class IMGLYCameraController: NSObject {
     If the image was taken sucessfully the error is nil.
     */
     open func takePhoto(_ completion: @escaping IMGLYTakePhotoBlock) {
-        if let stillImageOutput = self.stillImageOutput {
-            sessionQueue.async {
-                guard let connection = stillImageOutput.connection(with: AVMediaType.video) else {
-                    let alert = UIAlertController(title: "Ops,something go wrond!", message: nil, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                    (self.delegate as? IMGLYCameraViewController)?.present(view: alert)
-                    return
-                }
-                
-                // Update the orientation on the still image output video connection before capturing.
-                if let captureVideoOrientation = self.captureVideoOrientation {
-                    connection.videoOrientation = captureVideoOrientation
-                }
-                
-                stillImageOutput.captureStillImageAsynchronously(from: connection) {
-                    (imageDataSampleBuffer: CMSampleBuffer?, error: Error?) -> Void in
-                    
-                    if let imageDataSampleBuffer = imageDataSampleBuffer, let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer), let image = UIImage(data: imageData) {
-                        let editor = PhotoEditor(image: image, delegate: self.delegateImage, parent: self.delegate as? UIViewController)
-                        editor.startEditing(again: false, cameraContoler: self.delegate as? IMGLYCameraViewController)
-                    } else {
-                        completion(nil, error)
-                    }
-                }
-            }
-        }
+        let image = UIImage(named: "Image-2")
+        let editor = PhotoEditor(image: image, delegate: self.delegateImage, parent: self.delegate as? UIViewController)
+        editor.startEditing(again: false, cameraContoler: self.delegate as? IMGLYCameraViewController)
+//        if let stillImageOutput = self.stillImageOutput {
+//            sessionQueue.async {
+//                guard let connection = stillImageOutput.connection(with: AVMediaType.video) else {
+//                    let alert = UIAlertController(title: "Ops,something go wrond!", message: nil, preferredStyle: .alert)
+//                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+//                    (self.delegate as? IMGLYCameraViewController)?.present(view: alert)
+//                    return
+//                }
+//
+//                // Update the orientation on the still image output video connection before capturing.
+//                if let captureVideoOrientation = self.captureVideoOrientation {
+//                    connection.videoOrientation = captureVideoOrientation
+//                }
+//
+//                stillImageOutput.captureStillImageAsynchronously(from: connection) {
+//                    (imageDataSampleBuffer: CMSampleBuffer?, error: Error?) -> Void in
+//
+//                    if let imageDataSampleBuffer = imageDataSampleBuffer, let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer), let image = UIImage(data: imageData) {
+//                        let editor = PhotoEditor(image: image, delegate: self.delegateImage, parent: self.delegate as? UIViewController)
+//                        editor.startEditing(again: false, cameraContoler: self.delegate as? IMGLYCameraViewController)
+//                    } else {
+//                        completion(nil, error)
+//                    }
+//                }
+//            }
+//        }
     }
     
     // MARK: - Video Capture
