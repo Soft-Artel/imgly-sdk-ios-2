@@ -127,6 +127,6 @@ open class IMGLYEditorViewController: UIViewController {
     // MARK: - Actions
     
     @objc open func tappedDone(_ sender: UIBarButtonItem?) {
-        self.cameraDelegate?.close()
+        
     }
 }

@@ -240,14 +240,14 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     override open func tappedDone(_ sender: UIBarButtonItem?) {
 
         guard let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage!, filters: self.fixedFilterStack.activeFilters) else {
-            self.cameraDelegate?.close()
+            self.cameraDelegate?.close(photoPickerClosed: false)
             return
         }
         
         
         dismiss(animated: true) {
             guard let delegate = self.delegateEditor else {
-                self.cameraDelegate?.close()
+                self.cameraDelegate?.close(photoPickerClosed: false)
                 UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
                 guard let complition = self.photoPickerComplition else{ return }
                 complition(true)
@@ -278,11 +278,11 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
             present(ac, animated: true)
         }
         guard let delegateCam = self.cameraDelegate else {return}
-        delegateCam.close()
         if !self.animateSeque, let delegate = self.delegateEditor
         {
             delegate.saveImage(image)
         }
+        delegateCam.close(photoPickerClosed: !self.animateSeque)
     }
     
     @objc fileprivate func cancelTapped(_ sender: UIBarButtonItem?) {

@@ -22,7 +22,7 @@ open class PhotoEditor{
     var photoEditor: PhotoEditor? = nil
     public var complition: ((Bool) -> ())? = nil
     
-    var complitionSave : (() -> ())? = nil
+    var complitionSave : ((Bool) -> ())? = nil
     
     var cameraContoler: CameraCloseDelegate? = nil
     public init(image: UIImage?, delegate: SaveImageDelegate? = nil ,parent: UIViewController?, complit: ((Bool) -> ())? = nil) {
@@ -72,15 +72,17 @@ open class PhotoEditor{
         }
     }
         
-    public func openCamera(with complitionSave: (() -> ())?, presentComplition: (() -> ())? = nil){
+    public func openCamera(with complitionSave: ((Bool) -> ())?, presentComplition: (() -> ())? = nil, withCamera: Bool){
         
-        
-        let cameraViewController = IMGLYCameraViewController(recordingModes: [.photo, .video])
+        var recordingMode: [IMGLYRecordingMode] = [.photo]
+        if withCamera{
+            recordingMode.append(.video)
+        }
+        let cameraViewController = IMGLYCameraViewController(recordingModes: recordingMode)
         
         self.complitionSave = complitionSave
         cameraViewController.comlitionSave = complitionSave
         cameraViewController.cameraDelegate = self.cameraContoler
-        cameraViewController.comlitionSave = complitionSave
         cameraViewController.maximumVideoLength = 0
         cameraViewController.squareMode = false
         cameraViewController.delegateEditor = self.delegateImage

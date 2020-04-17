@@ -17,7 +17,7 @@ public typealias IMGLYCameraCompletionBlock = (UIImage?, URL?) -> (Void)
 
 
 public protocol CameraCloseDelegate: class {
-    func close()
+    func close(photoPickerClosed: Bool)
     func present(view: UIViewController)
 }
 
@@ -28,7 +28,7 @@ open class IMGLYCameraViewController: UIViewController {
     public weak var delegateEditor: SaveImageDelegate?
     var cameraDelegate: CameraCloseDelegate? = nil
     
-    public var comlitionSave: (() -> ())? = nil
+    public var comlitionSave: ((Bool) -> ())? = nil
     
     public convenience init() {
         self.init(recordingModes: [.photo, .video])
@@ -718,7 +718,7 @@ open class IMGLYCameraViewController: UIViewController {
                 cameraController?.stopVideoRecording()
                 self.dismiss(animated: true) {
                     guard  let save = self.comlitionSave else { return }
-                    save()
+                    save(true)
                     
                 }
             }
@@ -1067,10 +1067,10 @@ fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePicke
 }
 
 extension IMGLYCameraViewController: CameraCloseDelegate{
-    public func close() {
+    public func close(photoPickerClosed: Bool) {
         self.dismiss(animated: true) {
             guard  let complition = self.comlitionSave else { return }
-            complition()
+            complition(photoPickerClosed)
         }
     }
     public func present(view: UIViewController) {
