@@ -255,10 +255,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
             }
             if let delegateCam = self.cameraDelegate{
                 UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
-//                delegateCam.close()
-//                if !self.animateSeque{
-//                    delegate.saveImage(processedImage)
-//                }
+
             }else{
                 delegate.saveImage(processedImage)
             }
@@ -319,6 +316,9 @@ extension IMGLYMainEditorViewController: UICollectionViewDataSource {
             }
             
             buttonCell.textLabel.text = actionButton.title
+            if indexPath == IndexPath(row: 0, section: 0), IMGLYEditorViewController.isMagic == true{
+                buttonCell.imageView.image = actionButton.selectedImage
+            }
         }
         
         return cell
@@ -329,6 +329,10 @@ extension IMGLYMainEditorViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let actionButton = actionButtons[indexPath.item]
         actionButton.handler()
+        
+        if indexPath == IndexPath(row: 0, section: 0){
+            IMGLYEditorViewController.isMagic = true
+        }
         
         if actionButton.selectedImage != nil && actionButton.showSelection != nil {
             collectionView.reloadItems(at: [indexPath])

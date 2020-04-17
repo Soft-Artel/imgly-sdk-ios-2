@@ -43,11 +43,12 @@ open class PhotoEditor{
     }
 
 
-    public func startEditing(again: Bool = false, cameraContoler: CameraCloseDelegate? = nil){
+    public func startEditing(again: Bool = false, cameraContoler: CameraCloseDelegate? = nil, isMagic: Bool = false){
         if self.photoEditor == nil{
             self.photoEditor = self
         }
         let editorViewController = IMGLYMainEditorViewController()
+        IMGLYEditorViewController.isMagic = isMagic
         editorViewController.delegateEditor = self.delegateImage
         editorViewController.photoPickerComplition = self.complition
         editorViewController.highResolutionImage = self.image
@@ -95,10 +96,10 @@ open class PhotoEditor{
         })
     }
     
-    public func close(_ image: UIImage) {
+    public func close(_ image: UIImage, isMagic: Bool) {
 
         self.image = image
-        self.startEditing(again: true)
+        self.startEditing(again: true, isMagic: isMagic)
 
     }
 }

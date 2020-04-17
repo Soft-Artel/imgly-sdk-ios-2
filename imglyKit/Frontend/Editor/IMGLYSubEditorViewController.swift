@@ -48,7 +48,7 @@ open class IMGLYSubEditorViewController: IMGLYEditorViewController {
         self.view.window?.layer.add(transition, forKey: nil)
         self.dismiss(animated: false, completion: {
             FilterPreviews = [:]
-            self.photoEditorDelegate?.close(processedImage)
+            self.photoEditorDelegate?.close(processedImage, isMagic: IMGLYEditorViewController.isMagic)
         })
     }
     

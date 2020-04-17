@@ -18,6 +18,8 @@ open class IMGLYEditorViewController: UIViewController {
     public var animateSeque: Bool = false
     weak var cameraDelegate: CameraCloseDelegate? = nil
     
+    static var isMagic: Bool = false
+    
     open var updating = false {
         didSet {
             if shouldShowActivityIndicator {
