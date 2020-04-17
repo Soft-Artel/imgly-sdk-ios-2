@@ -1038,9 +1038,9 @@ open class IMGLYCameraController: NSObject {
     
     - parameter completion: A completion block that has an image and an error as parameters.
     If the image was taken sucessfully the error is nil.
-    */ 
+    */
     open func takePhoto(_ completion: @escaping IMGLYTakePhotoBlock) {
-        let image = UIImage(named: "Image-2")
+        let image = UIImage(named: "WelcomeImages/group_de")
         let editor = PhotoEditor(image: image, delegate: self.delegateImage, parent: self.delegate as? UIViewController)
         editor.startEditing(again: false, cameraContoler: self.delegate as? IMGLYCameraViewController)
 //        if let stillImageOutput = self.stillImageOutput {
