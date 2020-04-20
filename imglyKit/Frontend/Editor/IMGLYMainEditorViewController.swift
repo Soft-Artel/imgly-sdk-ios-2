@@ -254,7 +254,18 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                 return
             }
             if let delegateCam = self.cameraDelegate{
-                UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+                let image = processedImage
+                CustomPhotoAlbum.sharedInstance.saveImage(image: image, complition:{
+                    guard let delegateCam = self.cameraDelegate else {return}
+                                   if !self.animateSeque, let delegate = self.delegateEditor
+                                   {
+                                       delegate.saveImage(processedImage)
+                                   }
+                                   delegateCam.close(photoPickerClosed: !self.animateSeque)
+                    
+                })
+//                UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+               
 
             }else{
                 delegate.saveImage(processedImage)
@@ -274,12 +285,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)
         }
-        guard let delegateCam = self.cameraDelegate else {return}
-        if !self.animateSeque, let delegate = self.delegateEditor
-        {
-            delegate.saveImage(image)
-        }
-        delegateCam.close(photoPickerClosed: !self.animateSeque)
+        
     }
     
     @objc fileprivate func cancelTapped(_ sender: UIBarButtonItem?) {
@@ -344,4 +350,65 @@ extension IMGLYMainEditorViewController: UINavigationControllerDelegate {
     public func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return IMGLYNavigationAnimationController()
     }
+}
+
+
+import Photos
+class CustomPhotoAlbum {
+
+    static let albumName = "Simplanum"
+    static let sharedInstance = CustomPhotoAlbum()
+
+    var assetCollection: PHAssetCollection!
+
+    init() {
+
+        func fetchAssetCollectionForAlbum() -> PHAssetCollection! {
+
+            let fetchOptions = PHFetchOptions()
+            fetchOptions.predicate = NSPredicate(format: "title = %@", CustomPhotoAlbum.albumName)
+            let collection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
+
+            if let firstObject: AnyObject = collection.firstObject {
+                return collection.firstObject as! PHAssetCollection
+            }
+
+            return nil
+        }
+
+        if let assetCollection = fetchAssetCollectionForAlbum() {
+            self.assetCollection = assetCollection
+            return
+        }
+
+        PHPhotoLibrary.shared().performChanges({
+            PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: CustomPhotoAlbum.albumName)
+        }) { success, _ in
+            if success {
+                self.assetCollection = fetchAssetCollectionForAlbum()
+            }
+        }
+    }
+
+    func saveImage(image: UIImage, complition : @escaping () -> ()) {
+
+        if assetCollection == nil {
+            return   // If there was an error upstream, skip the save.
+        }
+
+//        PHPhotoLibrary.shared().performChanges({
+//
+//        }, completionHandler: nil)
+        PHPhotoLibrary.shared().performChanges({ [unowned self] in
+            let assetChangeRequest = PHAssetChangeRequest.creationRequestForAsset(from: image)
+            let assetPlaceholder = assetChangeRequest.placeholderForCreatedAsset
+            let albumChangeRequest = PHAssetCollectionChangeRequest(for: self.assetCollection)
+            albumChangeRequest?.addAssets([assetPlaceholder] as NSFastEnumeration)
+            complition()
+        }) { (_, _) in
+            
+        }
+    }
+
+
 }
