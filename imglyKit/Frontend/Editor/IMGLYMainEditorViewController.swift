@@ -41,9 +41,9 @@ private let ButtonCollectionViewCellSize = CGSize(width: 66, height: 90)
 open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     
     // MARK: - Properties
-
+    
     public weak var photoEditor: PhotoEditor?
-
+    
     public weak var delegateEditor: SaveImageDelegate?
     
     public var photoPickerComplition:((Bool) -> ())?
@@ -116,13 +116,13 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                 image: UIImage(named: "icon_option_text", in: bundle, compatibleWith: nil),
                 handler: { [unowned self] in self.subEditorButtonPressed(.text) }))
         handlers.append(
-        IMGLYActionButton(
-            title: NSLocalizedString("Drawing", tableName: nil, bundle: bundle, value: "", comment: ""),
-            image: UIImage(named: "draw", in: bundle, compatibleWith: nil),
-            handler: { [unowned self] in self.subEditorButtonPressed(.drawer) }))
-
+            IMGLYActionButton(
+                title: NSLocalizedString("Drawing", tableName: nil, bundle: bundle, value: "", comment: ""),
+                image: UIImage(named: "draw", in: bundle, compatibleWith: nil),
+                handler: { [unowned self] in self.subEditorButtonPressed(.drawer) }))
+        
         return handlers
-        }()
+    }()
     
     open var completionBlock: IMGLYEditorCompletionBlock?
     open var initialFilterType = IMGLYFilterType.none
@@ -142,15 +142,15 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
         super.viewDidLoad()
         
         let bundle = Bundle(for: type(of: self))
-
+        
         navigationItem.title = NSLocalizedString("main-editor.title", tableName: nil, bundle: bundle, value: "", comment: "")
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(IMGLYMainEditorViewController.cancelTapped(_:)))
         
         navigationController?.delegate = self
-
+        
         fixedFilterStack.effectFilter = IMGLYInstanceFactory.effectFilterWithType(initialFilterType)
         fixedFilterStack.effectFilter.inputIntensity = initialFilterIntensity
-
+        
         updatePreviewImage()
         configureMenuCollectionView()
     }
@@ -170,7 +170,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(IMGLYButtonCollectionViewCell.self, forCellWithReuseIdentifier: ButtonCollectionViewCellReuseIdentifier)
-
+        
         let views = [ "collectionView" : collectionView ]
         bottomContainerView.addSubview(collectionView)
         bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[collectionView]|", options: [], metrics: nil, views: views))
@@ -188,11 +188,11 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
             }
         default:
             if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: self.previewImageView.visibleImageFrame, doneEdit: self.photoEditor) {
-                            viewController.lowResolutionImage = previewImageView.image
-                            viewController.previewImageView.image = previewImageView.image
-                            viewController.completionHandler = subEditorDidComplete
-                            show(viewController, sender: self)
-                        }
+                viewController.lowResolutionImage = previewImageView.image
+                viewController.previewImageView.image = previewImageView.image
+                viewController.completionHandler = subEditorDidComplete
+                show(viewController, sender: self)
+            }
         }
     }
     
@@ -226,7 +226,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
             updating = true
             PhotoProcessorQueue.async {
                 let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage, filters: self.fixedFilterStack.activeFilters)
-
+                
                 DispatchQueue.main.async {
                     self.previewImageView.image = processedImage
                     self.updating = false
@@ -238,7 +238,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     // MARK: - EditorViewController
     
     override open func tappedDone(_ sender: UIBarButtonItem?) {
-
+        
         guard let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage!, filters: self.fixedFilterStack.activeFilters) else {
             self.cameraDelegate?.close(photoPickerClosed: false)
             return
@@ -257,20 +257,21 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                 let image = processedImage
                 CustomPhotoAlbum.sharedInstance.saveImage(image: image, complition:{
                     guard let delegateCam = self.cameraDelegate else {return}
-                                   if !self.animateSeque, let delegate = self.delegateEditor
-                                   {
-                                       delegate.saveImage(processedImage)
-                                   }
-                                   delegateCam.close(photoPickerClosed: !self.animateSeque)
-                    
+                    DispatchQueue.main.async {
+                        if !self.animateSeque, let delegate = self.delegateEditor
+                        {
+                            delegate.saveImage(processedImage)
+                        }
+                        delegateCam.close(photoPickerClosed: !self.animateSeque)
+                    }
                 })
-//                UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
-               
-
+                //                UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+                
+                
             }else{
                 delegate.saveImage(processedImage)
             }
-        
+            
         }
     }
     
@@ -355,32 +356,32 @@ extension IMGLYMainEditorViewController: UINavigationControllerDelegate {
 
 import Photos
 class CustomPhotoAlbum {
-
+    
     static let albumName = "Simplanum"
     static let sharedInstance = CustomPhotoAlbum()
-
+    
     var assetCollection: PHAssetCollection!
-
+    
     init() {
-
+        
         func fetchAssetCollectionForAlbum() -> PHAssetCollection! {
-
+            
             let fetchOptions = PHFetchOptions()
             fetchOptions.predicate = NSPredicate(format: "title = %@", CustomPhotoAlbum.albumName)
             let collection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
-
+            
             if let firstObject: AnyObject = collection.firstObject {
                 return collection.firstObject as! PHAssetCollection
             }
-
+            
             return nil
         }
-
+        
         if let assetCollection = fetchAssetCollectionForAlbum() {
             self.assetCollection = assetCollection
             return
         }
-
+        
         PHPhotoLibrary.shared().performChanges({
             PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: CustomPhotoAlbum.albumName)
         }) { success, _ in
@@ -389,16 +390,16 @@ class CustomPhotoAlbum {
             }
         }
     }
-
+    
     func saveImage(image: UIImage, complition : @escaping () -> ()) {
-
+        
         if assetCollection == nil {
             return   // If there was an error upstream, skip the save.
         }
-
-//        PHPhotoLibrary.shared().performChanges({
-//
-//        }, completionHandler: nil)
+        
+        //        PHPhotoLibrary.shared().performChanges({
+        //
+        //        }, completionHandler: nil)
         PHPhotoLibrary.shared().performChanges({ [unowned self] in
             let assetChangeRequest = PHAssetChangeRequest.creationRequestForAsset(from: image)
             let assetPlaceholder = assetChangeRequest.placeholderForCreatedAsset
@@ -409,6 +410,6 @@ class CustomPhotoAlbum {
             
         }
     }
-
-
+    
+    
 }
