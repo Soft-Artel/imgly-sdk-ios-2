@@ -718,6 +718,7 @@ open class IMGLYCameraViewController: UIViewController {
                 cameraController?.stopVideoRecording()
                 self.dismiss(animated: true) {
                     guard  let save = self.comlitionSave else { return }
+                    save(false)
                     save(true)
                     
                 }
