@@ -103,5 +103,8 @@ extension MainViewController: SaveImageDelegate{
     func saveImage(_ image: UIImage) {
         print("сохранил")
     }
+    func saveVideo(with data: Data) {
+        print(data,"data")
+    }
 }
 

@@ -31,6 +31,7 @@ import UIKit
 
 public protocol SaveImageDelegate: class {
     func saveImage(_ image: UIImage)
+    func saveVideo(with data: Data)
 }
 
 public typealias IMGLYEditorCompletionBlock = (IMGLYEditorResult, UIImage?) -> Void

@@ -612,6 +612,8 @@ open class IMGLYCameraViewController: UIViewController {
                     }
                 }
                 do {
+                    let data = try Data(contentsOf: movieURL)
+                    self.delegateEditor?.saveVideo(with: data)
                     try FileManager.default.removeItem(at: movieURL)
                 } catch _ {
                 }
