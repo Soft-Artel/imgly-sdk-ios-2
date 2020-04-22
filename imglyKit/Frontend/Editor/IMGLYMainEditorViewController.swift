@@ -255,17 +255,25 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                 return
             }
             if let delegateCam = self.cameraDelegate{
-                let image = processedImage
-                CustomPhotoAlbum.sharedInstance.saveImage(image: image, complition:{
-                    guard let delegateCam = self.cameraDelegate else {return}
-                    DispatchQueue.main.async {
-                        if !self.animateSeque, let delegate = self.delegateEditor
-                        {
-                            delegate.saveImage(processedImage)
+                if PhotoEditor.saveToAlbum || self.animateSeque{
+                    let image = processedImage
+                    CustomPhotoAlbum.sharedInstance.saveImage(image: image, complition:{
+                        guard let delegateCam = self.cameraDelegate else {return}
+                        DispatchQueue.main.async {
+                            if !self.animateSeque, let delegate = self.delegateEditor
+                            {
+                                delegate.saveImage(processedImage)
+                            }
+                            delegateCam.close(photoPickerClosed: !self.animateSeque)
                         }
-                        delegateCam.close(photoPickerClosed: !self.animateSeque)
+                    })
+                }else{
+                    if let delegate = self.delegateEditor
+                    {
+                        delegate.saveImage(processedImage)
                     }
-                })
+                    delegateCam.close(photoPickerClosed: !self.animateSeque)
+                }
                 //                UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
                 
                 

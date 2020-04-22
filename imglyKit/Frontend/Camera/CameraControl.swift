@@ -1058,7 +1058,7 @@ open class IMGLYCameraController: NSObject {
                     (imageDataSampleBuffer: CMSampleBuffer?, error: Error?) -> Void in
                     
                     if let imageDataSampleBuffer = imageDataSampleBuffer, let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer), let image = UIImage(data: imageData) {
-                        let editor = PhotoEditor(image: image, delegate: self.delegateImage, parent: self.delegate as? UIViewController)
+                        let editor = PhotoEditor(image: image, delegate: self.delegateImage, parent: self.delegate as? UIViewController, saveToSimplanum: PhotoEditor.saveToAlbum)
                         editor.startEditing(again: false, cameraContoler: self.delegate as? IMGLYCameraViewController, isMagic: false)
                     } else {
                         completion(nil, error)

@@ -15,6 +15,7 @@ private let BottomControlSize = CGSize(width: 47, height: 47)
 
 open class PhotoEditor{
     
+    static var saveToAlbum: Bool = true
     static var saveToEntryVC: (() -> ())? = nil
     var image: UIImage?
     weak var delegateImage: SaveImageDelegate?
@@ -25,7 +26,8 @@ open class PhotoEditor{
     var complitionSave : ((Bool) -> ())? = nil
     
     var cameraContoler: CameraCloseDelegate? = nil
-    public init(image: UIImage?, delegate: SaveImageDelegate? = nil ,parent: UIViewController?, complit: ((Bool) -> ())? = nil) {
+    public init(image: UIImage?, delegate: SaveImageDelegate? = nil ,parent: UIViewController?, complit: ((Bool) -> ())? = nil, saveToSimplanum: Bool = true) {
+        PhotoEditor.saveToAlbum = saveToSimplanum
         self.image = image
         self.delegateImage = delegate
         self.parentVC = parent
