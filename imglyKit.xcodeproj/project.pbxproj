@@ -1664,6 +1664,7 @@
 		2BF4D39B1AF1139600C801B2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
@@ -1677,6 +1678,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.9elements.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = imglyKit;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -1684,6 +1686,7 @@
 		2BF4D39C1AF1139600C801B2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
@@ -1697,6 +1700,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.9elements.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = imglyKit;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 			};

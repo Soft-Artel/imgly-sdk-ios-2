@@ -914,23 +914,23 @@ open class IMGLYCameraController: NSObject {
         
         // Used to determine device orientation even if orientation lock is active
         motionManager.startAccelerometerUpdates(to: motionManagerQueue, withHandler: { accelerometerData, _ in
-            guard let accelerometerData = accelerometerData else {
-                return
-            }
-            
-            if abs(accelerometerData.acceleration.y) < abs(accelerometerData.acceleration.x) {
-                if accelerometerData.acceleration.x > 0 {
-                    self.captureVideoOrientation = .landscapeLeft
-                } else {
-                    self.captureVideoOrientation = .landscapeRight
-                }
-            } else {
-                if accelerometerData.acceleration.y > 0 {
-                    self.captureVideoOrientation = .portraitUpsideDown
-                } else {
+//            guard let accelerometerData = accelerometerData else {
+//                return
+//            }
+//
+//            if abs(accelerometerData.acceleration.y) < abs(accelerometerData.acceleration.x) {
+//                if accelerometerData.acceleration.x > 0 {
+//                    self.captureVideoOrientation = .landscapeLeft
+//                } else {
+//                    self.captureVideoOrientation = .landscapeRight
+//                }
+//            } else {
+//                if accelerometerData.acceleration.y > 0 {
+//                    self.captureVideoOrientation = .portraitUpsideDown
+//                } else {
                     self.captureVideoOrientation = .portrait
-                }
-            }
+//                }
+//            }
         })
     }
     
@@ -1448,12 +1448,12 @@ private func GetTransformForDeviceOrientation(_ orientation: AVCaptureVideoOrien
     switch orientation {
     case .portrait:
         result = CGAffineTransform(rotationAngle: CGFloat.pi / 2)
-    case .portraitUpsideDown:
-        result = CGAffineTransform(rotationAngle: 3 * CGFloat.pi / 2)
-    case .landscapeRight:
-        result = mirrored ? CGAffineTransform(rotationAngle: CGFloat.pi) : CGAffineTransform.identity
-    case .landscapeLeft:
-        result = mirrored ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: CGFloat.pi)
+//    case .portraitUpsideDown:
+//        result = CGAffineTransform(rotationAngle: 3 * CGFloat.pi / 2)
+//    case .landscapeRight:
+//        result = mirrored ? CGAffineTransform(rotationAngle: CGFloat.pi) : CGAffineTransform.identity
+//    case .landscapeLeft:
+//        result = mirrored ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: CGFloat.pi)
     default:
         result = .identity
     }
