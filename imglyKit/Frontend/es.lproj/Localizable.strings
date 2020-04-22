@@ -94,3 +94,10 @@
 "word9-min"         =  "word9-min_en";
 "yellowarrow-min"   =  "yellowarrow-min_en";
 
+"orientation-editor.title" = "Orientación";
+"orientation-editor.rotate-left" = "";
+"orientation-editor.rotate-right" = "";
+"orientation-editor.flip-horizontally" = "";
+"orientation-editor.flip-vertically" = "";
+
+"brightness-editor.title" = "Brillo";

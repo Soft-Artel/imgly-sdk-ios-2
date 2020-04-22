@@ -55,11 +55,13 @@
 "stickers-editor.title" = "Autocollants";
 
 // Éditeur d'orientation
+
 "orientation-editor.title" = "Orientation";
-"orientation-editor.rotate-left" = "Rotation L";
-"orientation-editor.rotate-right" = "Rotation R";
-"orientation-editor.flip-horizontalally" = "Retourner H";
-"orientation-editor.flip-verticalically" = "Retourner V";
+"orientation-editor.rotate-left" = "";
+"orientation-editor.rotate-right" = "";
+"orientation-editor.flip-horizontally" = "";
+"orientation-editor.flip-vertically" = "";
+
 
 // Éditeur de focus
 "focus-editor.title" = "Focus";
@@ -112,3 +114,4 @@
 "word9-min"         =  "word9-min_en";
 "yellowarrow-min"   =  "yellowarrow-min_en";
 
+"brightness-editor.title" = "Luminosité";
