@@ -137,6 +137,14 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
         }
     }
     
+    open override var shouldAutorotate: Bool{
+        return true
+    }
+    
+    open override var supportedInterfaceOrientations: UIInterfaceOrientationMask{
+        return .portrait
+    }
+    
     // MARK: - UIViewController
     
     override open func viewDidLoad() {

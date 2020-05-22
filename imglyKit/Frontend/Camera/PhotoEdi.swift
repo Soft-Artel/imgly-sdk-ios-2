@@ -35,6 +35,10 @@ open class PhotoEditor{
         self.photoEditor = self
     }
     
+    deinit {
+        
+    }
+    
     public init(parent: UIViewController){
         self.parentVC = parent
         self.photoEditor = self
