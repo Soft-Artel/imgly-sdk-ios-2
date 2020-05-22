@@ -136,7 +136,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
             generateLowResolutionImage()
         }
     }
-    
+     
     open override var shouldAutorotate: Bool{
         return true
     }
