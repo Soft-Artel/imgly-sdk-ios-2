@@ -492,7 +492,9 @@ open class IMGLYCameraController: NSObject {
                     } catch {
                         fatalError()
                     }
-                    device.torchMode = newValue
+                    if device.isTorchModeSupported(newValue) {
+                        device.torchMode = newValue
+                    }
                     device.unlockForConfiguration()
                 }
                 
@@ -797,11 +799,13 @@ open class IMGLYCameraController: NSObject {
                     self.flashMode = AVCaptureDevice.FlashMode(rawValue: self.torchMode.rawValue)!
                     self.torchMode = .off
                 }
+                do { try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation) } catch { print(error)}
             case .video:
                 if self.torchAvailable {
                     self.torchMode = AVCaptureDevice.TorchMode(rawValue: self.flashMode.rawValue)!
                     self.flashMode = .off
                 }
+                do { try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation) } catch { print(error)}
             }
             
             self.delegate?.cameraController?(self, didSwitchToRecordingMode: recordingMode)
