@@ -57,7 +57,7 @@ class MainViewController: UIViewController {
             }else{
                 print("Не закрываем и выделяем")
             }
-        }, withCamera: true)
+        }, withCamera: true, afterOpenGallery: self)
 
     }
 
@@ -105,6 +105,12 @@ extension MainViewController: SaveImageDelegate{
     }
     func saveVideo(with data: Data) {
         print(data,"data")
+    }
+}
+
+extension MainViewController: GalleryDelegate{
+    func openGallery(complition: ((Bool) -> ())?) {
+        print("Открываем галерею")
     }
 }
 

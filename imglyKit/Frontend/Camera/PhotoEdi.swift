@@ -79,7 +79,7 @@ open class PhotoEditor{
         }
     }
         
-    public func openCamera(with complitionSave: ((Bool) -> ())?, presentComplition: (() -> ())? = nil, withCamera: Bool){
+    public func openCamera(with complitionSave: ((Bool) -> ())?, presentComplition: (() -> ())? = nil, withCamera: Bool, afterOpenGallery: GalleryDelegate? = nil){
         
         var recordingMode: [IMGLYRecordingMode] = [.photo]
         if withCamera{
@@ -93,6 +93,7 @@ open class PhotoEditor{
         cameraViewController.maximumVideoLength = 0
         cameraViewController.squareMode = false
         cameraViewController.delegateEditor = self.delegateImage
+        cameraViewController.galleryDelegate = afterOpenGallery
         
         self.cameraContoler = cameraViewController
         self.parentVC?.modalPresentationStyle = .fullScreen

@@ -21,12 +21,18 @@ public protocol CameraCloseDelegate: class {
     func present(view: UIViewController)
 }
 
+public protocol GalleryDelegate: class{
+    func openGallery(complition: ((Bool) -> ())?)
+}
+
 open class IMGLYCameraViewController: UIViewController {
     
     // MARK: - Initializers
     
     public weak var delegateEditor: SaveImageDelegate?
     var cameraDelegate: CameraCloseDelegate? = nil
+    
+    public weak var galleryDelegate: GalleryDelegate? = nil
     
     public var comlitionSave: ((Bool) -> ())? = nil
     
@@ -1082,7 +1088,12 @@ extension IMGLYCameraViewController: CameraCloseDelegate{
     public func close(photoPickerClosed: Bool) {
         self.dismiss(animated: true) {
             guard  let complition = self.comlitionSave else { return }
-            complition(photoPickerClosed)
+            if let gallery = self.galleryDelegate{
+                gallery.openGallery(complition: complition)
+            }else{
+                complition(photoPickerClosed)
+            }
+        
         }
     }
     public func present(view: UIViewController) {
