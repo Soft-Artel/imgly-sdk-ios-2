@@ -272,7 +272,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                             {
                                 delegate.saveImage(processedImage)
                             }
-                            delegateCam.close(photoPickerClosed: !self.animateSeque)
+                            delegateCam.close(photoPickerClosed: false)
                         }
                     })
                 }else{
@@ -282,8 +282,6 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                     }
                     delegateCam.close(photoPickerClosed: !self.animateSeque)
                 }
-                //                UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
-                
                 
             }else{
                 delegate.saveImage(processedImage)
