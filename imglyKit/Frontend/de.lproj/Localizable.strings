@@ -27,7 +27,7 @@
 "main-editor.button.crop" = "Zuschneiden";
 "main-editor.button.brightness" = "Helligkeit";
 "main-editor.button.contrast" = "Kontrast";
-"main-editor.button.saturation" = "Saturation";
+"main-editor.button.saturation" = "Sättigung";
 "main-editor.button.text" = "Text";
 "Drawing" = "Zeichnung";
 // Filtereditor
