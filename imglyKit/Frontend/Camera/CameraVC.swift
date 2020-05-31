@@ -386,7 +386,7 @@ open class IMGLYCameraViewController: UIViewController {
         ]
         
         let metrics: [String : AnyObject] = [
-            "topControlsViewHeight" : 44 as AnyObject,
+            "topControlsViewHeight" : 34 as AnyObject,
             "filterSelectionViewHeight" : FilterSelectionViewHeight as AnyObject,
             "topControlMargin" : 20 as AnyObject,
             "topControlMinWidth" : 44 as AnyObject,
@@ -542,7 +542,7 @@ open class IMGLYCameraViewController: UIViewController {
         actionButtonContainer.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[actionButton]|", options: [], metrics: nil, views: [ "actionButton" : actionButton ]))
     }
     
-    fileprivate func updateFlashButton() {
+    fileprivate func updateFlashButton(with mode: AVCaptureDevice.TorchMode? = nil) {
         if let cameraController = cameraController {
             let bundle = Bundle(for: type(of: self))
 
@@ -562,7 +562,7 @@ open class IMGLYCameraViewController: UIViewController {
             } else if currentRecordingMode == .video {
                 flashButton.isHidden = !cameraController.torchAvailable
                 
-                switch(cameraController.torchMode) {
+                switch(mode ?? cameraController.torchMode) {
                 case .auto:
                     self.flashButton.setImage(UIImage(named: "flash_auto", in: bundle, compatibleWith: nil), for: [])
                 case .on:
@@ -849,7 +849,7 @@ extension IMGLYCameraViewController: IMGLYCameraControllerDelegate {
     
     public func cameraController(_ cameraController: IMGLYCameraController, didChangeToTorchMode torchMode: AVCaptureDevice.TorchMode) {
         DispatchQueue.main.async {
-            self.updateFlashButton()
+            self.updateFlashButton(with: torchMode)
         }
     }
     

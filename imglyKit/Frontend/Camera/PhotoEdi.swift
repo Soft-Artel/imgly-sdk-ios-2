@@ -23,6 +23,8 @@ open class PhotoEditor{
     var photoEditor: PhotoEditor? = nil
     public var complition: ((Bool) -> ())? = nil
     
+    internal var again = false
+    
     var complitionSave : ((Bool) -> ())? = nil
     
     var cameraContoler: CameraCloseDelegate? = nil
@@ -106,6 +108,7 @@ open class PhotoEditor{
     public func close(_ image: UIImage, isMagic: Bool) {
 
         self.image = image
+        self.again = true
         self.startEditing(again: true, isMagic: isMagic)
 
     }

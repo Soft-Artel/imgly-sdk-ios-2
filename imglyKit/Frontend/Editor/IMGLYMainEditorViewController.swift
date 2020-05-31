@@ -154,7 +154,9 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
         
         navigationItem.title = NSLocalizedString("main-editor.title", tableName: nil, bundle: bundle, value: "", comment: "")
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(IMGLYMainEditorViewController.cancelTapped(_:)))
-        
+        if !(self.photoEditor?.again ?? true) && self.photoEditor?.cameraContoler == nil {
+            navigationItem.rightBarButtonItem = UIBarButtonItem()
+        }
         navigationController?.delegate = self
         
         fixedFilterStack.effectFilter = IMGLYInstanceFactory.effectFilterWithType(initialFilterType)

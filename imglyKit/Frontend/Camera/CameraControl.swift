@@ -115,6 +115,7 @@ open class IMGLYCameraController: NSObject {
     fileprivate let lowerMaskDarkenLayer = CALayer()
     fileprivate var focusIndicatorFadeOutTimer: Timer?
     fileprivate var focusIndicatorAnimating = false
+    private var iMGLYRecordingMode: IMGLYRecordingMode = .photo
     fileprivate let motionManager: CMMotionManager = {
         let motionManager = CMMotionManager()
         motionManager.accelerometerUpdateInterval = 0.2
@@ -411,6 +412,8 @@ open class IMGLYCameraController: NSObject {
         
         set {
             sessionQueue.async {
+                self.delegate?.cameraController?(self, didChangeToFlashMode: newValue)
+                
                 var error: NSError?
                 self.session.beginConfiguration()
                 
@@ -432,8 +435,6 @@ open class IMGLYCameraController: NSObject {
                     print("Error changing flash mode: \(error.description)")
                     return
                 }
-                
-                self.delegate?.cameraController?(self, didChangeToFlashMode: newValue)
             }
         }
     }
@@ -447,7 +448,7 @@ open class IMGLYCameraController: NSObject {
     */
     open func selectNextTorchMode() {
         var nextTorchMode: AVCaptureDevice.TorchMode = .off
-        
+        let torchMode = self.iMGLYRecordingMode == .video ? self.realmTorchMode : self.torchMode
         switch torchMode {
         case .auto:
             if let device = videoDeviceInput?.device, device.isTorchModeSupported(.on) {
@@ -467,8 +468,10 @@ open class IMGLYCameraController: NSObject {
             break
         }
         
-        torchMode = nextTorchMode
+        self.torchMode = nextTorchMode
     }
+    
+    fileprivate var realmTorchMode: AVCaptureDevice.TorchMode = .auto
     
     open fileprivate(set) var torchMode: AVCaptureDevice.TorchMode {
         get {
@@ -481,6 +484,10 @@ open class IMGLYCameraController: NSObject {
         
         set {
             sessionQueue.async {
+                self.delegate?.cameraController?(self, didChangeToTorchMode: newValue)
+                self.realmTorchMode = newValue
+                guard self.iMGLYRecordingMode != .video else { return }
+                
                 var error: NSError?
                 self.session.beginConfiguration()
                 
@@ -504,8 +511,8 @@ open class IMGLYCameraController: NSObject {
                     print("Error changing torch mode: \(error.description)")
                     return
                 }
+
                 
-                self.delegate?.cameraController?(self, didChangeToTorchMode: newValue)
             }
         }
     }
@@ -792,7 +799,7 @@ open class IMGLYCameraController: NSObject {
                 self.session.sessionPreset = AVCaptureSession.Preset(rawValue: recordingMode.sessionPreset)
             }
             sessionGroup.leave()
-
+            self.iMGLYRecordingMode = recordingMode
             switch(recordingMode) {
             case .photo:
                 if self.flashAvailable {
@@ -802,8 +809,9 @@ open class IMGLYCameraController: NSObject {
                 do { try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation) } catch { print(error)}
             case .video:
                 if self.torchAvailable {
-                    self.torchMode = AVCaptureDevice.TorchMode(rawValue: self.flashMode.rawValue)!
+                    let oldFlash = self.flashMode
                     self.flashMode = .off
+                    self.torchMode = AVCaptureDevice.TorchMode(rawValue: oldFlash.rawValue)!
                 }
                 do { try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation) } catch { print(error)}
             }
@@ -885,6 +893,23 @@ open class IMGLYCameraController: NSObject {
                 self.audioDataOutput = audioDataOutput
             }
         }
+        
+        self.session.beginConfiguration()
+        
+        if let device = self.videoDeviceInput?.device {
+            do {
+                try device.lockForConfiguration()
+            } catch let error1 as NSError {
+                error = error1
+            } catch {
+                fatalError()
+            }
+            device.torchMode = self.realmTorchMode
+            device.unlockForConfiguration()
+        }
+        
+        self.session.commitConfiguration()
+        
     }
     
     fileprivate func setupOutputs() {
@@ -1170,6 +1195,7 @@ open class IMGLYCameraController: NSObject {
             self.videoWritingStarted = false
             self.assetWriter = newAssetWriter
             self.startTimeUpdateTimer()
+            self.iMGLYRecordingMode = .photo
         }
     }
     
