@@ -91,7 +91,7 @@ open class PhotoEditor{
         
         self.complitionSave = complitionSave
         cameraViewController.comlitionSave = complitionSave
-        cameraViewController.cameraDelegate = self.cameraContoler
+        cameraViewController.cameraDelegate = cameraViewController//self.cameraContoler
         cameraViewController.maximumVideoLength = 0
         cameraViewController.squareMode = false
         cameraViewController.delegateEditor = self.delegateImage

@@ -736,9 +736,9 @@ open class IMGLYCameraViewController: UIViewController {
             } else {
                 cameraController?.stopVideoRecording()
                 self.dismiss(animated: true) {
-                    guard  let save = self.comlitionSave else { return }
-                    save(false)
-                    save(true)
+//                    guard  let save = self.comlitionSave else { return }
+//                    save(false)
+//                    save(true)
                     
                 }
             }
@@ -1088,14 +1088,16 @@ fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePicke
 
 extension IMGLYCameraViewController: CameraCloseDelegate{
     public func close(photoPickerClosed: Bool) {
-        self.dismiss(animated: true) {
-            guard  let complition = self.comlitionSave else { return }
-            if let gallery = self.galleryDelegate{
-                gallery.openGallery(complition: complition)
-            }else{
-                complition(photoPickerClosed)
+        DispatchQueue.main.async {
+            self.dismiss(animated: true) {
+                guard  let complition = self.comlitionSave else { return }
+                if let gallery = self.galleryDelegate{
+                    gallery.openGallery(complition: complition)
+                }else{
+                    complition(photoPickerClosed)
+                }
+                
             }
-        
         }
     }
     public func present(view: UIViewController) {
