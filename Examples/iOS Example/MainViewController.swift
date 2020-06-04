@@ -57,7 +57,7 @@ class MainViewController: UIViewController {
             }else{
                 print("Не закрываем и выделяем")
             }
-        }, withCamera: true, afterOpenGallery: self)
+        }, withCamera: false, afterOpenGallery: self)
 
     }
 

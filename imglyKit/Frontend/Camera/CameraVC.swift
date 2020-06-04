@@ -1030,11 +1030,11 @@ extension IMGLYCameraViewController: IMGLYCameraControllerDelegate {
     public func cameraControllerDidFinishRecording(_ cameraController: IMGLYCameraController, fileURL: URL) {
         DispatchQueue.main.async {
             self.updateUIForStoppedRecording()
-            if let completionBlock = self.completionBlock {
-                completionBlock(nil, fileURL)
-            } else {
+//            if let completionBlock = self.completionBlock {
+//                completionBlock(nil, fileURL)
+//            } else {
                 self.saveMovieWithMovieURLToAssets(fileURL)
-            }
+//            }
         }
     }
     

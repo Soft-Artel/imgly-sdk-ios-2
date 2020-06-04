@@ -278,6 +278,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                         }
                     })
                 }else{
+                    UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
                     if let delegate = self.delegateEditor
                     {
                         delegate.saveImage(processedImage)
