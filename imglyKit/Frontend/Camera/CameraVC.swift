@@ -602,15 +602,15 @@ open class IMGLYCameraViewController: UIViewController {
     }
     
     fileprivate func saveMovieWithMovieURLToAssets(_ movieURL: URL) {
-        guard PhotoEditor.saveToAlbum else{
-            do {
-                let data = try Data(contentsOf: movieURL)
-                self.delegateEditor?.saveVideo(with: data)
-                try FileManager.default.removeItem(at: movieURL)
-            } catch _ {
-            }
-            return
-        }
+//        guard PhotoEditor.saveToAlbum else{
+//            do {
+//                let data = try Data(contentsOf: movieURL)
+//                self.delegateEditor?.saveVideo(with: data)
+//                try FileManager.default.removeItem(at: movieURL)
+//            } catch _ {
+//            }
+//            return
+//        }
         PHPhotoLibrary.shared().performChanges({
             PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: movieURL)
             }) { success, error in
