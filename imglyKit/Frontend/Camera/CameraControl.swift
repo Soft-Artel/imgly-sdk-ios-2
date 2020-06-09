@@ -719,14 +719,14 @@ open class IMGLYCameraController: NSObject {
         checkSDKVersion()
         checkDeviceAuthorizationStatus()
         
-        guard let glContext = EAGLContext(api: .openGLES2) else {
+        guard let glContext = EAGLContext(api: .openGLES3) else {
             return
         }
-        
-        videoPreviewView = GLKView(frame: CGRect.zero, context: glContext)
+        //менять размер камеры тут
+        videoPreviewView = GLKView(frame: CGRect(x: 0, y: 40, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width), context: glContext)
         videoPreviewView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         videoPreviewView!.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2)
-        videoPreviewView!.frame = previewView.bounds
+//        videoPreviewView!.frame = previewView.bounds
         
         previewView.addSubview(videoPreviewView!)
         previewView.sendSubviewToBack(videoPreviewView!)
@@ -904,7 +904,10 @@ open class IMGLYCameraController: NSObject {
             } catch {
                 fatalError()
             }
-            device.torchMode = self.realmTorchMode
+            
+            if device.isTorchModeSupported(self.realmTorchMode){
+                device.torchMode = self.realmTorchMode
+            }
             device.unlockForConfiguration()
         }
         
