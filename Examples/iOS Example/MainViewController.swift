@@ -50,7 +50,7 @@ class MainViewController: UIViewController {
 //        let editor = PhotoEditor(image: image, delegate: self, parent: self)
 //        editor.startEditing()
         let editor = PhotoEditor(image: nil, delegate: self, parent: self, complit: nil)
-        
+    
         editor.openCamera(with: { (isOnlyPicker) in
             if isOnlyPicker{
                 print("Закрываем тоже его")
