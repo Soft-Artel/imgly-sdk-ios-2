@@ -36,6 +36,8 @@ open class IMGLYCameraViewController: UIViewController {
     
     public var comlitionSave: ((Bool) -> ())? = nil
     
+    private var orientation: AVCaptureVideoOrientation = .portrait
+    
     public convenience init() {
         self.init(recordingModes: [.photo, .video])
     }
@@ -348,7 +350,7 @@ open class IMGLYCameraViewController: UIViewController {
     
     fileprivate func configureViewHierarchy() {
         view.addSubview(backgroundContainerView)
-        view.addSubview(cameraPreviewContainer)
+        self.backgroundContainerView.addSubview(cameraPreviewContainer)
         view.addSubview(topControlsView)
         view.addSubview(bottomControlsView)
         
@@ -388,10 +390,9 @@ open class IMGLYCameraViewController: UIViewController {
         ]
         
         let metrics: [String : AnyObject] = [
-            "topControlsViewHeight" : 34 as AnyObject,
+            "topControlsViewHeight" : 44 as AnyObject,
             "filterSelectionViewHeight" : FilterSelectionViewHeight as AnyObject,
             "topControlMargin" : 20 as AnyObject,
-            "topControlMinWidth" : 44 as AnyObject,
             "filterIntensitySliderLeftRightMargin" : 10 as AnyObject
         ]
         
@@ -409,21 +410,21 @@ open class IMGLYCameraViewController: UIViewController {
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[bottomControlsView]|", options: [], metrics: nil, views: views))
         
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-(==filterIntensitySliderLeftRightMargin)-[filterIntensitySlider]-(==filterIntensitySliderLeftRightMargin)-|", options: [], metrics: metrics, views: views))
-
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[topLayoutGuide][topControlsView(==topControlsViewHeight)]", options: [], metrics: metrics, views: views))
         
         view.addConstraint(NSLayoutConstraint(item: filterIntensitySlider, attribute: .bottom, relatedBy: .equal, toItem: bottomControlsView, attribute: .top, multiplier: 1, constant: -20))
+        
+        self.topControlsView.heightAnchor.constraint(equalToConstant: 44).isActive = true
         
 //        cameraPreviewContainerTopConstraint = NSLayoutConstraint(item: cameraPreviewContainer, attribute: .top, relatedBy: .equal, toItem: topControlsView, attribute: .bottom, multiplier: 1, constant: 0)
 //        cameraPreviewContainerBottomConstraint = NSLayoutConstraint(item: cameraPreviewContainer, attribute: .bottom, relatedBy: .equal, toItem: bottomControlsView, attribute: .top, multiplier: 1, constant: 0)
 //        view.addConstraints([cameraPreviewContainerTopConstraint!, cameraPreviewContainerBottomConstraint!])
-        self.cameraPreviewContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.cameraPreviewContainer.topAnchor.constraint(equalTo: self.backgroundContainerView.topAnchor).isActive = true
         self.cameraPreviewPhoto = self.cameraPreviewContainer.bottomAnchor.constraint(equalTo: self.bottomControlsView.topAnchor)
         self.cameraPreviewPhoto?.isActive = true
-        self.cameraPreviewCamera = self.cameraPreviewContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        self.cameraPreviewCamera = self.cameraPreviewContainer.bottomAnchor.constraint(equalTo: self.backgroundContainerView.bottomAnchor)
         self.cameraPreviewCamera?.isActive = false
-        self.cameraPreviewContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        self.cameraPreviewContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        self.cameraPreviewContainer.leftAnchor.constraint(equalTo: self.backgroundContainerView.leftAnchor).isActive = true
+        self.cameraPreviewContainer.rightAnchor.constraint(equalTo: self.backgroundContainerView.rightAnchor).isActive = true
         
         if #available(iOS 11.0, *) {
             self.bottomControlsView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
@@ -438,9 +439,15 @@ open class IMGLYCameraViewController: UIViewController {
     }
     
     fileprivate func configureTopControlsConstraintsWithMetrics(_ metrics: [String : AnyObject], views: [String : AnyObject]) {
-        topControlsView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-(==topControlMargin)-[flashButton(>=topControlMinWidth)]-(>=topControlMargin)-[switchCameraButton(>=topControlMinWidth)]-(==topControlMargin)-|", options: [], metrics: metrics, views: views))
-        topControlsView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[flashButton]|", options: [], metrics: nil, views: views))
-        topControlsView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[switchCameraButton]|", options: [], metrics: nil, views: views))
+//        topControlsView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-(==topControlMargin)-[flashButton(>=topControlMinWidth)]-(>=topControlMargin)-[switchCameraButton(>=topControlMinWidth)]-(==topControlMargin)-|", options: [], metrics: metrics, views: views))
+//        topControlsView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[flashButton]|", options: [], metrics: nil, views: views))
+//        topControlsView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[switchCameraButton]|", options: [], metrics: nil, views: views))
+        
+        self.flashButton.leftAnchor.constraint(equalTo: self.topControlsView.leftAnchor, constant: 20).isActive = true
+        self.flashButton.centerYAnchor.constraint(equalTo: self.topControlsView.centerYAnchor).isActive = true
+
+        self.switchCameraButton.rightAnchor.constraint(equalTo: self.topControlsView.rightAnchor, constant: -20).isActive = true
+        self.switchCameraButton.centerYAnchor.constraint(equalTo: self.topControlsView.centerYAnchor).isActive = true
     }
     
     fileprivate func configureBottomControlsConstraintsWithMetrics(_ metrics: [String : AnyObject], views: [String : AnyObject]) {
@@ -538,17 +545,16 @@ open class IMGLYCameraViewController: UIViewController {
     fileprivate func updateFlashButton(with mode: AVCaptureDevice.TorchMode? = nil) {
         if let cameraController = cameraController {
             let bundle = Bundle(for: type(of: self))
-
+            let isHor = self.orientation == .portrait ? "" : self.orientation == .portraitUpsideDown ? "" : "_h"
             if currentRecordingMode == .photo {
                 flashButton.isHidden = !cameraController.flashAvailable
-                
                 switch(cameraController.flashMode) {
                 case .auto:
-                    self.flashButton.setImage(UIImage(named: "flash_auto", in: bundle, compatibleWith: nil), for: [])
+                    self.flashButton.setImage(UIImage(named: "flash_auto" + isHor, in: bundle, compatibleWith: nil), for: [])
                 case .on:
-                    self.flashButton.setImage(UIImage(named: "flash_on", in: bundle, compatibleWith: nil), for: [])
+                    self.flashButton.setImage(UIImage(named: "flash_on" + isHor, in: bundle, compatibleWith: nil), for: [])
                 case .off:
-                    self.flashButton.setImage(UIImage(named: "flash_off", in: bundle, compatibleWith: nil), for: [])
+                    self.flashButton.setImage(UIImage(named: "flash_off" + isHor, in: bundle, compatibleWith: nil), for: [])
                 default:
                     break
                 }
@@ -557,11 +563,11 @@ open class IMGLYCameraViewController: UIViewController {
                 
                 switch(mode ?? cameraController.torchMode) {
                 case .auto:
-                    self.flashButton.setImage(UIImage(named: "flash_auto", in: bundle, compatibleWith: nil), for: [])
+                    self.flashButton.setImage(UIImage(named: "flash_auto" + isHor, in: bundle, compatibleWith: nil), for: [])
                 case .on:
-                    self.flashButton.setImage(UIImage(named: "flash_on", in: bundle, compatibleWith: nil), for: [])
+                    self.flashButton.setImage(UIImage(named: "flash_on" + isHor, in: bundle, compatibleWith: nil), for: [])
                 case .off:
-                    self.flashButton.setImage(UIImage(named: "flash_off", in: bundle, compatibleWith: nil), for: [])
+                    self.flashButton.setImage(UIImage(named: "flash_off" + isHor, in: bundle, compatibleWith: nil), for: [])
                 default:
                     break
                 }
@@ -795,6 +801,19 @@ open class IMGLYCameraViewController: UIViewController {
 }
 
 extension IMGLYCameraViewController: IMGLYCameraControllerDelegate {
+    public func changeOrientation(orientation: AVCaptureVideoOrientation) {
+        self.orientation = orientation
+        let pi = CGFloat.pi / 2
+        let rotationAngle = orientation == .landscapeLeft ? -pi : orientation == .landscapeRight ? pi : 0
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2) {
+                self.flashButton.transform = CGAffineTransform(rotationAngle: rotationAngle)
+                self.updateFlashButton()
+                self.switchCameraButton.transform = CGAffineTransform(rotationAngle: rotationAngle)
+            }
+        }
+    }
+    
     public func cameraControllerDidStartCamera(_ cameraController: IMGLYCameraController) {
         DispatchQueue.main.async {
             self.buttonsEnabled = true

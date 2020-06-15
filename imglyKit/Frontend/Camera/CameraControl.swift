@@ -74,6 +74,7 @@ private var FocusAndExposureContext = 0
     @objc optional func cameraController(_ cameraController: IMGLYCameraController, recordedSeconds seconds: Int)
     @objc optional func cameraControllerDidFinishRecording(_ cameraController: IMGLYCameraController, fileURL: URL)
     @objc optional func cameraControllerDidFailRecording(_ cameraController: IMGLYCameraController, error: NSError?)
+    func changeOrientation(orientation: AVCaptureVideoOrientation)
 }
 
 public typealias IMGLYTakePhotoBlock = (UIImage?, Error?) -> Void
@@ -947,23 +948,24 @@ open class IMGLYCameraController: NSObject {
         
         // Used to determine device orientation even if orientation lock is active
         motionManager.startAccelerometerUpdates(to: motionManagerQueue, withHandler: { accelerometerData, _ in
-//            guard let accelerometerData = accelerometerData else {
-//                return
-//            }
-//
-//            if abs(accelerometerData.acceleration.y) < abs(accelerometerData.acceleration.x) {
-//                if accelerometerData.acceleration.x > 0 {
-//                    self.captureVideoOrientation = .landscapeLeft
-//                } else {
-//                    self.captureVideoOrientation = .landscapeRight
-//                }
-//            } else {
-//                if accelerometerData.acceleration.y > 0 {
-//                    self.captureVideoOrientation = .portraitUpsideDown
-//                } else {
+            guard let accelerometerData = accelerometerData else {
+                return
+            }
+
+            if abs(accelerometerData.acceleration.y) < abs(accelerometerData.acceleration.x) {
+                if accelerometerData.acceleration.x > 0 {
+                    self.captureVideoOrientation = .landscapeLeft
+                } else {
+                    self.captureVideoOrientation = .landscapeRight
+                }
+            } else {
+                if accelerometerData.acceleration.y > 0 {
+                    self.captureVideoOrientation = .portraitUpsideDown
+                } else {
                     self.captureVideoOrientation = .portrait
-//                }
-//            }
+                }
+            }
+            self.delegate?.changeOrientation(orientation: self.captureVideoOrientation ?? .portrait)
         })
     }
     
