@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 let InitialFilterIntensity = Float(0.75)
 private let ShowFilterIntensitySliderInterval = TimeInterval(2)
@@ -80,8 +81,15 @@ open class PhotoEditor{
             parentVC?.present(navigationController, animated: false, completion: nil)
         }
     }
-        
-    public func openCamera(with complitionSave: ((Bool) -> ())?, presentComplition: (() -> ())? = nil, withCamera: Bool, afterOpenGallery: GalleryDelegate? = nil){
+    
+    /// Используется для открытия камеры перед фоторедактором
+    /// - Parameters:
+    ///   - complitionSave: комплишен который вызывается после закрытия фотопикер возвращает true если были применены фильрры
+    ///   - presentComplition: комплишен который вызывается после соранения
+    ///   - withCamera: true фотопикер с видео камерой
+    ///   - afterOpenGallery: делегат который привязывается для открытие сторонней библиотеки или же контроллера
+    ///   - defaultIsFront: true открывает по дефолту фронталку
+    public func openCamera(with complitionSave: ((Bool) -> ())?, presentComplition: (() -> ())? = nil, withCamera: Bool = true, afterOpenGallery: GalleryDelegate? = nil, defaultIsFront: Bool = false){
         
         var recordingMode: [IMGLYRecordingMode] = [.photo]
         if withCamera{
@@ -96,6 +104,7 @@ open class PhotoEditor{
         cameraViewController.squareMode = false
         cameraViewController.delegateEditor = self.delegateImage
         cameraViewController.galleryDelegate = afterOpenGallery
+        cameraViewController.defaultIsFront = defaultIsFront
         
         self.cameraContoler = cameraViewController
         self.parentVC?.modalPresentationStyle = .fullScreen

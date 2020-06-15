@@ -234,6 +234,8 @@ open class IMGLYCameraViewController: UIViewController {
     
     open fileprivate(set) var cameraController: IMGLYCameraController?
     
+    internal var defaultIsFront: Bool = false
+    
     /// The maximum length of a video. If set to 0 the length is unlimited.
     open var maximumVideoLength: Int = 0 {
         didSet {
@@ -475,13 +477,14 @@ open class IMGLYCameraViewController: UIViewController {
     fileprivate func configureCameraController() {
         // Needed so that the framebuffer can bind to OpenGL ES
         view.layoutIfNeeded()
-        
-        cameraController = IMGLYCameraController(previewView: cameraPreviewContainer)
-        cameraController?.delegateImage = self.delegateEditor
-        cameraController!.delegate = self
-        cameraController!.setupWithInitialRecordingMode(currentRecordingMode)
+        let position: AVCaptureDevice.Position = self.defaultIsFront ? .front : .back
+        cameraController = IMGLYCameraController(previewView: cameraPreviewContainer, position: position)
+        guard let cameraController = self.cameraController else { return  }
+        cameraController.delegateImage = self.delegateEditor
+        cameraController.delegate = self
+        cameraController.setupWithInitialRecordingMode(currentRecordingMode, position: position)
         if maximumVideoLength > 0 {
-            cameraController!.maximumVideoLength = maximumVideoLength
+            cameraController.maximumVideoLength = maximumVideoLength
         }
     }
     

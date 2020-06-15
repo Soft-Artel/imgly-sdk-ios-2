@@ -144,13 +144,14 @@ open class IMGLYCameraController: NSObject {
     fileprivate var timeUpdateTimer: Timer?
     open var maximumVideoLength: Int?
     
-    
+    private var position: AVCaptureDevice.Position = .back
     
     // MARK: - Initializers
     
-    init(previewView: UIView) {
+    init(previewView: UIView, position: AVCaptureDevice.Position) {
         self.previewView = previewView
         self.squareMode = false
+        self.position = position
         super.init()
     }
     
@@ -705,13 +706,13 @@ open class IMGLYCameraController: NSObject {
     
     open func setup() {
         // For backwards compatibility
-        setupWithInitialRecordingMode(.photo)
+        setupWithInitialRecordingMode(.photo, position: self.position)
     }
     
     /**
     Initializes the camera and has to be called before calling `startCamera()` / `stopCamera()`
     */
-    open func setupWithInitialRecordingMode(_ recordingMode: IMGLYRecordingMode) {
+    open func setupWithInitialRecordingMode(_ recordingMode: IMGLYRecordingMode, position :AVCaptureDevice.Position) {
         if setupComplete {
             return
         }
@@ -734,7 +735,7 @@ open class IMGLYCameraController: NSObject {
         ciContext = CIContext(eaglContext: glContext)
         videoPreviewView!.bindDrawable()
         
-        setupWithPreferredCameraPosition(.back) {
+        setupWithPreferredCameraPosition(position) {
             if self.session.canSetSessionPreset(AVCaptureSession.Preset(rawValue: recordingMode.sessionPreset)) {
                 self.session.sessionPreset = AVCaptureSession.Preset(rawValue: recordingMode.sessionPreset)
             }
