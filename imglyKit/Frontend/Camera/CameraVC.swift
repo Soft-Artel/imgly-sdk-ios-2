@@ -269,8 +269,8 @@ open class IMGLYCameraViewController: UIViewController {
     open var completionBlock: IMGLYCameraCompletionBlock?
     
     fileprivate var centerModeButtonConstraint: NSLayoutConstraint?
-    fileprivate var cameraPreviewContainerTopConstraint: NSLayoutConstraint?
-    fileprivate var cameraPreviewContainerBottomConstraint: NSLayoutConstraint?
+    fileprivate var cameraPreviewPhoto: NSLayoutConstraint?
+    fileprivate var cameraPreviewCamera: NSLayoutConstraint?
     
     // MARK: - UIViewController
 
@@ -348,7 +348,7 @@ open class IMGLYCameraViewController: UIViewController {
     
     fileprivate func configureViewHierarchy() {
         view.addSubview(backgroundContainerView)
-        backgroundContainerView.addSubview(cameraPreviewContainer)
+        view.addSubview(cameraPreviewContainer)
         view.addSubview(topControlsView)
         view.addSubview(bottomControlsView)
         
@@ -405,7 +405,7 @@ open class IMGLYCameraViewController: UIViewController {
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[backgroundContainerView]|", options: [], metrics: nil, views: views))
         
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[topControlsView]|", options: [], metrics: nil, views: views))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[cameraPreviewContainer]|", options: [], metrics: nil, views: views))
+//        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[cameraPreviewContainer]|", options: [], metrics: nil, views: views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[bottomControlsView]|", options: [], metrics: nil, views: views))
         
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-(==filterIntensitySliderLeftRightMargin)-[filterIntensitySlider]-(==filterIntensitySliderLeftRightMargin)-|", options: [], metrics: metrics, views: views))
@@ -414,9 +414,16 @@ open class IMGLYCameraViewController: UIViewController {
         
         view.addConstraint(NSLayoutConstraint(item: filterIntensitySlider, attribute: .bottom, relatedBy: .equal, toItem: bottomControlsView, attribute: .top, multiplier: 1, constant: -20))
         
-        cameraPreviewContainerTopConstraint = NSLayoutConstraint(item: cameraPreviewContainer, attribute: .top, relatedBy: .equal, toItem: topControlsView, attribute: .bottom, multiplier: 1, constant: 0)
-        cameraPreviewContainerBottomConstraint = NSLayoutConstraint(item: cameraPreviewContainer, attribute: .bottom, relatedBy: .equal, toItem: bottomControlsView, attribute: .top, multiplier: 1, constant: 0)
-        view.addConstraints([cameraPreviewContainerTopConstraint!, cameraPreviewContainerBottomConstraint!])
+//        cameraPreviewContainerTopConstraint = NSLayoutConstraint(item: cameraPreviewContainer, attribute: .top, relatedBy: .equal, toItem: topControlsView, attribute: .bottom, multiplier: 1, constant: 0)
+//        cameraPreviewContainerBottomConstraint = NSLayoutConstraint(item: cameraPreviewContainer, attribute: .bottom, relatedBy: .equal, toItem: bottomControlsView, attribute: .top, multiplier: 1, constant: 0)
+//        view.addConstraints([cameraPreviewContainerTopConstraint!, cameraPreviewContainerBottomConstraint!])
+        self.cameraPreviewContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.cameraPreviewPhoto = self.cameraPreviewContainer.bottomAnchor.constraint(equalTo: self.bottomControlsView.topAnchor)
+        self.cameraPreviewPhoto?.isActive = true
+        self.cameraPreviewCamera = self.cameraPreviewContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        self.cameraPreviewCamera?.isActive = false
+        self.cameraPreviewContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        self.cameraPreviewContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         
         if #available(iOS 11.0, *) {
             self.bottomControlsView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
@@ -503,25 +510,8 @@ open class IMGLYCameraViewController: UIViewController {
     }
     
     fileprivate func updateConstraintsForRecordingMode(_ recordingMode: IMGLYRecordingMode) {
-        if let cameraPreviewContainerTopConstraint = cameraPreviewContainerTopConstraint {
-            view.removeConstraint(cameraPreviewContainerTopConstraint)
-        }
-        
-        if let cameraPreviewContainerBottomConstraint = cameraPreviewContainerBottomConstraint {
-            view.removeConstraint(cameraPreviewContainerBottomConstraint)
-        }
-        
-        
-//        switch recordingMode {
-//        case .photo:
-//            cameraPreviewContainerTopConstraint = NSLayoutConstraint(item: cameraPreviewContainer, attribute: .top, relatedBy: .equal, toItem: topControlsView, attribute: .bottom, multiplier: 1, constant: 0)
-//            cameraPreviewContainerBottomConstraint = NSLayoutConstraint(item: cameraPreviewContainer, attribute: .bottom, relatedBy: .equal, toItem: bottomControlsView, attribute: .top, multiplier: 1, constant: 0)
-//        case .video:
-            cameraPreviewContainerTopConstraint = NSLayoutConstraint(item: cameraPreviewContainer, attribute: .top, relatedBy: .equal, toItem: topLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
-            cameraPreviewContainerBottomConstraint = NSLayoutConstraint(item: cameraPreviewContainer, attribute: .bottom, relatedBy: .equal, toItem: bottomLayoutGuide, attribute: .top, multiplier: 1, constant: 0)
-//        }
-        
-        view.addConstraints([cameraPreviewContainerTopConstraint!, cameraPreviewContainerBottomConstraint!])
+        self.cameraPreviewPhoto?.isActive = recordingMode == .photo
+        self.cameraPreviewCamera?.isActive = recordingMode == .video        
     }
     
     fileprivate func updateViewsForRecordingMode(_ recordingMode: IMGLYRecordingMode) {
