@@ -561,7 +561,7 @@ open class IMGLYCameraViewController: UIViewController {
             } else if currentRecordingMode == .video {
                 flashButton.isHidden = !cameraController.torchAvailable
                 
-                switch(mode ?? cameraController.torchMode) {
+                switch(mode ?? cameraController.realmTorchMode) {
                 case .auto:
                     self.flashButton.setImage(UIImage(named: "flash_auto" + isHor, in: bundle, compatibleWith: nil), for: [])
                 case .on:

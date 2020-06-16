@@ -473,7 +473,7 @@ open class IMGLYCameraController: NSObject {
         self.torchMode = nextTorchMode
     }
     
-    fileprivate var realmTorchMode: AVCaptureDevice.TorchMode = .auto
+    internal var realmTorchMode: AVCaptureDevice.TorchMode = .auto
     
     open fileprivate(set) var torchMode: AVCaptureDevice.TorchMode {
         get {
