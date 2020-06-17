@@ -29,7 +29,7 @@ open class PhotoEditor{
     var complitionSave : ((Bool) -> ())? = nil
     
     var cameraContoler: CameraCloseDelegate? = nil
-    public init(image: UIImage?, delegate: SaveImageDelegate? = nil ,parent: UIViewController?, complit: ((Bool) -> ())? = nil, saveToSimplanum: Bool = true) {
+    public init(image: UIImage?, delegate: SaveImageDelegate? = nil ,parent: UIViewController?, complit: ((Bool) -> ())? = nil, saveToSimplanum: Bool = false) {
         PhotoEditor.saveToAlbum = saveToSimplanum
         self.image = image
         self.delegateImage = delegate

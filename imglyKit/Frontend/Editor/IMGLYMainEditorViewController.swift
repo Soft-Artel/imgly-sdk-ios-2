@@ -247,7 +247,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     }
     
     // MARK: - EditorViewController
-    
+    var processedImage: UIImage? = nil
     override open func tappedDone(_ sender: UIBarButtonItem?) {
         
         guard let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage!, filters: self.fixedFilterStack.activeFilters) else {
@@ -259,54 +259,47 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
         dismiss(animated: true) {
             guard let delegate = self.delegateEditor else {
                 self.cameraDelegate?.close(photoPickerClosed: false)
-                UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
-                guard let complition = self.photoPickerComplition else{ return }
-                complition(true)
+                UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.photoPickerCompliti), nil)
+                
                 return
             }
-            if let delegateCam = self.cameraDelegate{
-                if PhotoEditor.saveToAlbum || self.animateSeque{
-                    let image = processedImage
-                    CustomPhotoAlbum.sharedInstance.saveImage(image: image, complition:{
-                        guard let delegateCam = self.cameraDelegate else {return}
-                        DispatchQueue.main.async {
-                            if !self.animateSeque, let delegate = self.delegateEditor
-                            {
-                                delegate.saveImage(processedImage)
-                            }
-                            delegateCam.close(photoPickerClosed: false)
-                        }
-                    })
-                }else{
-                    UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
-                    if let delegate = self.delegateEditor
-                    {
-                        delegate.saveImage(processedImage)
-                    }
-                    delegateCam.close(photoPickerClosed: !self.animateSeque)
-                }
-                
-            }else{
+            guard self.cameraDelegate != nil else{
                 delegate.saveImage(processedImage)
+                return
             }
             
+            if PhotoEditor.saveToAlbum || self.animateSeque{
+                let image = processedImage
+                CustomPhotoAlbum.sharedInstance.saveImage(image: image, complition:{
+                    guard let delegateCam = self.cameraDelegate else {return}
+                    DispatchQueue.main.async {
+                        if !self.animateSeque, let delegate = self.delegateEditor
+                        {
+                            delegate.saveImage(processedImage)
+                        }
+                        delegateCam.close(photoPickerClosed: false)
+                    }
+                })
+            }else{
+                UIImageWriteToSavedPhotosAlbum(processedImage, self, #selector(self.saveToDefaultAlbumCompition), nil)
+            }
         }
     }
     
-    @objc fileprivate func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-        if let error = error {
-            // we got back an error!
-            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            present(ac, animated: true)
-        } else {
-            let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            present(ac, animated: true)
+    @objc func photoPickerCompliti( image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer){
+        guard let complition = self.photoPickerComplition else{ return }
+        complition(true)
+    }
+    
+    @objc func saveToDefaultAlbumCompition(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer){
+        let processedImage = image
+        if let delegate = self.delegateEditor
+        {
+            delegate.saveImage(processedImage)
         }
+         self.cameraDelegate!.close(photoPickerClosed: !self.animateSeque)
+    }
         
-    }
-    
     @objc fileprivate func cancelTapped(_ sender: UIBarButtonItem?) {
         if let completionBlock = completionBlock {
             completionBlock(.cancel, nil)
