@@ -268,7 +268,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                 return
             }
             
-            if PhotoEditor.saveToAlbum || self.animateSeque{
+            if PhotoEditor.saveToAlbum{
                 let image = processedImage
                 CustomPhotoAlbum.sharedInstance.saveImage(image: image, complition:{
                     guard let delegateCam = self.cameraDelegate else {return}
