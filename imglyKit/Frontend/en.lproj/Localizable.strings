@@ -19,7 +19,7 @@
 // Main Editor
 "Editor" = "Editor";
 "main-editor.title" = "Editor";
-"main-editor.button.magic" = "Magic";
+"main-editor.button.magic" = "Auto";
 "main-editor.button.filter" = "Filter";
 "main-editor.button.stickers" = "Stickers";
 "main-editor.button.orientation" = "Orientation";

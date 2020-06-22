@@ -61,7 +61,7 @@ open class IMGLYFontSelectorView: UIScrollView {
         contentSize = CGSize(width: frame.size.width - 1.0, height: kDistanceBetweenButtons * CGFloat(subviews.count - 2))
     }
     
-    @objc fileprivate func buttonTouchedUpInside(_ button: UIButton) {
+    @objc func buttonTouchedUpInside(_ button: UIButton) {
         selectorDelegate?.fontSelectorView(self, didSelectFontWithName: button.titleLabel!.text!)
     }
  }

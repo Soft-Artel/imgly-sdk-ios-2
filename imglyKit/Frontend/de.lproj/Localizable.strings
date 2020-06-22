@@ -19,7 +19,7 @@
 // Haupteditor
 "Editor" = "Editor";
 "main-editor.title" = "Editor";
-"main-editor.button.magic" = "Magic";
+"main-editor.button.magic" = "AUTO";
 "main-editor.button.filter" = "Filter";
 "main-editor.button.stickers" = "Aufkleber";
 "main-editor.button.orientation" = "Orientierung";

@@ -93,13 +93,25 @@ open class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
         IMGLYInstanceFactory.fontImporter().importFonts()
         
         navigationItem.rightBarButtonItem?.isEnabled = false
-        configureColorSelectorView()
-        configureTextClipView()
-        configureTextField()
-        configureTextLabel()
-        configureFontSelectorView()
-        registerForKeyboardNotifications()
-        configureGestureRecognizers()
+        self.configureColorSelectorView()
+        self.configureTextClipView()
+        self.configureTextField()
+        self.configureTextLabel()
+        self.configureFontSelectorView()
+        self.registerForKeyboardNotifications()
+        self.configureGestureRecognizers()
+    }
+    
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.fontSelectorView(self.fontSelectorView, didSelectFontWithName: "AmericanTypewriter")//зашлушка в случае отсутствия текстов
+
+    }
+
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.fontSelectorContainerView.isHidden = true
+
     }
     
     override open func viewDidLayoutSubviews() {

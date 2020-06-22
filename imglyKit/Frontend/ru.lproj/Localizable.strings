@@ -18,7 +18,7 @@
 
 // Main Editor
 "main-editor.title" = "Редактор";
-"main-editor.button.magic" = "Magic";
+"main-editor.button.magic" = "Авто";
 "main-editor.button.filter" = "Фильтр";
 "main-editor.button.stickers" = "Стикеры";
 "main-editor.button.orientation" = "Ориентация";
@@ -65,7 +65,7 @@
 "saturation-editor.title" = "Насыщеность";
 
 // Text Editor
-"text-editor.title" = "Text";
+"text-editor.title" = "Текст";
 
 "boy-min"  = "boy-min";
 "close-min" = "close-min";
