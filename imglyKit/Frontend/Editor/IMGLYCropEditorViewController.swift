@@ -18,8 +18,11 @@ import UIKit
 public let MinimumCropSize = CGFloat(50)
 
 open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
-
+    
     // MARK: - Properties
+    
+    public var doneBtn = UIButton()
+    public var cancelBtn = UIButton()
     
     open fileprivate(set) lazy var freeRatioButton: IMGLYImageCaptionButton = {
         let bundle = Bundle(for: type(of: self))
@@ -29,7 +32,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(IMGLYCropEditorViewController.activateFreeRatio(_:)), for: .touchUpInside)
         return button
-        }()
+    }()
     
     open fileprivate(set) lazy var oneToOneRatioButton: IMGLYImageCaptionButton = {
         let bundle = Bundle(for: type(of: self))
@@ -39,7 +42,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(IMGLYCropEditorViewController.activateOneToOneRatio(_:)), for: .touchUpInside)
         return button 
-        }()
+    }()
     
     open fileprivate(set) lazy var fourToThreeRatioButton: IMGLYImageCaptionButton = {
         let bundle = Bundle(for: type(of: self))
@@ -49,7 +52,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(IMGLYCropEditorViewController.activateFourToThreeRatio(_:)), for: .touchUpInside)
         return button
-        }()
+    }()
     
     open fileprivate(set) lazy var sixteenToNineRatioButton: IMGLYImageCaptionButton = {
         let bundle = Bundle(for: type(of: self))
@@ -59,7 +62,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(IMGLYCropEditorViewController.activateSixteenToNineRatio(_:)), for: .touchUpInside)
         return button
-        }()
+    }()
     
     fileprivate var selectedButton: IMGLYImageCaptionButton? {
         willSet(newSelectedButton) {
@@ -75,7 +78,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         let view = UIView()
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
         return view
-        }()
+    }()
     
     fileprivate let cropRectComponent = IMGLYInstanceFactory.cropRectComponent()
     open var selectionMode = IMGLYSelectionMode.free
@@ -85,7 +88,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
     fileprivate var cropRectTopBound = CGFloat(0)
     fileprivate var cropRectBottomBound = CGFloat(0)
     fileprivate var dragOffset = CGPoint.zero
-
+    
     // MARK: - UIViewController
     
     override open func viewDidLoad() {
@@ -97,7 +100,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         configureButtons()
         configureCropRect()
         selectedButton = freeRatioButton
-
+        
         fixedFilterStack.orientationCropFilter.trueCropRect = self.transparentRectView.frame
         fixedFilterStack.orientationCropFilter.trueCropRect.size.width = 2
         fixedFilterStack.orientationCropFilter.trueCropRect.size.height = 2
@@ -108,13 +111,13 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         let cropRect = fixedFilterStack.orientationCropFilter.cropRect
         if cropRect.origin.x != 0 || cropRect.origin.y != 0 ||
             cropRect.size.width != 1.0 || cropRect.size.height != 1.0 {
-
-                    self.view.setNeedsLayout()
-                    self.view.layoutIfNeeded()
-                    self.reCalculateCropRectBounds()
-                    self.setInitialCropRect()
-                    self.cropRectComponent.present(self.view.bounds)
-                
+            
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+            self.reCalculateCropRectBounds()
+            self.setInitialCropRect()
+            self.cropRectComponent.present(self.view.bounds)
+            
         } else {
             reCalculateCropRectBounds()
             setInitialCropRect()
@@ -134,7 +137,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
     open override func tappedDone(_ sender: UIBarButtonItem?) {
         fixedFilterStack.orientationCropFilter.trueCropRect = self.transparentRectView.frame
         fixedFilterStack.orientationCropFilter.cropRect = normalizedCropRect()
-
+        
         updatePreviewImageWithCompletion {
             super.tappedDone(sender)
         }
@@ -143,40 +146,40 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
     // MARK: - Configuration
     
     fileprivate func configureButtons() {
-        let buttonContainerView = UIView()
+        let buttonContainerView = UIStackView()
         buttonContainerView.translatesAutoresizingMaskIntoConstraints = false
         bottomContainerView.addSubview(buttonContainerView)
         
-        buttonContainerView.addSubview(freeRatioButton)
-        buttonContainerView.addSubview(oneToOneRatioButton)
-        buttonContainerView.addSubview(fourToThreeRatioButton)
-        buttonContainerView.addSubview(sixteenToNineRatioButton)
+        buttonContainerView.addArrangedSubview(self.cancelBtn)
+        buttonContainerView.addArrangedSubview(freeRatioButton)
+        buttonContainerView.addArrangedSubview(oneToOneRatioButton)
+        buttonContainerView.addArrangedSubview(fourToThreeRatioButton)
+        buttonContainerView.addArrangedSubview(sixteenToNineRatioButton)
+        buttonContainerView.addArrangedSubview(self.doneBtn)
         
-        let views = [
-            "buttonContainerView" : buttonContainerView,
-            "freeRatioButton" : freeRatioButton,
-            "oneToOneRatioButton" : oneToOneRatioButton,
-            "fourToThreeRatioButton" : fourToThreeRatioButton,
-            "sixteenToNineRatioButton" : sixteenToNineRatioButton
-        ]
         
-        let metrics = [
-            "buttonWidth" : 70
-        ]
+        buttonContainerView.axis = .horizontal
+        buttonContainerView.alignment = .center
+        buttonContainerView.distribution = .fillEqually
         
-        // Button Constraints
+        buttonContainerView.topAnchor.constraint(equalTo: self.bottomContainerView.topAnchor).isActive = true
+        buttonContainerView.bottomAnchor.constraint(equalTo: self.bottomContainerView.bottomAnchor).isActive = true
+        buttonContainerView.rightAnchor.constraint(equalTo: self.bottomContainerView.rightAnchor).isActive = true
+        buttonContainerView.leftAnchor.constraint(equalTo: self.bottomContainerView.leftAnchor).isActive = true
         
-        buttonContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[freeRatioButton(==buttonWidth)][oneToOneRatioButton(==freeRatioButton)][fourToThreeRatioButton(==freeRatioButton)][sixteenToNineRatioButton(==freeRatioButton)]|", options: [], metrics: metrics, views: views))
-        buttonContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[freeRatioButton]|", options: [], metrics: nil, views: views))
-        buttonContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[oneToOneRatioButton]|", options: [], metrics: nil, views: views))
-        buttonContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[fourToThreeRatioButton]|", options: [], metrics: nil, views: views))
-        buttonContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[sixteenToNineRatioButton]|", options: [], metrics: nil, views: views))
+        let bundle = Bundle(for: type(of: self))
         
-        // Container Constraints
+        self.cancelBtn.setImage(UIImage(named: "cancel", in: bundle, compatibleWith: nil), for: [])
+        self.doneBtn.setImage(UIImage(named: "done", in: bundle, compatibleWith: nil), for: [])
         
-        bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[buttonContainerView]|", options: [], metrics: nil, views: views))
-        bottomContainerView.addConstraint(NSLayoutConstraint(item: buttonContainerView, attribute: .centerX, relatedBy: .equal, toItem: bottomContainerView, attribute: .centerX, multiplier: 1, constant: 0))
+        self.doneBtn.addTarget(self, action: #selector(self.tappedDone(_:)), for: .touchUpInside)
+        self.cancelBtn.addTarget(self, action: #selector(self.tappedCancel), for: .touchUpInside)
     }
+    
+//    @objc open override func tappedCancel(){
+//        self.navigationController?.popViewController(animated: true)
+//        self.dismiss(animated: true, completion: nil)
+//    }
     
     fileprivate func configureCropRect() {
         view.addSubview(transparentRectView)
@@ -285,9 +288,9 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
     
     fileprivate func recalculateCropRectFromTopLeftAnchor() {
         cropRectComponent.cropRect = CGRect(x: cropRectComponent.topLeftAnchor_!.center.x,
-            y: cropRectComponent.topLeftAnchor_!.center.y,
-            width: cropRectComponent.bottomRightAnchor_!.center.x - cropRectComponent.topLeftAnchor_!.center.x,
-            height: cropRectComponent.bottomRightAnchor_!.center.y - cropRectComponent.topLeftAnchor_!.center.y)
+                                            y: cropRectComponent.topLeftAnchor_!.center.y,
+                                            width: cropRectComponent.bottomRightAnchor_!.center.x - cropRectComponent.topLeftAnchor_!.center.x,
+                                            height: cropRectComponent.bottomRightAnchor_!.center.y - cropRectComponent.topLeftAnchor_!.center.y)
     }
     
     fileprivate func handlePanOnTopRight(_ recognizer:UIPanGestureRecognizer) {
@@ -337,9 +340,9 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
     
     fileprivate func recalculateCropRectFromTopRightAnchor() {
         cropRectComponent.cropRect = CGRect(x: cropRectComponent.bottomLeftAnchor_!.center.x,
-            y: cropRectComponent.topRightAnchor_!.center.y,
-            width: cropRectComponent.topRightAnchor_!.center.x - cropRectComponent.bottomLeftAnchor_!.center.x,
-            height: cropRectComponent.bottomLeftAnchor_!.center.y - cropRectComponent.topRightAnchor_!.center.y)
+                                            y: cropRectComponent.topRightAnchor_!.center.y,
+                                            width: cropRectComponent.topRightAnchor_!.center.x - cropRectComponent.bottomLeftAnchor_!.center.x,
+                                            height: cropRectComponent.bottomLeftAnchor_!.center.y - cropRectComponent.topRightAnchor_!.center.y)
     }
     
     
@@ -516,7 +519,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
     
     fileprivate func setCropRectForSelectionRatio() {
         let size = CGSize(width: cropRectRightBound - cropRectLeftBound,
-            height: cropRectBottomBound - cropRectTopBound)
+                          height: cropRectBottomBound - cropRectTopBound)
         var rectWidth = size.width
         var rectHeight = rectWidth
         if size.width > size.height {

@@ -18,7 +18,7 @@ open class IMGLYTextColorSelectorView: UIScrollView, UIPopoverPresentationContro
     fileprivate var colorArray = [UIColor]()
     fileprivate var buttonArray = [IMGLYColorButton]()
     fileprivate let blur = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-    fileprivate let kButtonYPosition = CGFloat(22)
+    fileprivate let kButtonYPosition = CGFloat(0)
     fileprivate let kButtonXPositionOffset = CGFloat(5)
     fileprivate let kButtonDistance = CGFloat(10)
     fileprivate let kButtonSideLength = CGFloat(50)

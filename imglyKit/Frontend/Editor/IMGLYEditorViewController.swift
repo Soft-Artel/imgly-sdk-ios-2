@@ -60,6 +60,7 @@ open class IMGLYEditorViewController: UIViewController {
     
     override open func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.isHidden = true
         configureNavigationItems()
         configureViewHierarchy()
         configureViewConstraints()
@@ -130,5 +131,10 @@ open class IMGLYEditorViewController: UIViewController {
     
     @objc open func tappedDone(_ sender: UIBarButtonItem?) {
         
+    }
+    
+    @objc open func tappedCancel(){
+        self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true, completion: nil)
     }
 }

@@ -1,23 +1,23 @@
 {
   "images" : [
     {
+      "filename" : "iconfinder_edit_3689649 1.png",
       "idiom" : "universal",
-      "filename" : "Group-1.png",
       "scale" : "1x"
     },
     {
+      "filename" : "iconfinder_edit_3689649 1@2x.png",
       "idiom" : "universal",
-      "filename" : "Group.png",
       "scale" : "2x"
     },
     {
+      "filename" : "iconfinder_edit_3689649 1@3x.png",
       "idiom" : "universal",
-      "filename" : "Group@2x.png",
       "scale" : "3x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }

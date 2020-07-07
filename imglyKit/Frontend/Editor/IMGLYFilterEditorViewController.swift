@@ -12,8 +12,11 @@ open class IMGLYFilterEditorViewController: IMGLYSubEditorViewController {
     
     // MARK: - Properties
     
+    public var doneBtn = UIButton()
+    public var cancelBtn = UIButton()
+    
     private var filterSelectionController: IMGLYFilterSelectionController?
-
+    
     open fileprivate(set) lazy var filterIntensitySlider: UISlider = {
         let bundle = Bundle(for: type(of: self))
         let slider = UISlider()
@@ -31,7 +34,7 @@ open class IMGLYFilterEditorViewController: IMGLYSubEditorViewController {
         slider.setThumbImage(sliderThumbImage, for: .highlighted)
         
         return slider
-        }()
+    }()
     
     fileprivate var changeTimer: Timer?
     fileprivate var updateInterval: TimeInterval = 0.01
@@ -40,11 +43,11 @@ open class IMGLYFilterEditorViewController: IMGLYSubEditorViewController {
     
     override open func viewDidLoad() {
         super.viewDidLoad()
-
+        
         if self.filterSelectionController != nil{
             self.filterSelectionController = nil
         }
-
+        
         self.filterSelectionController = IMGLYFilterSelectionController()
         let image = self.previewImageView.image
         self.filterSelectionController?.previewImage = image
@@ -88,7 +91,7 @@ open class IMGLYFilterEditorViewController: IMGLYSubEditorViewController {
             self?.updatePreviewImage()
         }
         
-       self.filterSelectionController?.activeFilterType = { [weak self] in
+        self.filterSelectionController?.activeFilterType = { [weak self] in
             if let fixedFilterStack = self?.fixedFilterStack {
                 return fixedFilterStack.effectFilter.filterType
             }
@@ -96,14 +99,39 @@ open class IMGLYFilterEditorViewController: IMGLYSubEditorViewController {
             return nil
         }
         
-        let views = [ "filterSelectionView" : self.filterSelectionController!.view! ]
+        let bundle = Bundle(for: type(of: self))
+        
+        self.bottomContainerView.addSubview(self.doneBtn)
+        self.doneBtn.translatesAutoresizingMaskIntoConstraints = false
+        self.doneBtn.rightAnchor.constraint(equalTo: self.bottomContainerView.rightAnchor, constant: -15).isActive = true
+        self.doneBtn.centerYAnchor.constraint(equalTo: self.bottomContainerView.centerYAnchor).isActive = true
+        self.doneBtn.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        self.doneBtn.widthAnchor.constraint(equalTo: self.doneBtn.heightAnchor).isActive = true
+        
+        self.doneBtn.setImage(UIImage(named: "done", in: bundle, compatibleWith: nil), for: [])
+        
+        self.bottomContainerView.addSubview(self.cancelBtn)
+        self.cancelBtn.translatesAutoresizingMaskIntoConstraints = false
+        self.cancelBtn.leftAnchor.constraint(equalTo: self.bottomContainerView.leftAnchor, constant: 15).isActive = true
+        self.cancelBtn.centerYAnchor.constraint(equalTo: self.bottomContainerView.centerYAnchor).isActive = true
+        self.cancelBtn.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        self.cancelBtn.widthAnchor.constraint(equalTo: self.cancelBtn.heightAnchor).isActive = true
+        
+        self.cancelBtn.setImage(UIImage(named: "cancel", in: bundle, compatibleWith: nil), for: [])
+        
+        self.doneBtn.addTarget(self, action: #selector(self.tappedDone(_:)), for: .touchUpInside)
+        self.cancelBtn.addTarget(self, action: #selector(self.tappedCancel), for: .touchUpInside)
         
         addChild(self.filterSelectionController!)
         self.filterSelectionController?.didMove(toParent: self)
         bottomContainerView.addSubview(self.filterSelectionController!.view)
         
-         bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[filterSelectionView]|", options: [], metrics: nil, views: views))
-        bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[filterSelectionView]|", options: [], metrics: nil, views: views))
+        self.bottomContainerView.translatesAutoresizingMaskIntoConstraints = false
+        self.filterSelectionController?.view.topAnchor.constraint(equalTo: self.bottomContainerView.topAnchor).isActive = true
+        self.filterSelectionController?.view.bottomAnchor.constraint(equalTo: self.bottomContainerView.bottomAnchor).isActive = true
+        self.filterSelectionController?.view.rightAnchor.constraint(equalTo: self.doneBtn.leftAnchor, constant: -20).isActive = true
+        self.filterSelectionController?.view.leftAnchor.constraint(equalTo: self.cancelBtn.rightAnchor, constant: 20).isActive = true
+        
     }
     
     fileprivate func configureFilterIntensitySlider() {

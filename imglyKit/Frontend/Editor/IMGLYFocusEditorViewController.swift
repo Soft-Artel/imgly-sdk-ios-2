@@ -9,8 +9,11 @@
 import UIKit
 
 open class IMGLYFocusEditorViewController: IMGLYSubEditorViewController {
-
+    
     // MARK: - Properties
+    
+    public var doneBtn = UIButton()
+    public var cancelBtn = UIButton()
     
     open fileprivate(set) lazy var offButton: IMGLYImageCaptionButton = {
         let bundle = Bundle(for: type(of: self))
@@ -20,7 +23,7 @@ open class IMGLYFocusEditorViewController: IMGLYSubEditorViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(IMGLYFocusEditorViewController.turnOff(_:)), for: .touchUpInside)
         return button
-        }()
+    }()
     
     open fileprivate(set) lazy var linearButton: IMGLYImageCaptionButton = {
         let bundle = Bundle(for: type(of: self))
@@ -30,7 +33,7 @@ open class IMGLYFocusEditorViewController: IMGLYSubEditorViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(IMGLYFocusEditorViewController.activateLinear(_:)), for: .touchUpInside)
         return button
-        }()
+    }()
     
     open fileprivate(set) lazy var radialButton: IMGLYImageCaptionButton = {
         let bundle = Bundle(for: type(of: self))
@@ -40,7 +43,7 @@ open class IMGLYFocusEditorViewController: IMGLYSubEditorViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(IMGLYFocusEditorViewController.activateRadial(_:)), for: .touchUpInside)
         return button
-        }()
+    }()
     
     fileprivate var selectedButton: IMGLYImageCaptionButton? {
         willSet(newSelectedButton) {
@@ -58,7 +61,7 @@ open class IMGLYFocusEditorViewController: IMGLYSubEditorViewController {
         view.isHidden = true
         view.alpha = 0
         return view
-        }()
+    }()
     
     fileprivate lazy var boxGradientView: IMGLYBoxGradientView = {
         let view = IMGLYBoxGradientView()
@@ -66,7 +69,7 @@ open class IMGLYFocusEditorViewController: IMGLYSubEditorViewController {
         view.isHidden = true
         view.alpha = 0
         return view
-        }()
+    }()
     
     // MARK: - UIViewController
     
@@ -99,36 +102,34 @@ open class IMGLYFocusEditorViewController: IMGLYSubEditorViewController {
     // MARK: - Configuration
     
     fileprivate func configureButtons() {
-        let buttonContainerView = UIView()
+        
+        let buttonContainerView = UIStackView()
         buttonContainerView.translatesAutoresizingMaskIntoConstraints = false
         bottomContainerView.addSubview(buttonContainerView)
         
-        buttonContainerView.addSubview(offButton)
-        buttonContainerView.addSubview(linearButton)
-        buttonContainerView.addSubview(radialButton)
+        buttonContainerView.addArrangedSubview(self.cancelBtn)
+        buttonContainerView.addArrangedSubview(offButton)
+        buttonContainerView.addArrangedSubview(linearButton)
+        buttonContainerView.addArrangedSubview(radialButton)
+        buttonContainerView.addArrangedSubview(self.doneBtn)
         
-        let views = [
-            "buttonContainerView" : buttonContainerView,
-            "offButton" : offButton,
-            "linearButton" : linearButton,
-            "radialButton" : radialButton
-        ]
         
-        let metrics = [
-            "buttonWidth" : 90
-        ]
+        buttonContainerView.axis = .horizontal
+        buttonContainerView.alignment = .center
+        buttonContainerView.distribution = .fillEqually
         
-        // Button Constraints
+        buttonContainerView.topAnchor.constraint(equalTo: self.bottomContainerView.topAnchor).isActive = true
+        buttonContainerView.bottomAnchor.constraint(equalTo: self.bottomContainerView.bottomAnchor).isActive = true
+        buttonContainerView.rightAnchor.constraint(equalTo: self.bottomContainerView.rightAnchor).isActive = true
+        buttonContainerView.leftAnchor.constraint(equalTo: self.bottomContainerView.leftAnchor).isActive = true
         
-        buttonContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[offButton(==buttonWidth)][linearButton(==offButton)][radialButton(==offButton)]|", options: [], metrics: metrics, views: views))
-        buttonContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[offButton]|", options: [], metrics: nil, views: views))
-        buttonContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[linearButton]|", options: [], metrics: nil, views: views))
-        buttonContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[radialButton]|", options: [], metrics: nil, views: views))
+        let bundle = Bundle(for: type(of: self))
         
-        // Container Constraints
+        self.cancelBtn.setImage(UIImage(named: "cancel", in: bundle, compatibleWith: nil), for: [])
+        self.doneBtn.setImage(UIImage(named: "done", in: bundle, compatibleWith: nil), for: [])
         
-        bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[buttonContainerView]|", options: [], metrics: nil, views: views))
-        bottomContainerView.addConstraint(NSLayoutConstraint(item: buttonContainerView, attribute: .centerX, relatedBy: .equal, toItem: bottomContainerView, attribute: .centerX, multiplier: 1, constant: 0))
+        self.doneBtn.addTarget(self, action: #selector(self.tappedDone(_:)), for: .touchUpInside)
+        self.cancelBtn.addTarget(self, action: #selector(self.tappedCancel), for: .touchUpInside)
     }
     
     fileprivate func configureGradientViews() {
@@ -199,12 +200,12 @@ open class IMGLYFocusEditorViewController: IMGLYSubEditorViewController {
     fileprivate func hideCircleGradientView() {
         UIView.animate(withDuration: TimeInterval(0.15), animations: {
             self.circleGradientView.alpha = 0.0
-            },
-            completion: { finished in
-                if(finished) {
-                    self.circleGradientView.isHidden = true
-                }
-            }
+        },
+                       completion: { finished in
+                        if(finished) {
+                            self.circleGradientView.isHidden = true
+                        }
+        }
         )
     }
     
@@ -218,15 +219,15 @@ open class IMGLYFocusEditorViewController: IMGLYSubEditorViewController {
     fileprivate func hideBoxGradientView() {
         UIView.animate(withDuration: TimeInterval(0.15), animations: {
             self.boxGradientView.alpha = 0.0
-            },
-            completion: { finished in
-                if(finished) {
-                    self.boxGradientView.isHidden = true
-                }
-            }
+        },
+                       completion: { finished in
+                        if(finished) {
+                            self.boxGradientView.isHidden = true
+                        }
+        }
         )
     }
-
+    
 }
 
 extension IMGLYFocusEditorViewController: IMGLYGradientViewDelegate {

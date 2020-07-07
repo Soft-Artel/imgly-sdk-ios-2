@@ -593,9 +593,10 @@ open class IMGLYCameraViewController: UIViewController {
         editorViewController.completionBlock = editorCompletionBlock
         
         let navigationController = IMGLYNavigationController(rootViewController: editorViewController)
-        navigationController.navigationBar.barStyle = .black
-        navigationController.navigationBar.isTranslucent = false
-        navigationController.navigationBar.titleTextAttributes = [ NSAttributedString.Key.foregroundColor : UIColor.white ]
+//        navigationController.navigationBar.barStyle = .black
+//        navigationController.navigationBar.isTranslucent = false
+//        navigationController.navigationBar.titleTextAttributes = [ NSAttributedString.Key.foregroundColor : UIColor.white ]
+        navigationController.navigationBar.isHidden = true
         
         self.present(navigationController, animated: true, completion: nil)
     }

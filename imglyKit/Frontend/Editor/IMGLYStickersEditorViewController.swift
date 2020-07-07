@@ -8,11 +8,11 @@
 
 import UIKit
 
-let StickersCollectionViewCellSize = CGSize(width: 90, height: 90)
+let StickersCollectionViewCellSize = CGSize(width: 60, height: 60)
 let StickersCollectionViewCellReuseIdentifier = "StickersCollectionViewCell"
 
 open class IMGLYStickersEditorViewController: IMGLYSubEditorViewController {
-
+    
     // MARK: - Properties
     
     open var stickersDataSource = IMGLYStickersDataSource()
@@ -20,10 +20,13 @@ open class IMGLYStickersEditorViewController: IMGLYSubEditorViewController {
         let view = UIView()
         view.clipsToBounds = true
         return view
-        }()
+    }()
     
     fileprivate var draggedView: UIView?
     fileprivate var tempStickerCopy = [CIFilter]()
+    
+    public var doneBtn = UIButton()
+    public var cancelBtn = UIButton()
     
     // MARK: - SubEditorViewController
     
@@ -78,7 +81,7 @@ open class IMGLYStickersEditorViewController: IMGLYSubEditorViewController {
         
         let bundle = Bundle(for: type(of: self))
         navigationItem.title = NSLocalizedString("stickers-editor.title", tableName: nil, bundle: bundle, value: "", comment: "")
-
+        
         configureStickersCollectionView()
         configureStickersClipView()
         configureGestureRecognizers()
@@ -100,6 +103,29 @@ open class IMGLYStickersEditorViewController: IMGLYSubEditorViewController {
     // MARK: - Configuration
     
     fileprivate func configureStickersCollectionView() {
+        let bundle = Bundle(for: type(of: self))
+        
+        self.bottomContainerView.addSubview(self.doneBtn)
+        self.doneBtn.translatesAutoresizingMaskIntoConstraints = false
+        self.doneBtn.rightAnchor.constraint(equalTo: self.bottomContainerView.rightAnchor, constant: -15).isActive = true
+        self.doneBtn.centerYAnchor.constraint(equalTo: self.bottomContainerView.centerYAnchor).isActive = true
+        self.doneBtn.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        self.doneBtn.widthAnchor.constraint(equalTo: self.doneBtn.heightAnchor).isActive = true
+        
+        self.doneBtn.setImage(UIImage(named: "done", in: bundle, compatibleWith: nil), for: [])
+        
+        self.bottomContainerView.addSubview(self.cancelBtn)
+        self.cancelBtn.translatesAutoresizingMaskIntoConstraints = false
+        self.cancelBtn.leftAnchor.constraint(equalTo: self.bottomContainerView.leftAnchor, constant: 15).isActive = true
+        self.cancelBtn.centerYAnchor.constraint(equalTo: self.bottomContainerView.centerYAnchor).isActive = true
+        self.cancelBtn.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        self.cancelBtn.widthAnchor.constraint(equalTo: self.cancelBtn.heightAnchor).isActive = true
+        
+        self.cancelBtn.setImage(UIImage(named: "cancel", in: bundle, compatibleWith: nil), for: [])
+        
+        self.doneBtn.addTarget(self, action: #selector(self.tappedDone(_:)), for: .touchUpInside)
+        self.cancelBtn.addTarget(self, action: #selector(self.tappedCancel), for: .touchUpInside)
+        
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = StickersCollectionViewCellSize
         flowLayout.scrollDirection = .horizontal
@@ -113,10 +139,12 @@ open class IMGLYStickersEditorViewController: IMGLYSubEditorViewController {
         collectionView.delegate = self
         collectionView.register(IMGLYStickerCollectionViewCell.self, forCellWithReuseIdentifier: StickersCollectionViewCellReuseIdentifier)
         
-        let views = [ "collectionView" : collectionView ]
-        bottomContainerView.addSubview(collectionView)
-        bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[collectionView]|", options: [], metrics: nil, views: views))
-        bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[collectionView]|", options: [], metrics: nil, views: views))
+        self.bottomContainerView.addSubview(collectionView)
+        collectionView.centerYAnchor.constraint(equalTo: self.bottomContainerView.centerYAnchor).isActive = true
+        collectionView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        collectionView.rightAnchor.constraint(equalTo: self.doneBtn.leftAnchor, constant: -20).isActive = true
+        collectionView.leftAnchor.constraint(equalTo: self.cancelBtn.rightAnchor,constant: 20).isActive = true
+        
     }
     
     fileprivate func configureStickersClipView() {
@@ -270,7 +298,7 @@ extension IMGLYStickersEditorViewController: UICollectionViewDelegate {
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: { () -> Void in
             imageView.transform = CGAffineTransform.identity
-            }, completion: nil)
+        }, completion: nil)
     }
 }
 

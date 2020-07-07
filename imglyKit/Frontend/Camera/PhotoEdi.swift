@@ -64,10 +64,11 @@ open class PhotoEditor{
         editorViewController.photoEditor = self.photoEditor
         editorViewController.cameraDelegate = self.cameraContoler
         let navigationController = IMGLYNavigationController(rootViewController: editorViewController)
-        navigationController.navigationBar.barStyle = .black
-        navigationController.navigationBar.isTranslucent = false
-        navigationController.navigationBar.titleTextAttributes = [ NSAttributedString.Key.foregroundColor : UIColor.white ]
+//        navigationController.navigationBar.barStyle = .black
+//        navigationController.navigationBar.isTranslucent = false
+//        navigationController.navigationBar.titleTextAttributes = [ NSAttributedString.Key.foregroundColor : UIColor.white ]
         navigationController.modalPresentationStyle = .overFullScreen
+        navigationController.navigationBar.isHidden = true
 
         if again{
             editorViewController.animateSeque = true

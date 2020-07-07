@@ -26,18 +26,21 @@ open class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
     fileprivate var distanceAtPinchBegin = CGFloat(0)
     fileprivate var beganTwoFingerPitch = false
     
+    public var doneBtn = UIButton()
+    public var cancelBtn = UIButton()
+    
     open fileprivate(set) lazy var textColorSelectorView: IMGLYTextColorSelectorView = {
         let view = IMGLYTextColorSelectorView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.menuDelegate = self
         return view
-        }()
+    }()
     
     open fileprivate(set) lazy var textClipView: UIView = {
         let view = UIView()
         view.clipsToBounds = true
         return view
-        }()
+    }()
     
     open fileprivate(set) lazy var textField: UITextField = {
         let textField = UITextField()
@@ -49,7 +52,7 @@ open class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
         textField.contentVerticalAlignment = .center
         textField.returnKeyType = UIReturnKeyType.done
         return textField
-        }()
+    }()
     
     open fileprivate(set) lazy var textLabel: UILabel = {
         let label = UILabel()
@@ -60,14 +63,14 @@ open class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
         label.clipsToBounds = true
         label.isUserInteractionEnabled = true
         return label
-        }()
+    }()
     
     open fileprivate(set) lazy var fontSelectorContainerView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .dark)
         let view = UIVisualEffectView(effect: blurEffect)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
-        }()
+    }()
     
     open fileprivate(set) lazy var fontSelectorView: IMGLYFontSelectorView = {
         let selector = IMGLYFontSelectorView()
@@ -83,10 +86,10 @@ open class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
     }
     
     // MARK: - UIViewController
-
+    
     override open func viewDidLoad() {
         super.viewDidLoad()
-
+        
         let bundle = Bundle(for: type(of: self))
         navigationItem.title = NSLocalizedString("text-editor.title", tableName: nil, bundle: bundle, value: "", comment: "")
         
@@ -105,13 +108,13 @@ open class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.fontSelectorView(self.fontSelectorView, didSelectFontWithName: "AmericanTypewriter")//зашлушка в случае отсутствия текстов
-
+        
     }
-
+    
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.fontSelectorContainerView.isHidden = true
-
+        
     }
     
     override open func viewDidLayoutSubviews() {
@@ -137,14 +140,38 @@ open class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
     // MARK: - Configuration
     
     fileprivate func configureColorSelectorView() {
-        bottomContainerView.addSubview(textColorSelectorView)
-
-        let views = [
-            "textColorSelectorView" : textColorSelectorView
-        ]
         
-        bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[textColorSelectorView]|", options: [], metrics: nil, views: views))
-        bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[textColorSelectorView]|", options: [], metrics: nil, views: views))
+        let bundle = Bundle(for: type(of: self))
+        
+        self.bottomContainerView.addSubview(self.doneBtn)
+        self.doneBtn.translatesAutoresizingMaskIntoConstraints = false
+        self.doneBtn.rightAnchor.constraint(equalTo: self.bottomContainerView.rightAnchor, constant: -15).isActive = true
+        self.doneBtn.centerYAnchor.constraint(equalTo: self.bottomContainerView.centerYAnchor).isActive = true
+        self.doneBtn.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        self.doneBtn.widthAnchor.constraint(equalTo: self.doneBtn.heightAnchor).isActive = true
+        
+        self.doneBtn.setImage(UIImage(named: "done", in: bundle, compatibleWith: nil), for: [])
+        self.doneBtn.addTarget(self, action: #selector(self.tappedDone(_:)), for: .touchUpInside)
+        
+        self.bottomContainerView.addSubview(self.cancelBtn)
+        self.cancelBtn.translatesAutoresizingMaskIntoConstraints = false
+        self.cancelBtn.leftAnchor.constraint(equalTo: self.bottomContainerView.leftAnchor, constant: 15).isActive = true
+        self.cancelBtn.centerYAnchor.constraint(equalTo: self.bottomContainerView.centerYAnchor).isActive = true
+        self.cancelBtn.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        self.cancelBtn.widthAnchor.constraint(equalTo: self.cancelBtn.heightAnchor).isActive = true
+        
+        self.cancelBtn.setImage(UIImage(named: "cancel", in: bundle, compatibleWith: nil), for: [])
+        
+        self.doneBtn.addTarget(self, action: #selector(self.tappedDone(_:)), for: .touchUpInside)
+        self.cancelBtn.addTarget(self, action: #selector(self.tappedCancel), for: .touchUpInside)
+        
+        self.bottomContainerView.addSubview(textColorSelectorView)
+        self.textColorSelectorView.translatesAutoresizingMaskIntoConstraints = false
+        self.textColorSelectorView.centerYAnchor.constraint(equalTo: self.doneBtn.centerYAnchor).isActive = true
+        self.textColorSelectorView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        self.textColorSelectorView.rightAnchor.constraint(equalTo: self.doneBtn.leftAnchor, constant: -20).isActive = true
+        self.textColorSelectorView.leftAnchor.constraint(equalTo: self.cancelBtn.rightAnchor, constant: 20).isActive = true
+        
     }
     
     fileprivate func configureTextClipView() {
@@ -167,7 +194,7 @@ open class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
         let views = [
             "fontSelectorContainerView" : fontSelectorContainerView,
             "fontSelectorView" : fontSelectorView
-        ] as [String : Any]
+            ] as [String : Any]
         
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[fontSelectorContainerView]|", options: [], metrics: nil, views: views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[fontSelectorContainerView]|", options: [], metrics: nil, views: views))
@@ -183,7 +210,7 @@ open class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
     fileprivate func configureGestureRecognizers() {
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(IMGLYTextEditorViewController.handlePan(_:)))
         textLabel.addGestureRecognizer(panGestureRecognizer)
-
+        
         let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(IMGLYTextEditorViewController.handlePinch(_:)))
         view.addGestureRecognizer(pinchGestureRecognizer)
     }

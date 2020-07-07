@@ -10,6 +10,8 @@ import UIKit
 
 open class IMGLYOrientationEditorViewController: IMGLYSubEditorViewController {
     
+    public var doneBtn = UIButton()
+    public var cancelBtn = UIButton()
     // MARK: - Properties
     
     open fileprivate(set) lazy var rotateLeftButton: IMGLYImageCaptionButton = {
@@ -20,7 +22,7 @@ open class IMGLYOrientationEditorViewController: IMGLYSubEditorViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(IMGLYOrientationEditorViewController.rotateLeft(_:)), for: .touchUpInside)
         return button
-        }()
+    }()
     
     open fileprivate(set) lazy var rotateRightButton: IMGLYImageCaptionButton = {
         let bundle = Bundle(for: type(of: self))
@@ -30,7 +32,7 @@ open class IMGLYOrientationEditorViewController: IMGLYSubEditorViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(IMGLYOrientationEditorViewController.rotateRight(_:)), for: .touchUpInside)
         return button
-        }()
+    }()
     
     open fileprivate(set) lazy var flipHorizontallyButton: IMGLYImageCaptionButton = {
         let bundle = Bundle(for: type(of: self))
@@ -40,7 +42,7 @@ open class IMGLYOrientationEditorViewController: IMGLYSubEditorViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(IMGLYOrientationEditorViewController.flipHorizontally(_:)), for: .touchUpInside)
         return button
-        }()
+    }()
     
     open fileprivate(set) lazy var flipVerticallyButton: IMGLYImageCaptionButton = {
         let bundle = Bundle(for: type(of: self))
@@ -50,13 +52,13 @@ open class IMGLYOrientationEditorViewController: IMGLYSubEditorViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(IMGLYOrientationEditorViewController.flipVertically(_:)), for: .touchUpInside)
         return button
-        }()
+    }()
     
     fileprivate lazy var transparentRectView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear//UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
         return view
-        }()
+    }()
     
     fileprivate let cropRectComponent = IMGLYInstanceFactory.cropRectComponent()
     fileprivate var cropRectLeftBound = CGFloat(0)
@@ -78,15 +80,15 @@ open class IMGLYOrientationEditorViewController: IMGLYSubEditorViewController {
     
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        
         let cropRect = fixedFilterStack.orientationCropFilter.cropRect
         if cropRect.origin.x != 0 || cropRect.origin.y != 0 ||
             cropRect.size.width != 1.0 || cropRect.size.height != 1.0 {
-                updatePreviewImageWithoutCropWithCompletion {
-                    self.view.layoutIfNeeded()
-                    self.cropRectComponent.present(self.view.bounds)
-                    self.layoutCropRectViews()
-                }
+            updatePreviewImageWithoutCropWithCompletion {
+                self.view.layoutIfNeeded()
+                self.cropRectComponent.present(self.view.bounds)
+                self.layoutCropRectViews()
+            }
         } else {
             layoutCropRectViews()
         }
@@ -119,39 +121,35 @@ open class IMGLYOrientationEditorViewController: IMGLYSubEditorViewController {
     // MARK: - Configuration
     
     fileprivate func configureButtons() {
-        let buttonContainerView = UIView()
+        let buttonContainerView = UIStackView()
         buttonContainerView.translatesAutoresizingMaskIntoConstraints = false
         bottomContainerView.addSubview(buttonContainerView)
         
-        buttonContainerView.addSubview(rotateLeftButton)
-        buttonContainerView.addSubview(rotateRightButton)
-        buttonContainerView.addSubview(flipHorizontallyButton)
-        buttonContainerView.addSubview(flipVerticallyButton)
+        buttonContainerView.addArrangedSubview(self.cancelBtn)
+        buttonContainerView.addArrangedSubview(rotateLeftButton)
+        buttonContainerView.addArrangedSubview(rotateRightButton)
+        buttonContainerView.addArrangedSubview(flipHorizontallyButton)
+        buttonContainerView.addArrangedSubview(flipVerticallyButton)
+        buttonContainerView.addArrangedSubview(self.doneBtn)
         
-        let views = [
-            "buttonContainerView" : buttonContainerView,
-            "rotateLeftButton" : rotateLeftButton,
-            "rotateRightButton" : rotateRightButton,
-            "flipHorizontallyButton" : flipHorizontallyButton,
-            "flipVerticallyButton" : flipVerticallyButton
-        ]
         
-        let metrics = [
-            "buttonWidth" : 70
-        ]
+        buttonContainerView.axis = .horizontal
+        buttonContainerView.alignment = .center
+        buttonContainerView.distribution = .fillEqually
         
-        // Button Constraints
+        buttonContainerView.topAnchor.constraint(equalTo: self.bottomContainerView.topAnchor).isActive = true
+        buttonContainerView.bottomAnchor.constraint(equalTo: self.bottomContainerView.bottomAnchor).isActive = true
+        buttonContainerView.rightAnchor.constraint(equalTo: self.bottomContainerView.rightAnchor).isActive = true
+        buttonContainerView.leftAnchor.constraint(equalTo: self.bottomContainerView.leftAnchor).isActive = true
         
-        buttonContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[rotateLeftButton(==buttonWidth)][rotateRightButton(==rotateLeftButton)][flipHorizontallyButton(==rotateLeftButton)][flipVerticallyButton(==rotateLeftButton)]|", options: [], metrics: metrics, views: views))
-        buttonContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[rotateLeftButton]|", options: [], metrics: nil, views: views))
-        buttonContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[rotateRightButton]|", options: [], metrics: nil, views: views))
-        buttonContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[flipHorizontallyButton]|", options: [], metrics: nil, views: views))
-        buttonContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[flipVerticallyButton]|", options: [], metrics: nil, views: views))
+        let bundle = Bundle(for: type(of: self))
         
-        // Container Constraints
+        self.cancelBtn.setImage(UIImage(named: "cancel", in: bundle, compatibleWith: nil), for: [])
+        self.doneBtn.setImage(UIImage(named: "done", in: bundle, compatibleWith: nil), for: [])
         
-        bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[buttonContainerView]|", options: [], metrics: nil, views: views))
-        bottomContainerView.addConstraint(NSLayoutConstraint(item: buttonContainerView, attribute: .centerX, relatedBy: .equal, toItem: bottomContainerView, attribute: .centerX, multiplier: 1, constant: 0))
+        self.doneBtn.addTarget(self, action: #selector(self.tappedDone(_:)), for: .touchUpInside)
+        self.cancelBtn.addTarget(self, action: #selector(self.tappedCancel), for: .touchUpInside)
+        
     }
     
     fileprivate func configureCropRect() {
@@ -238,7 +236,7 @@ open class IMGLYOrientationEditorViewController: IMGLYSubEditorViewController {
         fixedFilterStack.orientationCropFilter.cropRect.origin.x += 0.5
         fixedFilterStack.orientationCropFilter.cropRect.origin.y += 0.5
     }
-
+    
     // MARK: - Actions
     
     @objc fileprivate func rotateLeft(_ sender: IMGLYImageCaptionButton) {

@@ -12,8 +12,11 @@ open class IMGLYSliderEditorViewController: IMGLYSubEditorViewController {
     
     // MARK: - Properties
     
+    public var doneBtn = UIButton()
+    public var cancelBtn = UIButton()
+    
     open fileprivate(set) lazy var slider: UISlider = {
-       let slider = UISlider()
+        let slider = UISlider()
         slider.minimumValue = self.minimumValue
         slider.maximumValue = self.maximumValue
         slider.value = self.initialValue
@@ -43,10 +46,10 @@ open class IMGLYSliderEditorViewController: IMGLYSubEditorViewController {
     fileprivate var updateInterval: TimeInterval = 0.01
     
     // MARK: - UIViewController
-
+    
     override open func viewDidLoad() {
         super.viewDidLoad()
-
+        
         shouldShowActivityIndicator = false
         configureViews()
     }
@@ -60,13 +63,35 @@ open class IMGLYSliderEditorViewController: IMGLYSubEditorViewController {
     // MARK: - Configuration
     
     fileprivate func configureViews() {
-        bottomContainerView.addSubview(slider)
+        let bundle = Bundle(for: type(of: self))
         
-        let views = ["slider" : slider]
-        let metrics = ["margin" : 20]
+        self.bottomContainerView.addSubview(self.doneBtn)
+        self.doneBtn.translatesAutoresizingMaskIntoConstraints = false
+        self.doneBtn.rightAnchor.constraint(equalTo: self.bottomContainerView.rightAnchor, constant: -15).isActive = true
+        self.doneBtn.centerYAnchor.constraint(equalTo: self.bottomContainerView.centerYAnchor).isActive = true
+        self.doneBtn.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        self.doneBtn.widthAnchor.constraint(equalTo: self.doneBtn.heightAnchor).isActive = true
         
-        bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-(==margin)-[slider]-(==margin)-|", options: [], metrics: metrics, views: views))
-        bottomContainerView.addConstraint(NSLayoutConstraint(item: slider, attribute: .centerY, relatedBy: .equal, toItem: bottomContainerView, attribute: .centerY, multiplier: 1, constant: 0))
+        self.doneBtn.setImage(UIImage(named: "done", in: bundle, compatibleWith: nil), for: [])
+        
+        self.bottomContainerView.addSubview(self.cancelBtn)
+        self.cancelBtn.translatesAutoresizingMaskIntoConstraints = false
+        self.cancelBtn.leftAnchor.constraint(equalTo: self.bottomContainerView.leftAnchor, constant: 15).isActive = true
+        self.cancelBtn.centerYAnchor.constraint(equalTo: self.bottomContainerView.centerYAnchor).isActive = true
+        self.cancelBtn.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        self.cancelBtn.widthAnchor.constraint(equalTo: self.cancelBtn.heightAnchor).isActive = true
+        
+        self.cancelBtn.setImage(UIImage(named: "cancel", in: bundle, compatibleWith: nil), for: [])
+        
+        self.doneBtn.addTarget(self, action: #selector(self.tappedDone(_:)), for: .touchUpInside)
+        self.cancelBtn.addTarget(self, action: #selector(self.tappedCancel), for: .touchUpInside)
+        
+        self.bottomContainerView.addSubview(slider)
+        
+        self.slider.centerYAnchor.constraint(equalTo: self.bottomContainerView.centerYAnchor).isActive = true
+        self.slider.rightAnchor.constraint(equalTo: self.doneBtn.leftAnchor, constant: -15).isActive = true
+        self.slider.leftAnchor.constraint(equalTo: self.cancelBtn.rightAnchor, constant: 15).isActive = true
+        
     }
     
     // MARK: - Actions
@@ -98,5 +123,5 @@ open class IMGLYSliderEditorViewController: IMGLYSubEditorViewController {
     open func valueChanged(_ value: Float) {
         // Subclasses should override this
     }
-
+    
 }

@@ -51,6 +51,9 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     
     public var reopenCamera: (() -> ())? = nil
     
+    public var doneBtn = UIButton()
+    public var cancelBtn = UIButton()
+    
     open lazy var actionButtons: [IMGLYActionButton] = {
         let bundle = Bundle(for: type(of: self))
         var handlers = [IMGLYActionButton]()
@@ -136,7 +139,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
             generateLowResolutionImage()
         }
     }
-     
+    
     open override var shouldAutorotate: Bool{
         return true
     }
@@ -169,10 +172,33 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     // MARK: - Configuration
     
     fileprivate func configureMenuCollectionView() {
+        let bundle = Bundle(for: type(of: self))
+        
+        self.bottomContainerView.addSubview(self.doneBtn)
+        self.doneBtn.translatesAutoresizingMaskIntoConstraints = false
+        self.doneBtn.rightAnchor.constraint(equalTo: self.bottomContainerView.rightAnchor, constant: -15).isActive = true
+        self.doneBtn.centerYAnchor.constraint(equalTo: self.bottomContainerView.centerYAnchor).isActive = true
+        self.doneBtn.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        self.doneBtn.widthAnchor.constraint(equalTo: self.doneBtn.heightAnchor).isActive = true
+        
+        self.doneBtn.setImage(UIImage(named: "done", in: bundle, compatibleWith: nil), for: [])
+        
+        self.bottomContainerView.addSubview(self.cancelBtn)
+        self.cancelBtn.translatesAutoresizingMaskIntoConstraints = false
+        self.cancelBtn.leftAnchor.constraint(equalTo: self.bottomContainerView.leftAnchor, constant: 15).isActive = true
+        self.cancelBtn.centerYAnchor.constraint(equalTo: self.bottomContainerView.centerYAnchor).isActive = true
+        self.cancelBtn.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        self.cancelBtn.widthAnchor.constraint(equalTo: self.cancelBtn.heightAnchor).isActive = true
+        
+        self.cancelBtn.setImage(UIImage(named: "cancel", in: bundle, compatibleWith: nil), for: [])
+        
+        self.doneBtn.addTarget(self, action: #selector(self.tappedDone(_:)), for: .touchUpInside)
+        self.cancelBtn.addTarget(self, action: #selector(self.tappedCancel), for: .touchUpInside)
+        
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = ButtonCollectionViewCellSize
         flowLayout.scrollDirection = .horizontal
-        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        flowLayout.sectionInset = UIEdgeInsets.zero
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 5
         
@@ -181,11 +207,11 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(IMGLYButtonCollectionViewCell.self, forCellWithReuseIdentifier: ButtonCollectionViewCellReuseIdentifier)
-        
-        let views = [ "collectionView" : collectionView ]
-        bottomContainerView.addSubview(collectionView)
-        bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[collectionView]|", options: [], metrics: nil, views: views))
-        bottomContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[collectionView]|", options: [], metrics: nil, views: views))
+        self.bottomContainerView.addSubview(collectionView)
+        collectionView.topAnchor.constraint(equalTo: self.bottomContainerView.topAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: self.bottomContainerView.bottomAnchor).isActive = true
+        collectionView.rightAnchor.constraint(equalTo: self.doneBtn.leftAnchor, constant: -20).isActive = true
+        collectionView.leftAnchor.constraint(equalTo: self.cancelBtn.rightAnchor, constant: 20).isActive = true
     }
     
     // MARK: - Helpers
@@ -297,9 +323,9 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
         {
             delegate.saveImage(processedImage)
         }
-         self.cameraDelegate!.close(photoPickerClosed: !self.animateSeque)
+        self.cameraDelegate!.close(photoPickerClosed: !self.animateSeque)
     }
-        
+    
     @objc fileprivate func cancelTapped(_ sender: UIBarButtonItem?) {
         if let completionBlock = completionBlock {
             completionBlock(.cancel, nil)
@@ -333,7 +359,7 @@ extension IMGLYMainEditorViewController: UICollectionViewDataSource {
                 buttonCell.imageView.image = actionButton.image
             }
             
-            buttonCell.textLabel.text = actionButton.title
+            //            buttonCell.textLabel.text = actionButton.title
             if indexPath == IndexPath(row: 0, section: 0), IMGLYEditorViewController.isMagic == true{
                 buttonCell.imageView.image = actionButton.selectedImage
             }
