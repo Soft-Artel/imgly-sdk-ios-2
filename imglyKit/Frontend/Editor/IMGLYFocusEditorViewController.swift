@@ -15,37 +15,37 @@ open class IMGLYFocusEditorViewController: IMGLYSubEditorViewController {
     public var doneBtn = UIButton()
     public var cancelBtn = UIButton()
     
-    open fileprivate(set) lazy var offButton: IMGLYImageCaptionButton = {
+    open fileprivate(set) lazy var offButton: UIButton = {
         let bundle = Bundle(for: type(of: self))
-        let button = IMGLYImageCaptionButton()
-        button.textLabel.text = NSLocalizedString("focus-editor.off", tableName: nil, bundle: bundle, value: "", comment: "")
-        button.imageView.image = UIImage(named: "icon_focus_off", in: bundle, compatibleWith: nil)
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+//        button.textLabel.text = NSLocalizedString("focus-editor.off", tableName: nil, bundle: bundle, value: "", comment: "")
+        let image = UIImage(named: "icon_focus_off", in: bundle, compatibleWith: nil)
+        button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(IMGLYFocusEditorViewController.turnOff(_:)), for: .touchUpInside)
         return button
     }()
     
-    open fileprivate(set) lazy var linearButton: IMGLYImageCaptionButton = {
+    open fileprivate(set) lazy var linearButton: UIButton = {
         let bundle = Bundle(for: type(of: self))
-        let button = IMGLYImageCaptionButton()
-        button.textLabel.text = NSLocalizedString("focus-editor.linear", tableName: nil, bundle: bundle, value: "", comment: "")
-        button.imageView.image = UIImage(named: "icon_focus_linear", in: bundle, compatibleWith: nil)
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+//        button.textLabel.text = NSLocalizedString("focus-editor.linear", tableName: nil, bundle: bundle, value: "", comment: "")
+        let image = UIImage(named: "icon_focus_linear", in: bundle, compatibleWith: nil)
+        button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(IMGLYFocusEditorViewController.activateLinear(_:)), for: .touchUpInside)
         return button
     }()
     
-    open fileprivate(set) lazy var radialButton: IMGLYImageCaptionButton = {
+    open fileprivate(set) lazy var radialButton: UIButton = {
         let bundle = Bundle(for: type(of: self))
-        let button = IMGLYImageCaptionButton()
-        button.textLabel.text = NSLocalizedString("focus-editor.radial", tableName: nil, bundle: bundle, value: "", comment: "")
-        button.imageView.image = UIImage(named: "icon_focus_radial", in: bundle, compatibleWith: nil)
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+//        button.textLabel.text = NSLocalizedString("focus-editor.radial", tableName: nil, bundle: bundle, value: "", comment: "")
+        let image = UIImage(named: "icon_focus_radial", in: bundle, compatibleWith: nil)
+        button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(IMGLYFocusEditorViewController.activateRadial(_:)), for: .touchUpInside)
         return button
     }()
     
-    fileprivate var selectedButton: IMGLYImageCaptionButton? {
+    fileprivate var selectedButton: UIButton? {
         willSet(newSelectedButton) {
             self.selectedButton?.isSelected = false
         }
@@ -139,7 +139,7 @@ open class IMGLYFocusEditorViewController: IMGLYSubEditorViewController {
     
     // MARK: - Actions
     
-    @objc fileprivate func turnOff(_ sender: IMGLYImageCaptionButton) {
+    @objc fileprivate func turnOff(_ sender: UIButton) {
         if selectedButton == sender {
             return
         }
@@ -150,7 +150,7 @@ open class IMGLYFocusEditorViewController: IMGLYSubEditorViewController {
         updateFilterTypeAndPreview()
     }
     
-    @objc fileprivate func activateLinear(_ sender: IMGLYImageCaptionButton) {
+    @objc fileprivate func activateLinear(_ sender: UIButton) {
         if selectedButton == sender {
             return
         }
@@ -161,7 +161,7 @@ open class IMGLYFocusEditorViewController: IMGLYSubEditorViewController {
         updateFilterTypeAndPreview()
     }
     
-    @objc fileprivate func activateRadial(_ sender: IMGLYImageCaptionButton) {
+    @objc fileprivate func activateRadial(_ sender: UIButton) {
         if selectedButton == sender {
             return
         }
