@@ -108,9 +108,9 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
         }
         let imageView = UIImageView()
         for line in lineArray{
-            UIGraphicsBeginImageContext(self.previewImageView.frame.size)
-            imageView.image?.draw(in: self.previewImageView.frame, blendMode: .normal, alpha: 1.0)
-            line.draw(in: self.previewImageView.frame, blendMode: .normal, alpha: opacity)
+            UIGraphicsBeginImageContext(self.tempImageView.bounds.size)
+            imageView.image?.draw(in: self.tempImageView.bounds, blendMode: .normal, alpha: 1.0)
+            line.draw(in: self.tempImageView.bounds, blendMode: .normal, alpha: opacity)
             imageView.image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
         }
