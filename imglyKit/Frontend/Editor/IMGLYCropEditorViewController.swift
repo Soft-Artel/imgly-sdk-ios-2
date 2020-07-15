@@ -24,47 +24,45 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
     public var doneBtn = UIButton()
     public var cancelBtn = UIButton()
     
-    open fileprivate(set) lazy var freeRatioButton: IMGLYImageCaptionButton = {
+    open fileprivate(set) lazy var freeRatioButton: UIButton = {
         let bundle = Bundle(for: type(of: self))
-        let button = IMGLYImageCaptionButton()
-        button.textLabel.text = NSLocalizedString("crop-editor.free", tableName: nil, bundle: bundle, value: "", comment: "")
-        button.imageView.image = UIImage(named: "icon_crop_custom", in: bundle, compatibleWith: nil)
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+//        button.textLabel.text = NSLocalizedString("crop-editor.free", tableName: nil, bundle: bundle, value: "", comment: "")
+        let image = UIImage(named: "icon_crop_custom", in: bundle, compatibleWith: nil)
+        button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(IMGLYCropEditorViewController.activateFreeRatio(_:)), for: .touchUpInside)
         return button
     }()
     
-    open fileprivate(set) lazy var oneToOneRatioButton: IMGLYImageCaptionButton = {
+    open fileprivate(set) lazy var oneToOneRatioButton: UIButton = {
         let bundle = Bundle(for: type(of: self))
-        let button = IMGLYImageCaptionButton()
-        button.textLabel.text = NSLocalizedString("crop-editor.1-to-1", tableName: nil, bundle: bundle, value: "", comment: "")
-        button.imageView.image = UIImage(named: "icon_crop_square", in: bundle, compatibleWith: nil)
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+//        button.textLabel.text = NSLocalizedString("crop-editor.1-to-1", tableName: nil, bundle: bundle, value: "", comment: "")
+        let image = UIImage(named: "icon_crop_square", in: bundle, compatibleWith: nil)
+        button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(IMGLYCropEditorViewController.activateOneToOneRatio(_:)), for: .touchUpInside)
         return button 
     }()
     
-    open fileprivate(set) lazy var fourToThreeRatioButton: IMGLYImageCaptionButton = {
+    open fileprivate(set) lazy var fourToThreeRatioButton: UIButton = {
         let bundle = Bundle(for: type(of: self))
-        let button = IMGLYImageCaptionButton()
-        button.textLabel.text = NSLocalizedString("crop-editor.4-to-3", tableName: nil, bundle: bundle, value: "", comment: "")
-        button.imageView.image = UIImage(named: "icon_crop_4-3", in: bundle, compatibleWith: nil)
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+        let image = UIImage(named:  "icon_crop_4-3", in: bundle, compatibleWith: nil)
+        button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(IMGLYCropEditorViewController.activateFourToThreeRatio(_:)), for: .touchUpInside)
         return button
     }()
     
-    open fileprivate(set) lazy var sixteenToNineRatioButton: IMGLYImageCaptionButton = {
+    open fileprivate(set) lazy var sixteenToNineRatioButton: UIButton = {
         let bundle = Bundle(for: type(of: self))
-        let button = IMGLYImageCaptionButton()
-        button.textLabel.text = NSLocalizedString("crop-editor.16-to-9", tableName: nil, bundle: bundle, value: "", comment: "")
-        button.imageView.image = UIImage(named: "icon_crop_16-9", in: bundle, compatibleWith: nil)
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+        let image = UIImage(named:  "icon_crop_16-9", in: bundle, compatibleWith: nil)
+        button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(IMGLYCropEditorViewController.activateSixteenToNineRatio(_:)), for: .touchUpInside)
         return button
     }()
     
-    fileprivate var selectedButton: IMGLYImageCaptionButton? {
+    fileprivate var selectedButton: UIButton? {
         willSet(newSelectedButton) {
             self.selectedButton?.isSelected = false
         }
@@ -556,7 +554,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
     
     // MARK: - Actions
     
-    @objc fileprivate func activateFreeRatio(_ sender: IMGLYImageCaptionButton) {
+    @objc fileprivate func activateFreeRatio(_ sender: UIButton) {
         if selectedButton == sender {
             return
         }
@@ -567,7 +565,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         selectedButton = sender
     }
     
-    @objc fileprivate func activateOneToOneRatio(_ sender: IMGLYImageCaptionButton) {
+    @objc fileprivate func activateOneToOneRatio(_ sender: UIButton) {
         if selectedButton == sender {
             return
         }
@@ -578,7 +576,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         selectedButton = sender
     }
     
-    @objc fileprivate func activateFourToThreeRatio(_ sender: IMGLYImageCaptionButton) {
+    @objc fileprivate func activateFourToThreeRatio(_ sender: UIButton) {
         if selectedButton == sender {
             return
         }
@@ -589,7 +587,7 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         selectedButton = sender
     }
     
-    @objc fileprivate func activateSixteenToNineRatio(_ sender: IMGLYImageCaptionButton) {
+    @objc fileprivate func activateSixteenToNineRatio(_ sender: UIButton) {
         if selectedButton == sender {
             return
         }
