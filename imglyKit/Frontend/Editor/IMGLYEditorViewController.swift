@@ -60,7 +60,7 @@ open class IMGLYEditorViewController: UIViewController {
     
     override open func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.navigationBar.isHidden = false
         configureNavigationItems()
         configureViewHierarchy()
         configureViewConstraints()
