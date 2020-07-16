@@ -43,6 +43,8 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     
     // MARK: - Properties
     
+    static var navBarBottom: CGFloat = 0
+    
     public weak var photoEditor: PhotoEditor?
     
     public weak var delegateEditor: SaveImageDelegate?
@@ -214,7 +216,8 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                 viewController.lowResolutionImage = previewImageView.image
                 viewController.previewImageView.image = previewImageView.image
                 viewController.completionHandler = subEditorDidComplete
-                show(viewController, sender: self)
+                self.present(viewController, animated: true, completion: nil)
+//                show(viewController, sender: self)
             }
         }
     }

@@ -108,9 +108,8 @@ open class IMGLYEditorViewController: UIViewController {
         }else{
             bottomAnchorConstraint = self.view.bottomAnchor
         }
-
-        self.previewImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        self.previewImageView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor).isActive = true
+        
+        self.previewImageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 44).isActive = true
         self.previewImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         self.previewImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.previewImageView.bottomAnchor.constraint(equalTo: self.bottomContainerView.topAnchor).isActive = true
