@@ -98,6 +98,9 @@ open class IMGLYEditorViewController: UIViewController {
         view.addSubview(previewImageView)
         view.addSubview(bottomContainerView)
         previewImageView.addSubview(activityIndicatorView)
+        self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        self.activityIndicatorView.centerYAnchor.constraint(equalTo: self.previewImageView.centerYAnchor).isActive = true
+        self.activityIndicatorView.centerXAnchor.constraint(equalTo: self.previewImageView.centerXAnchor).isActive = true
     }
     
     fileprivate func configureViewConstraints() {
