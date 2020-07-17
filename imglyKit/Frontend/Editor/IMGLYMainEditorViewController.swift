@@ -213,7 +213,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                 updatePreviewImage()
             }
         default:
-            if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: nil, doneEdit: self.photoEditor) {
+            if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: self.previewImageView.visibleImageFrame, doneEdit: self.photoEditor) {
                 viewController.modalPresentationStyle = .fullScreen
                 viewController.lowResolutionImage = previewImageView.image
                 viewController.previewImageView.image = previewImageView.image
