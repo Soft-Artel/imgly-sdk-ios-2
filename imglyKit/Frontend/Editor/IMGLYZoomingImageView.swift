@@ -81,6 +81,8 @@ open class IMGLYZoomingImageView: UIScrollView {
                 initialZoomScaleWasSet = true
                 
             }
+            imageView.sizeToFit()
+            contentSize = frame.size
         }
     }
 

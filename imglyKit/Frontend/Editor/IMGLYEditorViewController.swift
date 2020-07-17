@@ -109,7 +109,7 @@ open class IMGLYEditorViewController: UIViewController {
             bottomAnchorConstraint = self.view.bottomAnchor
         }
         
-        self.previewImageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 44).isActive = true
+        self.previewImageView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor).isActive = true
         self.previewImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         self.previewImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.previewImageView.bottomAnchor.constraint(equalTo: self.bottomContainerView.topAnchor).isActive = true
@@ -132,8 +132,5 @@ open class IMGLYEditorViewController: UIViewController {
         
     }
     
-    @objc open func tappedCancel(){
-        self.navigationController?.popViewController(animated: true)
-        self.dismiss(animated: true, completion: nil)
-    }
+    
 }

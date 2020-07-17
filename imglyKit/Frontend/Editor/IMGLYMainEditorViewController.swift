@@ -156,7 +156,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
         
         navigationItem.title = NSLocalizedString("main-editor.title", tableName: nil, bundle: bundle, value: "", comment: "")
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(IMGLYMainEditorViewController.cancelTapped(_:)))
-        if !(self.photoEditor?.again ?? true) && self.photoEditor?.cameraContoler == nil {
+        if !(self.photoEditor?.again ?? true) {
             navigationItem.rightBarButtonItem = UIBarButtonItem()
         }
         navigationController?.delegate = self
@@ -171,6 +171,7 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = false
+        self.view.layoutIfNeeded()
 //        self.navigationBar.isHidden = true
     }
     
@@ -212,12 +213,13 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
                 updatePreviewImage()
             }
         default:
-            if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: self.previewImageView.visibleImageFrame, doneEdit: self.photoEditor) {
+            if let viewController = IMGLYInstanceFactory.viewControllerForButtonType(buttonType, withFixedFilterStack: fixedFilterStack, and: nil, doneEdit: self.photoEditor) {
+                viewController.modalPresentationStyle = .fullScreen
                 viewController.lowResolutionImage = previewImageView.image
                 viewController.previewImageView.image = previewImageView.image
                 viewController.completionHandler = subEditorDidComplete
-                self.present(viewController, animated: true, completion: nil)
-//                show(viewController, sender: self)
+//                self.present(viewController, animated: true, completion: nil)
+                show(viewController, sender: self)
             }
         }
     }

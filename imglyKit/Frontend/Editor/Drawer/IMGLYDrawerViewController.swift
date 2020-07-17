@@ -62,6 +62,8 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
         }
     }
     
+    
+    
     var lastPoint = CGPoint.zero
     var color = UIColor.black
     var brushWidth: CGFloat = 20.0

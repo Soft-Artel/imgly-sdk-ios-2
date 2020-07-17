@@ -52,6 +52,15 @@ open class IMGLYSubEditorViewController: IMGLYEditorViewController {
         })
     }
     
+    @objc open func tappedCancel(){
+         guard let processedImage = IMGLYPhotoProcessor.processWithUIImage(lowResolutionImage!, filters: self.fixedFilterStack.activeFilters) else { return }
+        
+        self.dismiss(animated: false, completion: {
+            FilterPreviews = [:]
+            self.photoEditorDelegate?.close(processedImage, isMagic: IMGLYEditorViewController.isMagic)
+        })
+    }
+    
     // MARK: - Helpers
     
     open func updatePreviewImageWithCompletion(_ completionHandler: IMGLYPreviewImageGenerationCompletionBlock?) {
