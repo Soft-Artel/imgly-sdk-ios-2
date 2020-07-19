@@ -102,6 +102,12 @@ open class IMGLYDrawerViewController: IMGLYSubEditorViewController{
         
     }
     
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem()
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem()
+    }
+    
     @objc func undoAction(){
         if self.lineArray.count != 0 {
             self.lineArray.removeLast()

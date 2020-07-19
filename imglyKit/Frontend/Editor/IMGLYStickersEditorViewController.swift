@@ -89,6 +89,12 @@ open class IMGLYStickersEditorViewController: IMGLYSubEditorViewController {
         fixedFilterStack.stickerFilters.removeAll()
     }
     
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem()
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem()
+    }
+    
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         rerenderPreviewWithoutStickers()

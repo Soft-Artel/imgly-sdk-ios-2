@@ -114,7 +114,8 @@ open class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.fontSelectorContainerView.isHidden = true
-        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem()
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem()
     }
     
     override open func viewDidLayoutSubviews() {

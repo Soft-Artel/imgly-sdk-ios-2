@@ -54,6 +54,12 @@ open class IMGLYSliderEditorViewController: IMGLYSubEditorViewController {
         configureViews()
     }
     
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem()
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem()
+    }
+    
     // MARK: - IMGLYEditorViewController
     
     open override var enableZoomingInPreviewImage: Bool {

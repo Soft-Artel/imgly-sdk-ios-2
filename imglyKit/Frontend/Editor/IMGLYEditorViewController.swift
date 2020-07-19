@@ -135,5 +135,9 @@ open class IMGLYEditorViewController: UIViewController {
         
     }
     
+    @objc open func tappedCancel(){
+        self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true, completion: nil)
+    }
     
 }

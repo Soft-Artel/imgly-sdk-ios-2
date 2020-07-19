@@ -105,6 +105,12 @@ open class IMGLYCropEditorViewController: IMGLYSubEditorViewController {
         fixedFilterStack.orientationCropFilter.cropRect = normalizedCropRect()
     }
     
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem()
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem()
+    }
+    
     open override func viewDidAppear(_ animated: Bool) {
         let cropRect = fixedFilterStack.orientationCropFilter.cropRect
         if cropRect.origin.x != 0 || cropRect.origin.y != 0 ||

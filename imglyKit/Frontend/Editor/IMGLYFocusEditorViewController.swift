@@ -89,6 +89,12 @@ open class IMGLYFocusEditorViewController: IMGLYSubEditorViewController {
         }
     }
     
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem()
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem()
+    }
+    
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         

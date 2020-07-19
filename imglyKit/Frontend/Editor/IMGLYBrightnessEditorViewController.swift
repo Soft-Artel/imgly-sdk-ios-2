@@ -19,6 +19,12 @@ open class IMGLYBrightnessEditorViewController: IMGLYSliderEditorViewController 
         navigationItem.title = NSLocalizedString("brightness-editor.title", tableName: nil, bundle: bundle, value: "", comment: "")
     }
     
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem()
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem()
+    }
+    
     // MARK: - SliderEditorViewController
     
     override open var minimumValue: Float {

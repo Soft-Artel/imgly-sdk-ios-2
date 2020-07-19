@@ -156,9 +156,9 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
         
         navigationItem.title = NSLocalizedString("main-editor.title", tableName: nil, bundle: bundle, value: "", comment: "")
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(IMGLYMainEditorViewController.cancelTapped(_:)))
-        if !(self.photoEditor?.again ?? true) {
-            navigationItem.rightBarButtonItem = UIBarButtonItem()
-        }
+//        if !(self.photoEditor?.again ?? true) {
+//            navigationItem.rightBarButtonItem = UIBarButtonItem()
+//        }
         navigationController?.delegate = self
         
         fixedFilterStack.effectFilter = IMGLYInstanceFactory.effectFilterWithType(initialFilterType)
@@ -171,14 +171,16 @@ open class IMGLYMainEditorViewController: IMGLYEditorViewController {
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = false
+        self.navigationItem.rightBarButtonItem?.isEnabled = true
+        self.navigationItem.leftBarButtonItem?.isEnabled = true
         self.view.layoutIfNeeded()
-//        self.navigationBar.isHidden = true
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.navigationController?.view.backgroundColor = .black
-        self.navigationController?.navigationBar.isHidden = true
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        self.navigationItem.leftBarButtonItem?.isEnabled = false
     }
     
     // MARK: - Configuration
